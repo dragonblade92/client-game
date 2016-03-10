@@ -1,100 +1,116 @@
+//global variables ---------------------------
 var http = require('http');
 var server = http.createServer( handler );
-server.listen(8000);
-console.log("listening on port 8000");
+var usernames = {};
+var rooms = ['Lobby'];
 
 function handler( request, response ) 
 {
 	response.writeHead(200 , { "Content-Type": "text/plain"});
  	response.write("Hello World");
-
 	
     response.end();
     console.log("response sent..");
 };
 
+server.listen(8000);
+console.log("listening on port 8000");
 var io = require("socket.io").listen(server);
+io.sockets.on("connection", Connect);
 
-io.sockets.on("connection", function(socket) 
+
+
+function Connect(socket)
 {
 	console.log("user connected: " + socket.id);
 	
-	socket.on("ClientMessage", SendAllOthers("ServerMessage", data)); 
+	socket.on("ClientMessage", function(data)
+	{	
+		socket.broadcast.emit("ServerMessage", data);	
+	}); 
+	
+    socket.on('adduser', function(username) {
+        socket.username = username;
+        socket.room = 'Lobby';
+        usernames[username] = username;
+        socket.join('Lobby');
+        socket.emit('updatechat', 'SERVER', 'you have connected to Lobby');
+        socket.broadcast.to('Lobby').emit('updatechat', 'SERVER', username + ' has connected to this room');
+        socket.emit('updaterooms', rooms, 'Lobby');
+    });
+
+    socket.on('create', function(room) {
+        rooms.push(room);
+        socket.emit('updaterooms', rooms, socket.room);
+    });
+
+    socket.on('sendchat', function(data) {
+        io.sockets["in"](socket.room).emit('updatechat', socket.username, data);
+    });
+
+    socket.on('switchRoom', function(newroom) {
+        var oldroom;
+        oldroom = socket.room;
+        socket.leave(socket.room);
+        socket.join(newroom);
+        socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
+        socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
+        socket.room = newroom;
+        socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+        socket.emit('updaterooms', rooms, newroom);
+    });
+
+    socket.on('disconnect', function() {
+        delete usernames[socket.username];
+        io.sockets.emit('updateusers', usernames);
+        socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+        socket.leave(socket.room);
+    });
+	
 	//to all other connected clients
 	//io.sockets.emit("message", data); //to all connected clients
-});
-
-function SendAllOthers(MessageType, data)
+}
+/*
+// voeg gebruiker aan lobby toe
+function AddUser(username)
 {
-	socket.broadcast.emit(MessageType, data);
+	socket.username = username;
+	socket.room = 'Lobby';
+	usernames[username] = username;
+	socket.join('Lobby');
+	socket.emit('updatechat', 'SERVER', 'you have connected to Lobby');
+	socket.broadcast.to('Lobby').emit('updatechat', 'SERVER', username + ' has connected to this room');
+	socket.emit('updaterooms', rooms, 'Lobby');
+};
+ 
+ //creerd nieuwe room/lobby
+function Create(room) 
+{
+	rooms.push(room);
+	socket.emit('updaterooms', rooms, socket.room);
 }
 
-function Lobby()
+//speler wisselt van room
+function ChangeRoom(newroom)
 {
-	this.ID;
-	this.Players[];
-	this.MaxPlayers;
-	this.Available;
-	this.Blocks[];
-	
-	function CheckAvailable()
-	{
-		if(this.Players[].length == this.MaxPlayers)
-		{
-			this.Available = false;
-		}
-		else
-		{
-			this.Available = true;
-		}
-	}
-	
-	function SetBlocked(Player)
-	{
-		this.Blocks.ForEach(Block)
-		{
-			var Loc = new Location();
-			switch(Player.Direction)
-			{
-				case "up":
-				Loc.Height = Player.Height + 16;
-				case "down":
-				Loc.Height = Player.Height - 16;
-				case "left":
-				Loc.Height = Player.Height + 16;
-				case "right":
-				Loc.Height = Player.Height - 16;
-			}
-			
-			if(this.Location == Loc)
-			{
-				this.Blocked = true;
-			}
-		}
-	}
+	var oldroom;
+	oldroom = socket.room;
+	socket.leave(socket.room);
+	socket.join(newroom);
+	socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
+	socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
+	socket.room = newroom;
+	socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+	socket.emit('updaterooms', rooms, newroom);
 }
 
-function Player()
+//speler disconnect
+function Disconnect()
 {
-	this.ID;
-	this.Name;
-	this.Location;
-	this.Color;
-	this.Direction;
+	delete usernames[socket.username];
+	io.sockets.emit('updateusers', usernames);
+	socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+	socket.leave(socket.room);
 }
 
-function Block()
-{
-	this.Blocked;
-	this.ID;
-	this.Color;
-	this.Location;
-}
-
-function Location()
-{
-	this.width;
-	this.height;
-}
-
-
+*/
