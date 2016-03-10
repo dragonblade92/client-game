@@ -3,7 +3,8 @@ var server = http.createServer( handler );
 server.listen(8000);
 console.log("listening on port 8000");
 
-function handler( request, response ) {
+function handler( request, response ) 
+{
 	response.writeHead(200 , { "Content-Type": "text/plain"});
  	response.write("Hello World");
 
@@ -12,36 +13,88 @@ function handler( request, response ) {
     console.log("response sent..");
 };
 
-	var io = require("socket.io").listen(server);
+var io = require("socket.io").listen(server);
 
-	io.sockets.on("connection", function(socket) {
-		console.log("user connected: " + socket.id);
-		socket.on("ClientMessage", function (data) {
-			socket.broadcast.emit("ServerMessage", data); //to all other connected clients
-			//io.sockets.emit("message", data); //to all connected clients
-		});
-	});
+io.sockets.on("connection", function(socket) 
+{
+	console.log("user connected: " + socket.id);
 	
-	// mysql module
-	var mysql = require("mysql");  
+	socket.on("ClientMessage", SendAllOthers("ServerMessage", data)); 
+	//to all other connected clients
+	//io.sockets.emit("message", data); //to all connected clients
+});
 
-	// Create the connection 
-	var connection = mysql.createConnection({ 
-	host: "localhost:3307",
-	user: "root", 
-	password: "usbw", 
-	database: "db_name"}); 
+function SendAllOthers(MessageType, data)
+{
+	socket.broadcast.emit(MessageType, data);
+}
 
-	connection.connect();
+function Lobby()
+{
+	this.ID;
+	this.Players[];
+	this.MaxPlayers;
+	this.Available;
+	this.Blocks[];
 	
-	
-	function dbHandler(error, rows, fields) 
+	function CheckAvailable()
 	{
-		response.writeHead(200, {'Content-Type': 'x-application/json'}); 
-		response.end(JSON.stringify(rows));
-	};
+		if(this.Players[].length == this.MaxPlayers)
+		{
+			this.Available = false;
+		}
+		else
+		{
+			this.Available = true;
+		}
+	}
+	
+	function SetBlocked(Player)
+	{
+		this.Blocks.ForEach(Block)
+		{
+			var Loc = new Location();
+			switch(Player.Direction)
+			{
+				case "up":
+				Loc.Height = Player.Height + 16;
+				case "down":
+				Loc.Height = Player.Height - 16;
+				case "left":
+				Loc.Height = Player.Height + 16;
+				case "right":
+				Loc.Height = Player.Height - 16;
+			}
+			
+			if(this.Location == Loc)
+			{
+				this.Blocked = true;
+			}
+		}
+	}
+}
 
-	// Query the database. 
-	console.log(connection.query('SELECT * FROM your_table;', dbHandler));
+function Player()
+{
+	this.ID;
+	this.Name;
+	this.Location;
+	this.Color;
+	this.Direction;
+}
 
-	connection.destroy();
+function Block()
+{
+	this.Blocked;
+	this.ID;
+	this.Color;
+	this.Location;
+}
+
+function Location()
+{
+	this.width;
+	this.height;
+}
+
+
