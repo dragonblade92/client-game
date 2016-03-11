@@ -40,6 +40,8 @@ function Connect(socket)
     });
 
     socket.on('create', function(room) {
+		room.users = 0;
+		console.log(room.users);
         rooms.push(room);
         io.sockets.emit('updaterooms', rooms, socket.room);
     });
@@ -52,7 +54,19 @@ function Connect(socket)
         var oldroom;
         oldroom = socket.room;
         socket.leave(socket.room);
+		
+		//als de room 0 spelers heeft dan delete de room.
+		if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
+		{
+			var index = rooms.indexOf(oldroom);
+			if (index > -1) 
+			{
+				console.log("Room deleted: " + oldroom);
+				rooms.splice(index, 1);
+			}
+		}
         socket.join(newroom);
+		
         socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
         socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
         socket.room = newroom;
@@ -69,6 +83,13 @@ function Connect(socket)
 	
 	//to all other connected clients
 	//io.sockets.emit("message", data); //to all connected clients
+}
+
+var getUsersInRoomNumber = function(roomName, namespace) {
+    if (!namespace) namespace = '/';
+    var room = io.nsps[namespace].adapter.rooms[roomName];
+    if (!room) return null;
+    return Object.keys(room).length;
 }
 /*
 // voeg gebruiker aan lobby toe
