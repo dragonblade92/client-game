@@ -41,7 +41,7 @@ function Connect(socket)
 
     socket.on('create', function(room) {
         rooms.push(room);
-        socket.emit('updaterooms', rooms, socket.room);
+        io.sockets.emit('updaterooms', rooms, socket.room);
     });
 
     socket.on('sendchat', function(data) {
