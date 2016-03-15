@@ -1,14 +1,15 @@
-function Lobby()
+function Lobby(Room)
 {
 	this.ID;
-	this.Players[];
+	this.Players = [];
 	this.MaxPlayers;
 	this.Available;
-	this.Blocks[];
+	this.Blocks = [];
+	this.room = Room;
 	
 	function CheckAvailable()
 	{
-		if(this.Players[].length == this.MaxPlayers)
+		if(this.Players.length == this.MaxPlayers)
 		{
 			this.Available = false;
 		}

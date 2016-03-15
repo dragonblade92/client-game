@@ -18,8 +18,14 @@ console.log("listening on port 8000");
 var io = require("socket.io").listen(server);
 io.sockets.on("connection", Connect);
 
+var lob = new Lobby('Lobby');
+lob.ID = 'Lobby';
+lob.MaxPlayers = 99999;
+lob.Available = true;
+var lobbies = [lob];
 
 
+//message handeling--------------------------------------------
 function Connect(socket)
 {
 	console.log("user connected: " + socket.id);
@@ -33,6 +39,11 @@ function Connect(socket)
         socket.username = username;
         socket.room = 'Lobby';
         usernames[username] = username;
+		var newplay = new Player();
+		newplay.ID = socket.id;
+		newplay.Name = username;
+		newplay.room = "Lobby";
+		lobbies['Lobby'].Players.Add(newplay);
         socket.join('Lobby');
         socket.emit('updatechat', 'SERVER', 'you have connected to Lobby');
         socket.broadcast.to('Lobby').emit('updatechat', 'SERVER', username + ' has connected to this room');
@@ -40,8 +51,6 @@ function Connect(socket)
     });
 
     socket.on('create', function(room) {
-		room.users = 0;
-		console.log(room.users);
         rooms.push(room);
         io.sockets.emit('updaterooms', rooms, socket.room);
     });
@@ -65,13 +74,15 @@ function Connect(socket)
 				rooms.splice(index, 1);
 			}
 		}
+		
         socket.join(newroom);
 		
         socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
         socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
         socket.room = newroom;
         socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-        socket.emit('updaterooms', rooms, newroom);
+        socket.emit('updaterooms', rooms, newroom);		
+        io.sockets.emit('updaterooms', rooms, socket.room);
     });
 
     socket.on('disconnect', function() {
@@ -135,3 +146,110 @@ function Disconnect()
 }
 
 */
+
+function Lobby(Room)
+{
+	this.ID;
+	this.Players = [];
+	this.MaxPlayers;
+	this.Available;
+	this.Blocks = [];
+	this.room = Room;
+	
+	function CheckAvailable()
+	{
+		if(this.Players.length == this.MaxPlayers)
+		{
+			this.Available = false;
+		}
+		else
+		{
+			this.Available = true;
+		}
+	}
+	
+	function SetBlocked(Player)
+	{
+		this.Blocks.ForEach(Block)
+		{
+			var Loc = new Location();
+			switch(Player.Direction)
+			{
+				case "up":
+				Loc.Height = Player.Height + 16;
+				case "down":
+				Loc.Height = Player.Height - 16;
+				case "left":
+				Loc.Height = Player.Height + 16;
+				case "right":
+				Loc.Height = Player.Height - 16;
+			}
+			
+			if(this.Location == Loc)
+			{
+				this.Blocked = true;
+			}
+		}
+	}
+	
+	function GetPlayer(ID)
+	{
+		for (i = 0; i < this.Players.length; i++)
+		{
+			if(this.Players[i].ID == ID)
+			{
+				return this.Players[i];
+			}
+		}		
+		return null;
+	}
+}
+
+function Player()
+{
+	this.ID;
+	this.Name;
+	this.Location;
+	this.Color;
+	this.Direction;
+}
+
+function Block()
+{
+	this.Blocked;
+	this.ID;
+	this.Color;
+	this.Location;
+}
+
+function Location()
+{
+	this.width;
+	this.height;
+}
+
+function FindPlayerLobby(PlayerID)
+{
+	for (i = 0; i < lobbies.length; i++)
+	{
+		var x = lobbies[i].GetPlayer(PlayerID);
+		if(x != null)
+		{
+			return lobbies[i];
+		}
+	}	
+	return null;
+}
+
+function FindPlayer(PlayerID)
+{
+	for (i = 0; i < lobbies.length; i++)
+	{
+		var x = lobbies[i].GetPlayer(PlayerID);
+		if(x != null)
+		{
+			return x;
+		}
+	}	
+	return null;
+}
