@@ -31,16 +31,20 @@ socket.on('updatechat', function (username, data) {
 });
 
 
-socket.on('updaterooms', function (rooms, current_room) {
     $('#rooms').empty();
     $.each(rooms, function(key, value) {
         if(value == current_room){
-            $('#rooms').append('<div>' + value + '</div>');
+            $('#rooms').append('<div id="'value'">' + value + '</div>');
         }
         else {
-            $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
+            $('#rooms').append('<div id="'value'"><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
         }
     });
+});
+
+socket.on('deleteRooms', function (current_room) 
+{
+	$(current_room).remove();
 });
 
 function switchRoom(room){
