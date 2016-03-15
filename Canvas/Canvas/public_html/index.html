@@ -12,15 +12,17 @@ and open the template in the editor.
     </head>
     <body>
         <div id="splashScreen">
-            <img src="SplashScreen.png"/>
+            <img id="splashPlaatje" src="SplashScreen.png"/>
             <input id="StartButton" type="button" value="Start"/>
         </div>
         <canvas id="myCanvas" width= "960" height= "640" style="border:1px solid #000000;"></canvas>
         
         <script>
-            Window.onload {
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("splashPlaatje");
+            ctx.drawImage(img,0,0);
                 
-            }
             $("#StartButton").click(function () {
                 $("#StartButton").hide();
                 $("#myCanvas").show();
