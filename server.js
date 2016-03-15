@@ -13,8 +13,8 @@ function handler( request, response )
     console.log("response sent..");
 };
 
-server.listen(8000);
-console.log("listening on port 8000");
+server.listen(8080);
+console.log("listening on port 8080");
 var io = require("socket.io").listen(server);
 io.sockets.on("connection", Connect);
 
