@@ -61,8 +61,9 @@ function Connect(socket)
 			var index = rooms.indexOf(oldroom);
 			if (index > -1) 
 			{
+				rooms.splice(index, 1);			
+				io.sockets.emit('deleteRoom', oldroom);				
 				console.log("Room deleted: " + oldroom);
-				rooms.splice(index, 1);
 			}
 		}
         socket.join(newroom);
@@ -71,7 +72,7 @@ function Connect(socket)
         socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
         socket.room = newroom;
         socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-        socket.emit('updaterooms', rooms, newroom);
+		socket.emit('updaterooms', rooms, newroom);
     });
 
     socket.on('disconnect', function() {
