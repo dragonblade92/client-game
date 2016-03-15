@@ -9,23 +9,31 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script language="JavaScript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     </head>
     <body>
         <div id="splashScreen">
-            <img id="splashPlaatje" src="SplashScreen.png"/>
-            <input id="StartButton" type="button" value="Start"/>
+            <img width= "960" height= "540" id="splashPlaatje" src="SplashScreen.png" style="display: none"/>
         </div>
-        <canvas id="myCanvas" width= "960" height= "640" style="border:1px solid #000000;"></canvas>
+        <canvas id="myCanvas" width= "960" height= "540" style="border:1px solid #000000;"></canvas>
         
         <script>
             var c = document.getElementById("myCanvas");
             var ctx = c.getContext("2d");
-            var img = document.getElementById("splashPlaatje");
-            ctx.drawImage(img,0,0);
-                
-            $("#StartButton").click(function () {
-                $("#StartButton").hide();
-                $("#myCanvas").show();
+            var splash = document.getElementById("splashPlaatje");
+    
+            window.onload = function() { 
+                ctx.drawImage(splash, 0, 0);          
+            };
+            
+            $("#myCanvas").click(function () {
+                ctx.clearRect(0, 0, c.width, c.height);
+                window.alert("Sample text");
+            });
+            
+            window.onkeypress(function(){
+                ctx.clearRect(0, 0, c.width, c.height);
+                window.alert("Sample text");
             });
         </script>
     </body>
