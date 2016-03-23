@@ -1,7 +1,5 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-//var splash = document.getElementById("splashPlaatje");
-//var grid = document.getElementById("gridPlaatje");
 var splashUp = false;
 var gameStarted = false;
 var hit = false;
@@ -20,64 +18,55 @@ var buttonY = [350,400,450,500];
 var buttonWidth = [100,100,100,100];
 var buttonHeight = [25,25,25,25];
 
-//Drawing images on canvas
-/*playImage.onload = function() {
-    ctx.drawImage(playImage, buttonX[0], buttonY[0]);
-};*/
+//Drawing splash screen on canvas
 splashImage.onload = function() {
     ctx.drawImage(splashImage, 0, 0);
     splashUp = true;
 };
-/*gridImage.onload = function() {
-    ctx.drawImage(gridImage, 0, 0);
-};*/
-
-
-
+//Continue to menu by clicking anywhere on canvas
 $("#myCanvas").click(function () {
    if(splashUp == true) {
        ctx.clearRect(0,0, c.width, c.height);
        ctx.drawImage(playImage, buttonX[0], buttonY[0]);
-       ctx.drawImage(playImage, buttonX[1], buttonY[1]);
-       ctx.drawImage(playImage, buttonX[2], buttonY[2]);
-       ctx.drawImage(playImage, buttonX[3], buttonY[3]);
        splashUp = false;
    }
 });
-
-playImage.onclick(function() {
-    ctx.clearRect(0, 0, c.width, c.height);
-    ctx.drawImage(gridImage, 0, 0);
-    startGame();
-    gameStarted = true;
-});
-/*window.onload = function() {
-    ctx.drawImage(splash, 0, 0);
-    splashUp = true;
-};*/
-
-/*$("#myCanvas").click(function () {
-    if(splashUp == true) {
-        ctx.clearRect(0, 0, c.width, c.height);
-        splashUp = false;
-    }
-    else if(gameStarted === false) {
-        startGame();
-        ctx.drawImage(grid, 0, 0);
-        gameStarted = true;
-    }
-});*/
-
-/*document.onkeydown = function(evt){
+//Or press any key
+document.onkeydown = function(evt){
     if(splashUp === true) {
-        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.clearRect(0,0, c.width, c.height);
+        ctx.drawImage(playImage, buttonX[0], buttonY[0]);
         splashUp = false;
-    } else if(gameStarted === false) {
+    }
+ };
+//Function that handles the mouse position in order to recognize which button is clicked
+function getPosition(event) {
+    var x,
+        y;
+    if (event.x != undefined && event.y != undefined) {
+        x = event.x;
+        y = event.y;
+    } else {
+        x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+        y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+    x -= c.offsetLeft;
+    y -= c.offsetTop;
+    x = x - window.pageXOffset;
+    y = y - window.pageYOffset;
+    mouseX = x;
+    mouseY = y;
+
+    if (mouseX > buttonX[0] &&
+        mouseX < buttonX[0] + buttonWidth[0] &&
+        mouseY > buttonY[0] &&
+        mouseY < buttonY[0] + buttonHeight[0]) {
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.drawImage(gridImage, 0, 0);
         startGame();
-        ctx.drawImage(grid, 0, 0);
         gameStarted = true;
     }
-};*/
+}
 
 function startGame() {
     var player1 = new Player();
@@ -177,7 +166,7 @@ function startGame() {
                 bewogen = true;
             }
         }
-    };
+    }
 }
 
 
