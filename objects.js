@@ -7,24 +7,7 @@ function Lobby()
 	this.Blocks = [];
 	this.room;
 	
-	function AddPlayer(p)
-	{		
-		console.log("adding player");
-		if(this.Players.length == this.MaxPlayers)
-		{
-			console.log("not available");
-			this.Available = false;
-		}
-		else
-		{
-			console.log("available");
-			Players.push(p);
-			this.Available = true;
-		}
-		return Available;
-	}
-	
-	function SetBlocked(Player)
+	/*function SetBlocked(Player)
 	{
 		this.Blocks.ForEach(Block)
 		{
@@ -46,7 +29,7 @@ function Lobby()
 				this.Blocked = true;
 			}
 		}
-	}
+	} */
 }
 
 function Player()
@@ -59,7 +42,7 @@ function Player()
 
 function Block()
 {
-	this.Blocked;
+	this.Blocked = false;
 	this.ID;
 	this.Color;
 	this.Location;
@@ -67,8 +50,8 @@ function Block()
 
 function Location()
 {
-	this.width;
-	this.height;
+	this.posX;
+	this.posY;
 }
 
 // Export the Player class so you can use it in

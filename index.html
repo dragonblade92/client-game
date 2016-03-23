@@ -50,7 +50,8 @@ socket.on('Roomfull', function ()
 //if the roomname or player name already exists this will function will be triggered
 socket.on('Exists', function () 
 {
-	alert("There is already a room with that name!");
+	alert("There is already a room with that name!");	
+	socket.emit('create', prompt("What's the room name: "));
 });
 
 //if the roomname or player name already exists this will function will be triggered

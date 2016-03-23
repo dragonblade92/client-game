@@ -84,6 +84,7 @@ function Connect(socket)
 				console.log("something went wrong");
 			}
 			
+			socket.emit("PlayerInfo", p);
 			socket.emit('updatechat', 'SERVER', 'you have connected to Lobby');
 			socket.broadcast.to('Lobby').emit('updatechat', 'SERVER', username + ' has connected to this room');
 			socket.emit('updaterooms', rooms, 'Lobby');
@@ -193,10 +194,32 @@ function Connect(socket)
 		}
     }); 
 	
-	socket.on('direction', function() {
-        
+	//add a new block to the lobby the player is in.
+	//Also checks the collision
+	socket.on('NewBlock', function(block) 
+	{
+		var gr = FindRoomOccupiedByUser(socket.username);
+		AddBlock(gr, block);
+		var check = CheckCollision(gr);
+		
+		if(check != undefined)
+		{
+			io.to(gr.room).emit('lose', check.ID);
+		}
     });
 
+	socket.on('StartGame', function()
+	{
+		var gr = FindRoomOccupiedByUser(socket.username);
+		socket.emit('BlockInfo', gr.Blocks);
+		gr.Players.forEach(function(value, index)
+		{
+			if(value.ID != socket.username)
+			{
+				socket.emit("PlayerInfo", value);
+			}
+		}		
+	}
     socket.on('disconnect', function() {
         delete usernames[socket.username];
         io.sockets.emit('updateusers', usernames);
@@ -264,4 +287,36 @@ function getUsersInRoomNumber(roomName, namespace) {
     var room = io.nsps[namespace].adapter.rooms[roomName];
     if (!room) return null;
     return Object.keys(room).length;
+}
+
+function SendGameRoomData(socket, gr)
+{
+	
+}
+
+function AddBlock(gr, NewBlock)
+{
+	gr.Blocks[NewBlock.ID] = NewBlock;
+}
+
+function CheckCollision(gr)
+{	
+	var player;
+	if(gr.Blocks != undefined){
+		gr.Players.forEach( function (value, index)
+		{			
+			gr.Blocks.forEach( function (value2, index2)
+			{
+				if(value2.Blocked)
+				{			
+					if(value.Location.posX == value2.Location.posX && value.Location.posY == value2.Location.posY)
+					{
+						console.log("Collision by: " + value.ID);
+						player = value;
+					}
+				}
+			});
+		});
+	}
+	return player;
 }
