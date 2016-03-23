@@ -62,3 +62,9 @@ function Block()
 	this.Color;
 	this.Location;
 }
+
+function Location()
+{
+    this.posX;
+    this.posY;
+}
