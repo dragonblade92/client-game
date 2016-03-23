@@ -5,49 +5,65 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 		<script>
-		$( document ).ready(function() {				
-				//connect to websocket
-				var socket = io.connect("http://localhost:8080");
-
-				//event handler for incoming messages
-				socket.on("ServerMessage", function (data) {
-					alert(data);
-				});
-			
-			document.getElementById("myButton").onclick = function(){
-				var message = document.getElementById("message").value;
-				socket.emit('ClientMessage', message);
-			};			
-			
-		});
+		
+// making a connection to the server.
 var socket = io.connect('http://localhost:8080');
 
+//Getting the username of the user.
 socket.on('connect', function(){
     socket.emit('adduser', prompt("What's your name: "));
 });
 
+//recieve the new message.
 socket.on('updatechat', function (username, data) {
     $('#conversation').append('<b>'+ username + ':</b> ' + data + '<br>');
 });
 
-
+//to update the list with rooms
 socket.on('updaterooms', function (rooms, current_room) {
     $('#rooms').empty();
     $.each(rooms, function(key, value) {
+		//this is the room the player is in/
         if(value == current_room){
             $('#rooms').append('<div id=\''+value+'\'>' + value + '</div>');
         }
         else {
+			//these are the other rooms.
             $('#rooms').append('<div id=\''+value+'\'><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
         }
     });
 });
 
+//to delete a room from the page
 socket.on('deleteRoom', function (current_room) 
 {
 	var d = "#" + current_room;
-	alert(d);
 	$(d).remove();
+});
+
+//if the room the user is trying to join is full this will trigger
+socket.on('Roomfull', function () 
+{
+	alert("Room is full");
+});
+
+//if the roomname or player name already exists this will function will be triggered
+socket.on('Exists', function () 
+{
+	alert("There is already a room with that name!");
+});
+
+//if the roomname or player name already exists this will function will be triggered
+socket.on('NonExi', function () 
+{
+	alert("This room doesnt exist.");
+});
+
+//Playernaam bestaat al
+socket.on('PlayerExists', function () 
+{
+	alert("There is already a Player with that name!");
+	socket.emit('adduser', prompt("What's your name: "));	
 });
 
 function switchRoom(room){
