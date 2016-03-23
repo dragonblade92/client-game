@@ -1,29 +1,74 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-var splash = document.getElementById("splashPlaatje");
-var grid = document.getElementById("gridPlaatje");
+//var splash = document.getElementById("splashPlaatje");
+//var grid = document.getElementById("gridPlaatje");
 var splashUp = false;
 var gameStarted = false;
 var hit = false;
 var bewogen = false;
+//Images
+var splashImage = new Image();
+var gridImage = new Image();
+var playImage = new Image();
+//Image sources
+splashImage.src = "images/SplashScreen.png";
+gridImage.src = "images/grid.png";
+playImage.src = "images/menu/play.PNG";
+//Array with button locations
+var buttonX = [384,384,384,384];
+var buttonY = [350,400,450,500];
+var buttonWidth = [100,100,100,100];
+var buttonHeight = [25,25,25,25];
 
-window.onload = function() { 
-    ctx.drawImage(splash, 0, 0);
+//Drawing images on canvas
+/*playImage.onload = function() {
+    ctx.drawImage(playImage, buttonX[0], buttonY[0]);
+};*/
+splashImage.onload = function() {
+    ctx.drawImage(splashImage, 0, 0);
     splashUp = true;
 };
+/*gridImage.onload = function() {
+    ctx.drawImage(gridImage, 0, 0);
+};*/
+
+
 
 $("#myCanvas").click(function () {
-    if(splashUp === true) {
-        ctx.clearRect(0, 0, c.width, c.height);
-        splashUp = false;
-    } else if(gameStarted === false) {
-        startGame();
-        ctx.drawImage(grid, 0, 0);
-        gameStarted = true;
-    }
+   if(splashUp == true) {
+       ctx.clearRect(0,0, c.width, c.height);
+       ctx.drawImage(playImage, buttonX[0], buttonY[0]);
+       ctx.drawImage(playImage, buttonX[1], buttonY[1]);
+       ctx.drawImage(playImage, buttonX[2], buttonY[2]);
+       ctx.drawImage(playImage, buttonX[3], buttonY[3]);
+       splashUp = false;
+   }
 });
 
-document.onkeydown = function(evt){
+playImage.onclick(function() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.drawImage(gridImage, 0, 0);
+    startGame();
+    gameStarted = true;
+});
+/*window.onload = function() {
+    ctx.drawImage(splash, 0, 0);
+    splashUp = true;
+};*/
+
+/*$("#myCanvas").click(function () {
+    if(splashUp == true) {
+        ctx.clearRect(0, 0, c.width, c.height);
+        splashUp = false;
+    }
+    else if(gameStarted === false) {
+        startGame();
+        ctx.drawImage(grid, 0, 0);
+        gameStarted = true;
+    }
+});*/
+
+/*document.onkeydown = function(evt){
     if(splashUp === true) {
         ctx.clearRect(0, 0, c.width, c.height);
         splashUp = false;
@@ -32,7 +77,7 @@ document.onkeydown = function(evt){
         ctx.drawImage(grid, 0, 0);
         gameStarted = true;
     }
-};
+};*/
 
 function startGame() {
     var player1 = new Player();
