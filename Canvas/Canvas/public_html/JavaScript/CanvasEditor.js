@@ -31,7 +31,7 @@ $("#myCanvas").click(function () {
        splashUp = false;
    }
 });
-//Or press any key
+//Or press any key to continue to menu
 document.onkeydown = function(evt){
     if(splashUp === true) {
         ctx.clearRect(0,0, c.width, c.height);
@@ -57,6 +57,7 @@ function getPosition(event) {
     mouseX = x;
     mouseY = y;
 
+    //To detect if Play button is pressed, and if pressed to handle its event.
     if (mouseX > buttonX[0] &&
         mouseX < buttonX[0] + buttonWidth[0] &&
         mouseY > buttonY[0] &&
@@ -67,7 +68,7 @@ function getPosition(event) {
         gameStarted = true;
     }
 }
-
+//Function to start the game
 function startGame() {
     var player1 = new Player();
     player1.ID = 0;
