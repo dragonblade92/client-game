@@ -195,19 +195,27 @@ function Connect(socket)
     }); 
 	
 	//add a new block to the lobby the player is in.
-	//Also checks the collision
 	socket.on('NewBlock', function(block) 
 	{
 		var gr = FindRoomOccupiedByUser(socket.username);
 		AddBlock(gr, block);
+    });
+
+	//sets new location of player,
+	//also checks for collisions
+	socket.on("Location", function(Location)
+	{
+		var pl = FindUser(socket.username);
+		pl.Location.posX = Location.posX;
+		pl.Location.posY = Location.posY;
 		var check = CheckCollision(gr);
 		
 		if(check != undefined)
 		{
 			io.to(gr.room).emit('lose', check.ID);
 		}
-    });
-
+	}
+	
 	socket.on('StartGame', function()
 	{
 		var gr = FindRoomOccupiedByUser(socket.username);
