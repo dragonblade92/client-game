@@ -220,14 +220,12 @@ function Connect(socket)
 	{
 		var gr = FindRoomOccupiedByUser(socket.username);
 		socket.emit('BlockInfo', gr.Blocks);
-		gr.Players.forEach(function(value, index)
-		{
-			if(value.ID != socket.username)
-			{
+		gr.Players.forEach(function(value, index) {
+			if (value.ID != socket.username) {
 				socket.emit("PlayerInfo", value);
 			}
-		}		
-	}
+		})
+	});
     socket.on('disconnect', function() {
         delete usernames[socket.username];
         io.sockets.emit('updateusers', usernames);
