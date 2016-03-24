@@ -18,8 +18,8 @@ mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 //Array with button locations
-var buttonX = [215,202,330,330];
-var buttonY = [110,240,310,440];
+var buttonX = [218,202,330,330];
+var buttonY = [120,220,320,420];
 var buttonWidth = [670,700,300,300];
 var buttonHeight = [77,77,77,77];
 
