@@ -18,10 +18,10 @@ mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 //Array with button locations
-var buttonX = [218,202,330,330];
+var buttonX = [280,280,330,330];
 var buttonY = [120,220,320,420];
-var buttonWidth = [670,700,300,300];
-var buttonHeight = [77,77,77,77];
+var buttonWidth = [400,400,300,300];
+var buttonHeight = [70,70,77,77];
 
 //Drawing splash screen on canvas
 splashImage.onload = function() {
@@ -62,7 +62,7 @@ function getPosition(event) {
 }
 //Function that loads the menu
 function loadMenu() {
-    if(splashUp === true) {
+    if(splashUp == true) {
         ctx.clearRect(0,0, c.width, c.height);
         ctx.drawImage(mainImage, 0, 0);
         ctx.drawImage(newImage, buttonX[0], buttonY[0]);
@@ -73,19 +73,26 @@ function loadMenu() {
 }
 //function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array
 function menuButton(buttonIndex) {
-    if(gameStarted === false) {
+    if(gameStarted == false) {
         if (mouseX > buttonX[buttonIndex] &&
             mouseX < buttonX[buttonIndex] + buttonWidth[buttonIndex] &&
             mouseY > buttonY[buttonIndex] &&
             mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
-            ctx.clearRect(0, 0, c.width, c.height);
-            ctx.drawImage(gridImage, 0, 0);
-            //Checks to see if the splash screen has been passed yet.
-            if (mainMenu === false) {
-                mainMenu = true;
-            } else {
-                startGame();
-                gameStarted = true;
+            //If it's button "New game"
+            if(buttonIndex == 0) {
+                ctx.clearRect(0, 0, c.width, c.height);
+                ctx.drawImage(gridImage, 0, 0);
+                //Checks to see if the splash screen has been passed yet.
+                if (mainMenu == false) {
+                    mainMenu = true;
+                } else {
+                    startGame();
+                    gameStarted = true;
+                }
+            }
+            //If it's button "Join game"
+            if(buttonIndex == 1) {
+
             }
         }
     }
@@ -117,7 +124,7 @@ function startGame() {
         ctx.fillRect(player1.posX,player1.posY,16,16);
         ctx.fillStyle="#FFDC33";
         ctx.fillRect(player2.posX,player2.posY,16,16);
-	moving(player1);
+	    moving(player1);
         bewogen = false;
     }
     
