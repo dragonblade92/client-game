@@ -9,19 +9,19 @@ var bewogen = false;
 var splashImage = new Image();
 var gridImage = new Image();
 var mainImage = new Image();
-var playImage = new Image();
+var newImage = new Image();
 var joinImage = new Image();
 //Image sources
 splashImage.src = "images/SplashScreen.png";
 gridImage.src = "images/grid.png";
 mainImage.src= "images/menu/mainmenu.png";
-playImage.src = "images/menu/play.png";
+newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 //Array with button locations
-var buttonX = [330,330,330,330];
-var buttonY = [110,240,310,440];
-var buttonWidth = [315,300,300,300];
-var buttonHeight = [100,100,100,100];
+var buttonX = [280,280,330,330];
+var buttonY = [120,220,320,420];
+var buttonWidth = [400,400,300,300];
+var buttonHeight = [70,70,77,77];
 
 //Drawing splash screen on canvas
 splashImage.onload = function() {
@@ -30,25 +30,11 @@ splashImage.onload = function() {
 };
 //Continue to menu by clicking anywhere on canvas
 $("#myCanvas").click(function () {
-   if(splashUp === true) {
-       ctx.clearRect(0,0, c.width, c.height);
-       ctx.drawImage(mainImage, 0, 0);
-       ctx.drawImage(playImage, buttonX[0], buttonY[0]);
-       ctx.drawImage(joinImage, buttonX[1], buttonY[1]);
-       splashUp = false;
-       mainMenu = true;
-   }
+   loadMenu();
 });
 //Or press any key to continue to menu
 document.onkeydown = function(evt){
-    if(splashUp === true) {
-        ctx.clearRect(0,0, c.width, c.height);
-        ctx.drawImage(mainImage, 0, 0);
-        ctx.drawImage(playImage, buttonX[0], buttonY[0]);
-        ctx.drawImage(joinImage, buttonX[1], buttonY[1]);
-        splashUp = false;
-        mainMenu = true;
-    }
+    loadMenu();
  };
 //Function that handles the mouse position in order to recognize which button is clicked
 function getPosition(event) {
@@ -70,35 +56,43 @@ function getPosition(event) {
 
     //To detect if Play button is pressed, and if pressed to handle its event.
     //Play button
-    if(gameStarted === false) {
-        if (mouseX > buttonX[0] &&
-            mouseX < buttonX[0] + buttonWidth[0] &&
-            mouseY > buttonY[0] &&
-            mouseY < buttonY[0] + buttonHeight[0]) {
-            ctx.clearRect(0, 0, c.width, c.height);
-            ctx.drawImage(gridImage, 0, 0);
-            //Checks to see if the splash screen has been passed yet.
-            if (mainMenu === false) {
-                mainMenu = true;
-            } else {
-                startGame();
-                gameStarted = true;
-            }
-        }
-    }
+    menuButton(0);
     //Join button
-    if(gameStarted === false) {
-        if (mouseX > buttonX[1] &&
-            mouseX < buttonX[1] + buttonWidth[1] &&
-            mouseY > buttonY[1] &&
-            mouseY < buttonY[1] + buttonHeight[1]) {
-            ctx.clearRect(0, 0, c.width, c.height);
-            ctx.drawImage(gridImage, 0, 0);
-            if (mainMenu === false) {
-                mainMenu = true;
-            } else if (gameStarted === false) {
-                startGame();
-                gameStarted = true;
+    menuButton(1);
+}
+//Function that loads the menu
+function loadMenu() {
+    if(splashUp == true) {
+        ctx.clearRect(0,0, c.width, c.height);
+        ctx.drawImage(mainImage, 0, 0);
+        ctx.drawImage(newImage, buttonX[0], buttonY[0]);
+        ctx.drawImage(joinImage, buttonX[1], buttonY[1]);
+        splashUp = false;
+        mainMenu = true;
+    }
+}
+//function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array
+function menuButton(buttonIndex) {
+    if(gameStarted == false) {
+        if (mouseX > buttonX[buttonIndex] &&
+            mouseX < buttonX[buttonIndex] + buttonWidth[buttonIndex] &&
+            mouseY > buttonY[buttonIndex] &&
+            mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
+            //If it's button "New game"
+            if(buttonIndex == 0) {
+                ctx.clearRect(0, 0, c.width, c.height);
+                ctx.drawImage(gridImage, 0, 0);
+                //Checks to see if the splash screen has been passed yet.
+                if (mainMenu == false) {
+                    mainMenu = true;
+                } else {
+                    startGame();
+                    gameStarted = true;
+                }
+            }
+            //If it's button "Join game"
+            if(buttonIndex == 1) {
+
             }
         }
     }
@@ -130,7 +124,7 @@ function startGame() {
         ctx.fillRect(player1.posX,player1.posY,16,16);
         ctx.fillStyle="#FFDC33";
         ctx.fillRect(player2.posX,player2.posY,16,16);
-	moving(player1);
+	    moving(player1);
         bewogen = false;
     }
     
