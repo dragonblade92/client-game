@@ -1,4 +1,4 @@
-// created by Déan van den Berg, s1037569
+// created by Dï¿½an van den Berg, s1037569
 
 //global variables ---------------------------
 var http = require('http');
@@ -17,7 +17,7 @@ function handler( request, response )
 	
     response.end();
     console.log("response sent..");
-};
+}
 
 server.listen(8080);
 console.log("listening on port 8080");
@@ -171,7 +171,7 @@ function Connect(socket)
 			//als de room 0 spelers heeft dan delete de room.
 			if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
 			{
-				var index = rooms.indexOf(oldroom);
+				index = rooms.indexOf(oldroom);
 				if (index > -1) 
 				{
 					rooms.splice(index, 1);			
@@ -189,7 +189,7 @@ function Connect(socket)
 			socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
 			socket.emit('updaterooms', rooms, newroom);
 			
-			if(gameRooms[index].Players.Length < 1 
+			//if(gameRooms[index].Players.Length < 1
 		}
 		else
 		{

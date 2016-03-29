@@ -55,9 +55,9 @@ function getPosition(event) {
     mouseY = y;
 
     //To detect if Play button is pressed, and if pressed to handle its event.
-    //Play button
+    //new game button
     menuButton(0);
-    //Join button
+    //join game button
     menuButton(1);
 
 }
@@ -85,7 +85,11 @@ function menuButton(buttonIndex) {
                     mainMenu = true;
                 } else {
                     var roomname = prompt("Making a new room. New room name: ");
-                    socket.emit('create', roomname)
+                    socket.emit('create', roomname);
+                    ctx.clearRect(0, 0, c.width, c.height);
+                    ctx.drawImage(gridImage, 0, 0);
+                    startGame();
+                    gameStarted = true;
                 }
             }
             /**    ctx.clearRect(0, 0, c.width, c.height);
@@ -119,7 +123,7 @@ function startGame() {
 	player1.Location.posX = 32;
     player1.Location.posY = 304;
     player1.Color = "Red";
-    player1.Direction = "right";
+    player1.Direction = "up";
 
     var player2 = new Player();
     player2.ID = 1;    
@@ -127,57 +131,56 @@ function startGame() {
 	player2.Location.posX = 608;
     player2.Location.posY = 320;
     player2.Color = "Blue";
-    player2.Direction = "left";
+    player2.Direction = "down";
     ctx.fillStyle="#0000FF";
     ctx.fillRect(player2.Location.posX,player2.Location.PosY,16,16);
-    var tickrate = setInterval(update, 125);
+    drawPlayers();
+    //var tickrate = setInterval(update, 125);
 
 	function update()
 	{
 		socket.emit('Location', player1.Location);
-		socket.emit
-		move();
-		
+		//socket.emit
+        moving(player1);
+        bewogen = false;
 	}
 
-    function move() {
+    function drawPlayers() {
         ctx.fillStyle="#8DD5DF";
         ctx.shadowBlur=10;
         ctx.shadowColor="#74b1b9";
-        ctx.fillRect(player1.posX,player1.posY,16,16);
+        ctx.fillRect(player1.Location.posX,player1.Location.posY,16,16);
         ctx.fillStyle="#FFDC33";
-        ctx.fillRect(player2.posX,player2.posY,16,16);
-	    moving(player1);
-        bewogen = false;
+        ctx.fillRect(player2.Location.posX,player2.Location.posY,16,16);
     }
     
     function moving(Player) {
         switch(Player.Direction)
         {
             case "up":
-            player1.posY = Player.posY - 16;
-            if(player1.posY < 0){
+            player1.Location.posY = Player.Location.posY - 16;
+            if(player1.Location.posY < 0){
                 alert("You failed!");
                 clearInterval(tickrate);
             }
             break;
             case "down":
-            player1.posY = Player.posY + 16;
-            if(player1.posY > 624){
+            player1.Location.posY = Player.Location.posY + 16;
+            if(player1.Location.posY > 624){
                 alert("You failed!");
                 clearInterval(tickrate);
             }
             break;
             case "left":
-            player1.posX = Player.posX - 16;
-            if(player1.posX < 0){
+            player1.Location.posX = Player.Location.posX - 16;
+            if(player1.Location.posX < 0){
                 alert("You failed!");
                 clearInterval(tickrate);
             }
             break;
             case "right":
-            player1.posX = Player.posX + 16;
-            if(player1.posX > 624){
+            player1.Location.posX = Player.Location.posX + 16;
+            if(player1.Location.posX > 624){
                 alert("You failed!");
                 clearInterval(tickrate);
             }
