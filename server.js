@@ -5,10 +5,10 @@ var http = require('http');
 var server = http.createServer( handler );
 var usernames = {};
 var rooms = ['Lobby'];
-var Player = require("./objects").Player;
-var Lobby = require("./objects").Lobby;
-var Location = require("./objects").Location;
-var Block = require("./objects").Block;
+var Player = require("./JavaScript/objects").Player;
+var Lobby = require("./JavaScript/objects").Lobby;
+var Location = require("./JavaScript/objects").Location;
+var Block = require("./JavaScript/objects").Block;
 
 function handler( request, response ) 
 {
@@ -382,12 +382,14 @@ function NewPLayerLocation(gr)
 	gr.Players[0].Location = new Location();
 	gr.Players[0].Location.posX = 32;
     gr.Players[0].Location.posY = 304;
+	gr.Players[0].Direction = "up";
 	
 	if(gr.Players[1] != undefined)
 	{		
 		gr.Players[1].Location = new Location();
 		gr.Players[1].Location.posX = 608;
 		gr.Players[1].Location.posY = 320;
+		gr.Players[1].Direction = "down";
 	}
 }
 
