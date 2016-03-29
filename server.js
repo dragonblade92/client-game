@@ -382,12 +382,14 @@ function NewPLayerLocation(gr)
 	gr.Players[0].Location = new Location();
 	gr.Players[0].Location.posX = 32;
     gr.Players[0].Location.posY = 304;
+	gr.Players[0].Direction = "up";
 	
 	if(gr.Players[1] != undefined)
 	{		
 		gr.Players[1].Location = new Location();
 		gr.Players[1].Location.posX = 608;
 		gr.Players[1].Location.posY = 320;
+		gr.Players[1].Direction = "down";
 	}
 }
 
