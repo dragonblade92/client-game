@@ -7,16 +7,16 @@ function Lobby()
 	this.Blocks = [];
 	this.room;
 	
-	function SetBlocked(Player)
-	{
-		this.Blocks.ForEach(Block)
-		{
-			var Loc = new Location();
-			Loc.posX = Player.posX;
-                        Loc.posY = Player.posY;
-                        this.Blocked = true;
-		}
-	}
+//	function SetBlocked(Player)
+//	{
+//		Lobby.Blocks.ForEach(Block)
+//		{
+//			var Loc = new Location();
+//			Loc.posX = Player.posX;
+//                        Loc.posY = Player.posY;
+//                        this.Blocked = true;
+//		}
+//	}
 }
 
 function Player()

@@ -143,6 +143,7 @@ function startGame() {
 		//socket.emit
         moving(player1);
         bewogen = false;
+        drawPlayers();
 	}
 
     function drawPlayers() {
@@ -155,7 +156,13 @@ function startGame() {
     }
     
     function moving(Player) {
-        SetBlocked(Player);
+        blok = new Block();
+        blok.Location = new Location();
+        blok.Blocked = true;
+        blok.Location.posX = Player.posX;
+        blok.Location.posY = Player.posY;
+        blok.Color = Player.Color;
+            
         switch(Player.Direction)
         {
             case "up":
