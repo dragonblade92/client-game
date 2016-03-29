@@ -104,21 +104,30 @@ function menuButton(buttonIndex) {
 function startGame() {
     var player1 = new Player();
     player1.ID = 0;
-    player1.posX = 32;
-    player1.posY = 304;
+    player1.Location = new Location();
+	player1.Location.posX = 32;
+    player1.Location.posY = 304;
     player1.Color = "Red";
     player1.Direction = "right";
 
     var player2 = new Player();
-    player2.ID = 1;
-    player2.posX = 608;
-    player2.posY = 320;
+    player2.ID = 1;    
+	player2.Location = new Location();
+	player2.Location.posX = 608;
+    player2.Location.posY = 320;
     player2.Color = "Blue";
     player2.Direction = "left";
     ctx.fillStyle="#0000FF";
-    ctx.fillRect(player2.posX,player2.PosY,16,16);
-    var tickrate = setInterval(move, 125);
+    ctx.fillRect(player2.Location.posX,player2.Location.PosY,16,16);
+    var tickrate = setInterval(update, 125);
 
+	function update()
+	{
+		socket.emit('Location', player1.Location);
+		socket.emit
+		move();
+		
+	}
 
     function move() {
         ctx.fillStyle="#8DD5DF";

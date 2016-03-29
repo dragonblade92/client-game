@@ -1,3 +1,5 @@
+// created by Déan van den Berg, s1037569
+
 //global variables ---------------------------
 var http = require('http');
 var server = http.createServer( handler );
@@ -186,6 +188,8 @@ function Connect(socket)
 			socket.room = newroom;
 			socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
 			socket.emit('updaterooms', rooms, newroom);
+			
+			if(gameRooms[index].Players.Length < 1 
 		}
 		else
 		{
@@ -218,14 +222,17 @@ function Connect(socket)
 	
 	socket.on('StartGame', function()
 	{
+		var pl = FindUser(socket.username);
+		
 		var gr = FindRoomOccupiedByUser(socket.username);
 		socket.emit('BlockInfo', gr.Blocks);
 		gr.Players.forEach(function(value, index) {
 			if (value.ID != socket.username) {
-				socket.emit("PlayerInfo", value);
+				socket.emit("gameroom", value);
 			}
 		})
 	});
+	
     socket.on('disconnect', function() {
         delete usernames[socket.username];
         io.sockets.emit('updateusers', usernames);
@@ -295,7 +302,7 @@ function getUsersInRoomNumber(roomName, namespace) {
     return Object.keys(room).length;
 }
 
-function SendGameRoomData(socket, gr)
+function NewPLayerLocation(socket, gr)
 {
 	
 }

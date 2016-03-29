@@ -51,8 +51,8 @@ function Player()
 	this.Location;
 	this.Color;
 	this.Direction;
-        this.posX;
-        this.posY;
+	//this.posX;
+	//this.posY;
 }
 
 function Block()
