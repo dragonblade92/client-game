@@ -1,6 +1,7 @@
 body {
     background-repeat: repeat;
     background-image: url(images/background.png);
+    color: white;
 }
 canvas {
     border:1px solid #000000;
@@ -12,4 +13,7 @@ canvas {
     -webkit-box-shadow: 0 0 20px 6px rgba(0,0,0,0.75);
     -moz-box-shadow: 0 0 20px 6px rgba(0,0,0,0.75);
     box-shadow: 0 0 20px 6px rgba(0,0,0,0.75);
+}
+a {
+    color: white;
 }

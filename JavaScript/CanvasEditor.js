@@ -81,7 +81,14 @@ function menuButton(buttonIndex) {
             mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
             //If it's button "New game"
             if(buttonIndex == 0) {
-                ctx.clearRect(0, 0, c.width, c.height);
+                if(mainMenu == false) {
+                    mainMenu = true;
+                } else {
+                    var roomname = prompt("Making a new room. New room name: ");
+                    socket.emit('create', roomname)
+                }
+            }
+            /**    ctx.clearRect(0, 0, c.width, c.height);
                 ctx.drawImage(gridImage, 0, 0);
                 //Checks to see if the splash screen has been passed yet.
                 if (mainMenu == false) {
@@ -90,11 +97,15 @@ function menuButton(buttonIndex) {
                     startGame();
                     gameStarted = true;
                 }
-            }
+            }**/
             //If it's button "Join game"
             if(buttonIndex == 1) {
-                var roomname = prompt("What is the roomname?");
-                socket.emit('create', name)
+                if(mainMenu == false) {
+                    mainMenu = true;
+                } else {
+                    var joinroom = prompt("Name of the room you want to join: ");
+                    socket.emit('switchRoom', joinroom);
+                }
             }
 
         }
