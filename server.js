@@ -314,13 +314,13 @@ function ChangeRoom(socket, newRoom)
 		}
 		
 		//join the new room
-		socket.join(newroom);
+		socket.join(newRoom);
 		
-		socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
+		socket.emit('updatechat', 'SERVER', 'you have connected to ' + newRoom);
 		socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
-		socket.room = newroom;
-		socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-		socket.emit('updaterooms', rooms, newroom);
+		socket.room = newRoom;
+		socket.broadcast.to(newRoom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+		socket.emit('updaterooms', rooms, newRoom);
 	}
 	else
 	{
