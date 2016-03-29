@@ -268,64 +268,67 @@ function GetIndexOfRoom(name)
 
 function ChangeRoom(socket, newRoom)
 {
-	var index = GetIndexOfRoom(newRoom);
-	
-	if(index == -1)
+	if(socket.room != newRoom)
 	{
-		console.log("gameRoom not found!");
-		socket.emit("NonExi");
-		return;
-	}
-	
-	//gameroom has space left for players
-	if(gameRooms[index].Available)
-	{					
-		var pl = FindUser(socket.username);
-		//leave the old room
-		var oldroom;
-		oldroom = socket.room;
-		socket.leave(socket.room);
+		var index = GetIndexOfRoom(newRoom);
 		
-		//finding the current room of the player;
-		r = FindRoomOccupiedByUser(socket.username);
-		
-		//finding him in the array
-		var index = r.Players.indexOf(pl);
-		
-		//remove the player from the old room
-		if (index > -1)
+		if(index == -1)
 		{
-			r.Players.splice(index, 1);
+			console.log("gameRoom not found!");
+			socket.emit("NonExi");
+			return;
 		}
 		
-		//add player to the new gameroom
-		gameRooms[index].Players.push(pl);
-		
-		//als de room 0 spelers heeft dan delete de room.
-		if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
-		{
-			var index = rooms.indexOf(oldroom);
-			if (index > -1) 
+		//gameroom has space left for players
+		if(gameRooms[index].Available)
+		{					
+			var pl = FindUser(socket.username);
+			//leave the old room
+			var oldroom;
+			oldroom = socket.room;
+			socket.leave(socket.room);
+			
+			//finding the current room of the player;
+			r = FindRoomOccupiedByUser(socket.username);
+			
+			//finding him in the array
+			var index = r.Players.indexOf(pl);
+			
+			//remove the player from the old room
+			if (index > -1)
 			{
-				rooms.splice(index, 1);			
-				io.sockets.emit('deleteRoom', oldroom);				
-				console.log("Room deleted: " + oldroom);
+				r.Players.splice(index, 1);
 			}
+			
+			//add player to the new gameroom
+			gameRooms[index].Players.push(pl);
+			
+			//als de room 0 spelers heeft dan delete de room.
+			if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
+			{
+				var index = rooms.indexOf(oldroom);
+				if (index > -1) 
+				{
+					rooms.splice(index, 1);			
+					io.sockets.emit('deleteRoom', oldroom);				
+					console.log("Room deleted: " + oldroom);
+				}
+			}
+			
+			//join the new room
+			socket.join(newRoom);
+			
+			socket.emit('updatechat', 'SERVER', 'you have connected to ' + newRoom);
+			socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
+			socket.room = newRoom;
+			socket.broadcast.to(newRoom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
+			socket.emit('updaterooms', rooms, newRoom);
 		}
-		
-		//join the new room
-		socket.join(newRoom);
-		
-		socket.emit('updatechat', 'SERVER', 'you have connected to ' + newRoom);
-		socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
-		socket.room = newRoom;
-		socket.broadcast.to(newRoom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-		socket.emit('updaterooms', rooms, newRoom);
-	}
-	else
-	{
-		console.log("full");
-		socket.emit("Roomfull");
+		else
+		{
+			console.log("full");
+			socket.emit("Roomfull");
+		}
 	}
 }
 
