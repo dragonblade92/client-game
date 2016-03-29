@@ -12,7 +12,8 @@ var socket = io.connect('http://localhost:8080');
 
 //Getting the username of the user.
 socket.on('connect', function(){
-    socket.emit('adduser', prompt("What's your name: "));
+	socket.username = prompt("What's your name: ");
+    socket.emit('adduser', socket.username));
 });
 
 //recieve the new message.
@@ -68,6 +69,11 @@ socket.on('PlayerExists', function ()
 	socket.emit('adduser', prompt("What's your name: "));	
 });
 
+socket.on('gameroom', function(gr)
+{
+	gameRoom = gr
+	startGame();
+}
 function switchRoom(room){
     socket.emit('switchRoom', room);
 }

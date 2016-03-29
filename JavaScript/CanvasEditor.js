@@ -5,12 +5,15 @@ var mainMenu = false;
 var gameStarted = false;
 var hit = false;
 var bewogen = false;
+var gameRoom;
+
 //Images
 var splashImage = new Image();
 var gridImage = new Image();
 var mainImage = new Image();
 var newImage = new Image();
 var joinImage = new Image();
+
 //Image sources
 splashImage.src = "images/SplashScreen.png";
 gridImage.src = "images/grid.png";
@@ -115,121 +118,119 @@ function menuButton(buttonIndex) {
         }
     }
 }
+
 //Function to start the game
-function startGame() {
-    var player1 = new Player();
-    player1.ID = 0;
-    player1.Location = new Location();
-	player1.Location.posX = 32;
-    player1.Location.posY = 304;
-    player1.Color = "Red";
-    player1.Direction = "up";
-
-    var player2 = new Player();
-    player2.ID = 1;    
-	player2.Location = new Location();
-	player2.Location.posX = 608;
-    player2.Location.posY = 320;
-    player2.Color = "Blue";
-    player2.Direction = "down";
-    ctx.fillStyle="#0000FF";
-    ctx.fillRect(player2.Location.posX,player2.Location.PosY,16,16);
-    drawPlayers();
-    var tickrate = setInterval(update, 125);
-
-	function update()
+function startGame() 
+{  
+	
+	gameRoom.Players.forEach( function (value, index)
 	{
-		socket.emit('Location', player1.Location);
-		//socket.emit
-        moving(player1);
-        bewogen = false;
-        drawPlayers();
+		if(index == 0)
+		{
+			value.Color = "#0000FF";
+		}
+		else
+		{
+			value.Color = "#FF0000";
+		}		
 	}
-
-    function drawPlayers() {
-        ctx.fillStyle="#8DD5DF";
-        ctx.shadowBlur=10;
-        ctx.shadowColor="#74b1b9";
-        ctx.fillRect(player1.Location.posX,player1.Location.posY,16,16);
-        ctx.fillStyle="#FFDC33";
-        ctx.fillRect(player2.Location.posX,player2.Location.posY,16,16);
-    }
-    
-    function moving(Player) {
-        blok = new Block();
-        blok.Location = new Location();
-        blok.Blocked = true;
-        blok.Location.posX = Player.posX;
-        blok.Location.posY = Player.posY;
-        blok.Color = Player.Color;
-            
-        switch(Player.Direction)
-        {
-            case "up":
-            player1.Location.posY = Player.Location.posY - 16;
-            if(player1.Location.posY < 0){
-                alert("You failed!");
-                clearInterval(tickrate);
-            }
-            break;
-            case "down":
-            player1.Location.posY = Player.Location.posY + 16;
-            if(player1.Location.posY > 624){
-                alert("You failed!");
-                clearInterval(tickrate);
-            }
-            break;
-            case "left":
-            player1.Location.posX = Player.Location.posX - 16;
-            if(player1.Location.posX < 0){
-                alert("You failed!");
-                clearInterval(tickrate);
-            }
-            break;
-            case "right":
-            player1.Location.posX = Player.Location.posX + 16;
-            if(player1.Location.posX > 624){
-                alert("You failed!");
-                clearInterval(tickrate);
-            }
-            break;
-        }
-    }
-    
-    document.onkeydown = checkKey;
-    
-    function checkKey(e) {
-        e = e || window.event;
-        
-        if(e.keyCode == '37') {
-            // left arrow key
-            if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
-                player1.Direction = "left";
-                bewogen = true;
-            }
-        } else if(e.keyCode == '38') {
-            // up arrow key
-            if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
-                player1.Direction = "up";
-                bewogen = true;
-            }
-        }
-        else if(e.keyCode == '39') {
-            // right arrow key
-            if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
-                player1.Direction = "right";
-                bewogen = true;
-            }
-        }
-        else if(e.keyCode == '40') {
-            // down arrow key
-            if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
-                player1.Direction = "down";
-                bewogen = true;
-            }
-        }
-    }
+    drawPlayers();
+    //var tickrate = setInterval(update, 125);
 }
+
+function update()
+{
+	socket.emit('Location', player1.Location);
+	//socket.emit
+	moving(player1);
+	bewogen = false;
+}
+
+function drawPlayers() 
+{
+	gameRoom.Players.forEach( function (value, index)
+	{			
+		ctx.fillStyle= value.Color;
+		ctx.shadowBlur=10;
+		var shadow = value.Color
+		shadow.replace("FF", "88");
+		ctx.shadowColor= shadow;
+		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
+	}
+}
+
+function moving() 
+{
+	gameRoom.Players.forEach( function (value, index)
+	{
+		switch(Player.Direction)
+		{
+			case "up":
+			player1.Location.posY = Player.Location.posY - 16;
+			if(player1.Location.posY < 0){
+				alert("You failed!");
+				clearInterval(tickrate);
+			}
+			break;
+			case "down":
+			player1.Location.posY = Player.Location.posY + 16;
+			if(player1.Location.posY > 624){
+				alert("You failed!");
+				clearInterval(tickrate);
+			}
+			break;
+			case "left":
+			player1.Location.posX = Player.Location.posX - 16;
+			if(player1.Location.posX < 0){
+				alert("You failed!");
+				clearInterval(tickrate);
+			}
+			break;
+			case "right":
+			player1.Location.posX = Player.Location.posX + 16;
+			if(player1.Location.posX > 624){
+				alert("You failed!");
+				clearInterval(tickrate);
+			}
+			break;
+		}
+	}
+}
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+	e = e || window.event;
+	
+	if(e.keyCode == '37') {
+		// left arrow key
+		if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
+			player1.Direction = "left";
+			bewogen = true;
+		}
+	} else if(e.keyCode == '38') {
+		// up arrow key
+		if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
+			player1.Direction = "up";
+			bewogen = true;
+		}
+	}
+	else if(e.keyCode == '39') {
+		// right arrow key
+		if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
+			player1.Direction = "right";
+			bewogen = true;
+		}
+	}
+	else if(e.keyCode == '40') {
+		// down arrow key
+		if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
+			player1.Direction = "down";
+			bewogen = true;
+		}
+	}
+}
+
 
 
 
