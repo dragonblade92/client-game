@@ -38,6 +38,7 @@ function Player()
 	this.Location;
 	this.Color;
 	this.Direction;
+	this.Ready;
 }
 
 function Block()
