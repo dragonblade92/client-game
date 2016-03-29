@@ -13,11 +13,8 @@ var gridImage = new Image();
 var mainImage = new Image();
 var newImage = new Image();
 var joinImage = new Image();
-<<<<<<< HEAD
 var readyImage = new Image();
-=======
 
->>>>>>> origin/master
 //Image sources
 splashImage.src = "images/SplashScreen.png";
 gridImage.src = "images/grid.png";
@@ -25,6 +22,7 @@ mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
+
 //Array with button locations
 var buttonX = [280,280,680,330];
 var buttonY = [120,220,10,420];
@@ -101,6 +99,7 @@ function menuButton(buttonIndex) {
                     gameStarted = true;
                 }
             }
+			
             //If it's button "Join game"
             if(buttonIndex == 1) {
                 if(mainMenu == false) {
@@ -113,7 +112,6 @@ function menuButton(buttonIndex) {
                     gameStarted = true;
                 }
             }
-
         }
         if(gameStarted) {
             //To see if Ready button is pressed
@@ -130,8 +128,7 @@ function menuButton(buttonIndex) {
 
 //Function to start the game
 function startGame() 
-{  
-	
+{  	
 	gameRoom.Players.forEach( function (value, index)
 	{
 		if(index == 0)
@@ -170,46 +167,49 @@ function drawPlayers()
 
 function moving() 
 {
+	var pl;
 	gameRoom.Players.forEach( function (value, index)
 	{
-<<<<<<< HEAD
-		socket.emit('Location', player1.Location);
-        moving(player1);
-        bewogen = false;
-=======
-		switch(Player.Direction)
-		{
-			case "up":
-			player1.Location.posY = Player.Location.posY - 16;
-			if(player1.Location.posY < 0){
-				alert("You failed!");
-				clearInterval(tickrate);
-			}
-			break;
-			case "down":
-			player1.Location.posY = Player.Location.posY + 16;
-			if(player1.Location.posY > 624){
-				alert("You failed!");
-				clearInterval(tickrate);
-			}
-			break;
-			case "left":
-			player1.Location.posX = Player.Location.posX - 16;
-			if(player1.Location.posX < 0){
-				alert("You failed!");
-				clearInterval(tickrate);
-			}
-			break;
-			case "right":
-			player1.Location.posX = Player.Location.posX + 16;
-			if(player1.Location.posX > 624){
-				alert("You failed!");
-				clearInterval(tickrate);
-			}
-			break;
+		if(value.ID == socket.username)
+		{			
+			pl = value;
 		}
->>>>>>> origin/master
 	}
+	
+	switch(pl.Direction)
+	{
+		case "up":
+		pl.Location.posY = pl.Location.posY - 16;
+		if(pl.Location.posY < 0){
+			alert("You failed!");
+			clearInterval(tickrate);
+		}
+		break;
+		case "down":
+		pl.Location.posY = pl.Location.posY + 16;
+		if(pl.Location.posY > 624){
+			alert("You failed!");
+			clearInterval(tickrate);
+		}
+		break;
+		case "left":
+		pl.Location.posX = pl.Location.posX - 16;
+		if(pl.Location.posX < 0){
+			alert("You failed!");
+			clearInterval(tickrate);
+		}
+		break;
+		case "right":
+		pl.Location.posX = pl.Location.posX + 16;
+		if(pl.Location.posX > 624){
+			alert("You failed!");
+			clearInterval(tickrate);
+		}
+		break;
+	}
+		
+	socket.emit('Location', pl.Location);
+	bewogen = false;
 }
 
 document.onkeydown = checkKey;
