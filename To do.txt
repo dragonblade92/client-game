@@ -1,0 +1,10 @@
+Dingen die we nog moeten doen:
+
+- Multiplayer maken
+
+- Lobby
+  -New game room
+  -Join game room
+  -Instructions
+
+- Wachten tot Ready
