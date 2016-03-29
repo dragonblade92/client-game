@@ -11,17 +11,19 @@ var gridImage = new Image();
 var mainImage = new Image();
 var newImage = new Image();
 var joinImage = new Image();
+var readyImage = new Image();
 //Image sources
 splashImage.src = "images/SplashScreen.png";
 gridImage.src = "images/grid.png";
 mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
+readyImage.src = "images/menu/ready.png";
 //Array with button locations
-var buttonX = [280,280,330,330];
-var buttonY = [120,220,320,420];
-var buttonWidth = [400,400,300,300];
-var buttonHeight = [70,70,77,77];
+var buttonX = [280,280,680,330];
+var buttonY = [120,220,10,420];
+var buttonWidth = [400,400,244,300];
+var buttonHeight = [70,70,70,77];
 
 //Drawing splash screen on canvas
 splashImage.onload = function() {
@@ -36,6 +38,17 @@ $("#myCanvas").click(function () {
 document.onkeydown = function(evt){
     loadMenu();
  };
+//Function that loads the menu
+function loadMenu() {
+    if(splashUp == true) {
+        ctx.clearRect(0,0, c.width, c.height);
+        ctx.drawImage(mainImage, 0, 0);
+        ctx.drawImage(newImage, buttonX[0], buttonY[0]);
+        ctx.drawImage(joinImage, buttonX[1], buttonY[1]);
+        splashUp = false;
+        mainMenu = true;
+    }
+}
 //Function that handles the mouse position in order to recognize which button is clicked
 function getPosition(event) {
     var x,
@@ -59,26 +72,17 @@ function getPosition(event) {
     menuButton(0);
     //join game button
     menuButton(1);
+    //:D
+    menuButton(2);
 
-}
-//Function that loads the menu
-function loadMenu() {
-    if(splashUp == true) {
-        ctx.clearRect(0,0, c.width, c.height);
-        ctx.drawImage(mainImage, 0, 0);
-        ctx.drawImage(newImage, buttonX[0], buttonY[0]);
-        ctx.drawImage(joinImage, buttonX[1], buttonY[1]);
-        splashUp = false;
-        mainMenu = true;
-    }
 }
 //function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array
 function menuButton(buttonIndex) {
-    if(gameStarted == false) {
-        if (mouseX > buttonX[buttonIndex] &&
-            mouseX < buttonX[buttonIndex] + buttonWidth[buttonIndex] &&
-            mouseY > buttonY[buttonIndex] &&
-            mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
+    if (mouseX > buttonX[buttonIndex] &&
+        mouseX < buttonX[buttonIndex] + buttonWidth[buttonIndex] &&
+        mouseY > buttonY[buttonIndex] &&
+        mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
+        if(gameStarted == false) {
             //If it's button "New game"
             if(buttonIndex == 0) {
                 if(mainMenu == false) {
@@ -86,22 +90,11 @@ function menuButton(buttonIndex) {
                 } else {
                     var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
-                    ctx.clearRect(0, 0, c.width, c.height);
-                    ctx.drawImage(gridImage, 0, 0);
+                    clearDraw();
                     startGame();
                     gameStarted = true;
                 }
             }
-            /**    ctx.clearRect(0, 0, c.width, c.height);
-                ctx.drawImage(gridImage, 0, 0);
-                //Checks to see if the splash screen has been passed yet.
-                if (mainMenu == false) {
-                    mainMenu = true;
-                } else {
-                    startGame();
-                    gameStarted = true;
-                }
-            }**/
             //If it's button "Join game"
             if(buttonIndex == 1) {
                 if(mainMenu == false) {
@@ -109,12 +102,26 @@ function menuButton(buttonIndex) {
                 } else {
                     var joinroom = prompt("Name of the room you want to join: ");
                     socket.emit('switchRoom', joinroom);
+                    clearDraw();
+                    startGame();
+                    gameStarted = true;
                 }
             }
 
         }
+        if(gameStarted) {
+            //To see if Ready button is pressed
+            if(buttonIndex == 2) {
+                if(mainMenu == false) {
+                    mainMenu = true;
+                }else{
+                    socket.emit('ready');
+                }
+            }
+        }
     }
 }
+
 //Function to start the game
 function startGame() {
     var player1 = new Player();
@@ -140,7 +147,6 @@ function startGame() {
 	function update()
 	{
 		socket.emit('Location', player1.Location);
-		//socket.emit
         moving(player1);
         bewogen = false;
 	}
@@ -225,6 +231,12 @@ function startGame() {
             }
         }
     }
+}
+
+function clearDraw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.drawImage(gridImage, 0, 0);
+    ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
 }
 
 
