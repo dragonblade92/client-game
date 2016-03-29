@@ -235,7 +235,7 @@ function Connect(socket)
 			{
 				r = true;
 			}
-		})
+		});
 		if (r)
 		{
 			StartGame(gr);
