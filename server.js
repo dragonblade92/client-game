@@ -5,10 +5,10 @@ var http = require('http');
 var server = http.createServer( handler );
 var usernames = {};
 var rooms = ['Lobby'];
-var Player = require("./objects").Player;
-var Lobby = require("./objects").Lobby;
-var Location = require("./objects").Location;
-var Block = require("./objects").Block;
+var Player = require("./JavaScript/objects").Player;
+var Lobby = require("./JavaScript/objects").Lobby;
+var Location = require("./JavaScript/objects").Location;
+var Block = require("./JavaScript/objects").Block;
 
 function handler( request, response ) 
 {
