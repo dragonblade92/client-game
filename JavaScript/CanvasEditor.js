@@ -59,6 +59,7 @@ function getPosition(event) {
     menuButton(0);
     //Join button
     menuButton(1);
+
 }
 //Function that loads the menu
 function loadMenu() {
@@ -92,8 +93,10 @@ function menuButton(buttonIndex) {
             }
             //If it's button "Join game"
             if(buttonIndex == 1) {
-
+                var roomname = prompt("What is the roomname?");
+                socket.emit('create', name)
             }
+
         }
     }
 }
