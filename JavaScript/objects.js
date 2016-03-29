@@ -1,63 +1,49 @@
-function Lobby(Room)
+function Lobby()
 {
-	this.ID;
+	this.ID
 	this.Players = [];
 	this.MaxPlayers;
 	this.Available;
 	this.Blocks = [];
-	this.room = Room;
+	this.room;
 	
-	function CheckAvailable()
+	/*function SetBlocked(Player)
 	{
-		if(this.Players.length == this.MaxPlayers)
-		{
-			this.Available = false;
-		}
-		else
-		{
-			this.Available = true;
-		}
-	}
-	
-	function SetBlocked(Player)
-	{
-		this.Blocks.ForEach(Block);
+		this.Blocks.ForEach(Block)
 		{
 			var Loc = new Location();
 			switch(Player.Direction)
 			{
 				case "up":
-				Player.posY = Player.posY - 16;
+				Loc.Height = Player.Height + 16;
 				case "down":
-				Player.posY = Player.posY + 16;
+				Loc.Height = Player.Height - 16;
 				case "left":
-				Player.posX = Player.posX - 16;
+				Loc.Height = Player.Height + 16;
 				case "right":
-				Player.posX = Player.posX + 16;
+				Loc.Height = Player.Height - 16;
 			}
 			
-			if(this.Location === Loc)
+			if(this.Location == Loc)
 			{
 				this.Blocked = true;
 			}
 		}
-	}
+	} */
 }
 
 function Player()
 {
 	this.ID;
-	this.Name;
 	this.Location;
 	this.Color;
 	this.Direction;
-	//this.posX;
-	//this.posY;
+	this.Ready;
 }
 
 function Block()
 {
-	this.Blocked;
+	this.Blocked = false;
 	this.ID;
 	this.Color;
 	this.Location;
@@ -65,6 +51,13 @@ function Block()
 
 function Location()
 {
-    this.posX;
-    this.posY;
+	this.posX;
+	this.posY;
 }
+
+// Export the Player class so you can use it in
+// other files by using require("Player").Player
+exports.Player = Player;
+exports.Block = Block;
+exports.Location = Location;
+exports.Lobby = Lobby;
