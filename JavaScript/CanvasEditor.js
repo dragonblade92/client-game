@@ -192,14 +192,12 @@ function startGame() {
         
         if(e.keyCode == '37') {
             // left arrow key
-            //if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false)
             if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
                 player1.Direction = "left";
                 bewogen = true;
             }
         } else if(e.keyCode == '38') {
             // up arrow key
-            //if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false)
             if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
                 player1.Direction = "up";
                 bewogen = true;
@@ -207,7 +205,6 @@ function startGame() {
         }
         else if(e.keyCode == '39') {
             // right arrow key
-            //if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false)
             if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
                 player1.Direction = "right";
                 bewogen = true;
@@ -215,7 +212,6 @@ function startGame() {
         }
         else if(e.keyCode == '40') {
             // down arrow key
-            //if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false)
             if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
                 player1.Direction = "down";
                 bewogen = true;
