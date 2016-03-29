@@ -51,7 +51,7 @@ function Connect(socket)
 		if(p != undefined)
 		{			
 			console.log("Player already exists");
-			socket.emit("Playerexists");
+			socket.emit("PlayerExists");
 			bool = false;
 		}	
 		if(bool)
@@ -146,7 +146,6 @@ function Connect(socket)
 		if(gameRooms[index].Available)
 		{					
 			var pl = FindUser(socket.username);
-			
 			//leave the old room
 			var oldroom;
 			oldroom = socket.room;
@@ -190,6 +189,7 @@ function Connect(socket)
 		}
 		else
 		{
+			console.log("full");
 			socket.emit("Roomfull");
 		}
     }); 
@@ -214,7 +214,7 @@ function Connect(socket)
 		{
 			io.to(gr.room).emit('lose', check.ID);
 		}
-	}
+	});
 	
 	socket.on('StartGame', function()
 	{
