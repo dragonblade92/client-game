@@ -135,7 +135,7 @@ function startGame() {
     ctx.fillStyle="#0000FF";
     ctx.fillRect(player2.Location.posX,player2.Location.PosY,16,16);
     drawPlayers();
-    //var tickrate = setInterval(update, 125);
+    var tickrate = setInterval(update, 125);
 
 	function update()
 	{
@@ -155,6 +155,7 @@ function startGame() {
     }
     
     function moving(Player) {
+        SetBlocked(Player);
         switch(Player.Direction)
         {
             case "up":
