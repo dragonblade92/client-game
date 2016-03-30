@@ -145,10 +145,10 @@ function startGame()
 }
 
 function update()
-{
-	socket.emit('Location', player1.Location);
+{	
 	//socket.emit
-	moving(player1);
+	moving();
+	drawPlayers();
 	bewogen = false;
 }
 
@@ -163,6 +163,13 @@ function drawPlayers()
 		ctx.shadowColor= shadow;
 		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
 	});
+	
+	gameRoom.Blocks.forEach( function (value, index)
+	{			
+		ctx.fillStyle = value.Color;
+		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
+	});
+	
 }
 
 function moving() 
@@ -216,6 +223,15 @@ document.onkeydown = checkKey;
 
 function checkKey(e) {
 	e = e || window.event;
+	
+	var player1;
+	gameRoom.Players.forEach( function (value, index)
+	{
+		if(value.ID == socket.username)
+		{			
+			player1 = value;
+		}
+	});
 	
 	if(e.keyCode == '37') {
 		// left arrow key

@@ -1,5 +1,3 @@
-// created by D�an van den Berg, s1037569
-
 //global variables ---------------------------
 var http = require('http');
 var server = http.createServer( handler );
