@@ -13,8 +13,8 @@ function Lobby()
 //		{
 //			var Loc = new Location();
 //			Loc.posX = Player.posX;
-//                        Loc.posY = Player.posY;
-//                        this.Blocked = true;
+//                      Loc.posY = Player.posY;
+//                      this.Blocked = true;
 //		}
 //	}
 }

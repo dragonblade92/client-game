@@ -133,7 +133,7 @@ function startGame()
 		{
 			value.Color = "#FF0000";
 		}		
-	}
+	});
     drawPlayers();
     //var tickrate = setInterval(update, 125);
 }
@@ -156,7 +156,7 @@ function drawPlayers()
 		shadow.replace("FF", "88");
 		ctx.shadowColor= shadow;
 		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
-	}
+	});
 }
 
 function moving() 
@@ -194,7 +194,8 @@ function moving()
 			}
 			break;
 		}
-	}
+	});
+        gameRoom.setBlocked(Player);
 }
 
 document.onkeydown = checkKey;
