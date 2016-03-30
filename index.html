@@ -74,7 +74,8 @@ socket.on('gameroom', function(gr)
 {
 	gameRoom = gr
 	startGame();
-}
+});
+
 function switchRoom(room){
     socket.emit('switchRoom', room);
 }
