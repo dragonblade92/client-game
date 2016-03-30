@@ -72,7 +72,7 @@ socket.on('PlayerExists', function ()
 
 socket.on('gameroom', function(gr)
 {
-	gameRoom = gr
+	gameRoom = gr;
 	startGame();
 });
 
@@ -97,7 +97,7 @@ $(function(){
     $('#roombutton').click(function(){
         var name = $('#roomname').val();
         $('#roomname').val('');
-        socket.emit('create', name)
+        socket.emit('create', name);
     });
 });
 
