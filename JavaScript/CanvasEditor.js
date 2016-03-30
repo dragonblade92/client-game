@@ -209,6 +209,7 @@ function moving()
 	}
 		
 	socket.emit('Location', pl.Location);
+        makeBlok(p1);
 	bewogen = false;
 }
 
@@ -250,4 +251,12 @@ function clearDraw() {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(gridImage, 0, 0);
     ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
+}
+
+function makeBlok(Player) {
+    blok = new Block();
+    locatie = new Location();
+    blok.blocked = true;
+    locatie.posX = Player.posX;
+    locatie.posY = Player.posY;
 }
