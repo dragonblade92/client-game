@@ -403,7 +403,7 @@ function StartGame()
 	var gr = FindRoomOccupiedByUser(socket.username);
 	NewPLayerLocation(gr);
 	var pl = FindUser(socket.username);
-	socket.emit('BlockInfo', gr.Blocks);
+	//socket.emit('BlockInfo', gr.Blocks);
 	io.sockets["in"](gr.room).emit('gameroom', gr);	
 }
 

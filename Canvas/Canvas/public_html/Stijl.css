@@ -1,0 +1,10 @@
+canvas {
+    border:1px solid #000000;
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 960px;
+}
+myCanvas {
+    background: red;
+}

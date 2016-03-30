@@ -8,3 +8,5 @@ Dingen die we nog moeten doen:
   -Instructions
 
 - Wachten tot Ready
+
+- Mobiel / Tablet afvangen
