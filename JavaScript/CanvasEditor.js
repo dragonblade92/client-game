@@ -87,11 +87,13 @@ function menuButton(buttonIndex) {
         mouseY > buttonY[buttonIndex] &&
         mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
         if(gameStarted == false) {
-            //If it's button "New game"
             if(buttonIndex == 0) {
+                //If it's the button "New Game"
                 if(mainMenu == false) {
+                    //If the splashscreen is up
                     mainMenu = true;
-                } else {
+                } else
+                {
                     var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
                     clearDraw();
@@ -103,6 +105,7 @@ function menuButton(buttonIndex) {
             //If it's button "Join game"
             if(buttonIndex == 1) {
                 if(mainMenu == false) {
+                    //If the splashscreen is up
                     mainMenu = true;
                 } else {
                     var joinroom = prompt("Name of the room you want to join: ");
@@ -117,6 +120,7 @@ function menuButton(buttonIndex) {
             //To see if Ready button is pressed
             if(buttonIndex == 2) {
                 if(mainMenu == false) {
+                    //If the splashscreen is up
                     mainMenu = true;
                 }else{
                     socket.emit('ready');

@@ -385,7 +385,7 @@ function NewPLayerLocation(gr)
 	if(gr.Players[1] != undefined)
 	{		
 		gr.Players[1].Location = new Location();
-		gr.Players[1].Location.posX = 608;
+		gr.Players[1].Location.posX = 592;
 		gr.Players[1].Location.posY = 320;
 		gr.Players[1].Direction = "down";
 	}
