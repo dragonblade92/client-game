@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" href="style.css" >
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+		<script type="text/javascript" src="../JavaScript/objects.js"></script>
 		<script>
 		
 // making a connection to the server.
@@ -72,7 +73,12 @@ socket.on('PlayerExists', function ()
 
 socket.on('gameroom', function(gr)
 {
+	console.log("gameroom command");
 	gameRoom = gr
+	console.log("GameRoom = ");
+	console.log(gameRoom);
+	console.log("GR = ");
+	console.log(gr);
 	startGame();
 });
 

@@ -236,7 +236,7 @@ function Connect(socket)
 		});
 		if (r)
 		{
-			StartGame(gr);
+			StartGame(socket);
 		}
 	});
 	
@@ -321,6 +321,7 @@ function ChangeRoom(socket, newRoom)
 			socket.room = newRoom;
 			socket.broadcast.to(newRoom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
 			socket.emit('updaterooms', rooms, newRoom);
+			StartGame(socket);
 		}
 		else
 		{
@@ -396,13 +397,13 @@ function AddBlock(gr, NewBlock)
 	gr.Blocks[NewBlock.ID] = NewBlock;
 }
 
-function StartGame()
+function StartGame(socket)
 {
 	var gr = FindRoomOccupiedByUser(socket.username);
 	NewPLayerLocation(gr);
 	var pl = FindUser(socket.username);
 	//socket.emit('BlockInfo', gr.Blocks);
-	io.sockets["in"](gr.room).emit('gameroom', gr);	
+	io.sockets["in"](socket.room).emit('gameroom', gr);	
 }
 
 function CheckCollision(gr)
