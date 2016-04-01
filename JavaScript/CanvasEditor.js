@@ -286,6 +286,8 @@ function checkKey(e) {
 
 function youLose(user) {
 	alert("You have collided");
+	clearInterval(tickrate);
+	
 }
 
 function makeBlok(location) {
