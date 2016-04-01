@@ -6,11 +6,8 @@
         <link rel="stylesheet" type="text/css" href="style.css" >
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<<<<<<< HEAD
         <script src="JavaScript/clientobjects.js"></script>
-=======
 		<script type="text/javascript" src="../JavaScript/objects.js"></script>
->>>>>>> origin/master
 		<script>
 		
 // making a connection to the server.
@@ -78,21 +75,18 @@ socket.on('PlayerExists', function ()
 
 socket.on('gameroom', function(gr)
 {
-<<<<<<< HEAD
+
 	gameRoom = new Lobby();
     //gameRoom.Blocks =
-=======
-<<<<<<< HEAD
+
 	console.log("gameroom command");
 	gameRoom = gr
 	console.log("GameRoom = ");
 	console.log(gameRoom);
 	console.log("GR = ");
 	console.log(gr);
-=======
 	gameRoom = gr;
->>>>>>> 21c6b0de70690f22149428d6ce3215d90f9dcb56
->>>>>>> origin/master
+
 	startGame();
 });
 
