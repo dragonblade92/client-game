@@ -131,70 +131,6 @@ function Connect(socket)
 	
 	//switchRoom =======================================================
 	// switches the user from one room to another.
-    socket.on('switchRoom', function(newroom){
-		
-		var index = GetIndexOfRoom(newroom);
-		
-		if(index == -1)
-		{
-			console.log("gameRoom not found!");
-			socket.emit("NonExi");
-			return;
-		}
-		
-		//gameroom has space left for players
-		if(gameRooms[index].Available)
-		{					
-			var pl = FindUser(socket.username);
-			//leave the old room
-			var oldroom;
-			oldroom = socket.room;
-			socket.leave(socket.room);
-			
-			//finding the current room of the player;
-			r = FindRoomOccupiedByUser(socket.username);
-			
-			//finding him in the array
-			var index = r.Players.indexOf(pl);
-			
-			//remove the player from the old room
-			if (index > -1)
-			{
-				r.Players.splice(index, 1);
-			}
-			
-			//add player to the new gameroom
-			gameRooms[index].Players.push(pl);
-			
-			//als de room 0 spelers heeft dan delete de room.
-			if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
-			{
-				index = rooms.indexOf(oldroom);
-				if (index > -1) 
-				{
-					rooms.splice(index, 1);			
-					io.sockets.emit('deleteRoom', oldroom);				
-					console.log("Room deleted: " + oldroom);
-				}
-			}
-			
-			//join the new room
-			socket.join(newroom);
-			
-			socket.emit('updatechat', 'SERVER', 'you have connected to ' + newroom);
-			socket.broadcast.to(oldroom).emit('updatechat', 'SERVER', socket.username + ' has left this room');
-			socket.room = newroom;
-			socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-			socket.emit('updaterooms', rooms, newroom);
-			
-			//if(gameRooms[index].Players.Length < 1
-		}
-		else
-		{
-			console.log("full");
-			socket.emit("Roomfull");
-		}
-    }); 
     socket.on('switchRoom', function(newroom)
 	{
 		ChangeRoom(socket, newroom);
@@ -223,20 +159,23 @@ function Connect(socket)
 	});
 	
 	socket.on('ready', function()
-	{		
+	{
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
 		pl.ready = true;
-		var r = false;
-		gr.Players.forEach(function(value, index) {
-			if (!value.Ready) 
-			{
-				r = true;
+		if(gr.Players.length >= 2) {
+			var r = false;
+			gr.Players.forEach(function (value, index) {
+				if (!value.Ready) {
+					r = true;
+				}
+			});
+			if (!r) {
+				StartGame(socket);
 			}
-		});
-		if (r)
-		{
-			StartGame(socket);
+		} else {
+			console.log("Less than two required players");
+			socket.emit('moreplayers');
 		}
 	});
 	
@@ -297,10 +236,18 @@ function ChangeRoom(socket, newRoom)
 			{
 				r.Players.splice(index, 1);
 			}
-			
-			//add player to the new gameroom
-			gameRooms[index].Players.push(pl);
-			
+			console.log(gameRooms[index]);
+			console.log("---");
+			console.log(gameRooms);
+			if (gameRooms[index] == undefined) {
+				console.log("UNDEFINED MOFO");
+			}
+			if(gameRooms[index].Players == undefined) {
+					gameRooms[index].Players = [pl];
+					//add player to the new gameroom
+			}else {
+				gameRooms[index].Players.push(pl);
+			}
 			//als de room 0 spelers heeft dan delete de room.
 			if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
 			{
@@ -321,7 +268,7 @@ function ChangeRoom(socket, newRoom)
 			socket.room = newRoom;
 			socket.broadcast.to(newRoom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
 			socket.emit('updaterooms', rooms, newRoom);
-			StartGame(socket);
+			//StartGame(socket);
 		}
 		else
 		{

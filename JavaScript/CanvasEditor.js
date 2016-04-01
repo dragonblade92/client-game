@@ -80,6 +80,13 @@ function getPosition(event) {
     menuButton(2);
 
 }
+//Clear canvas and draw new
+function clearDraw() {
+	ctx.clearRect(0, 0, c.width, c.height);
+	ctx.drawImage(gridImage, 0, 0);
+	ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
+}
+
 //function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array
 function menuButton(buttonIndex) {
     if (mouseX > buttonX[buttonIndex] &&
@@ -123,6 +130,7 @@ function menuButton(buttonIndex) {
                     mainMenu = true;
                 }else{
                     socket.emit('ready');
+					console.log("ready");
                 }
             }
         }
@@ -145,7 +153,7 @@ function startGame()
 		}		
 	});
     drawPlayers();
-    var tickrate = setInterval(update, 125);
+	var tickrate = setInterval(update, 125);
 }
 
 function update()
@@ -270,11 +278,6 @@ function checkKey(e) {
 	}
 }
 
-function clearDraw() {
-    ctx.clearRect(0, 0, c.width, c.height);
-    ctx.drawImage(gridImage, 0, 0);
-    ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
-}
 
 function makeBlok(Location) {
     blok = new Block();
