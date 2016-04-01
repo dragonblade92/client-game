@@ -149,7 +149,7 @@ function Connect(socket)
 
 	//sets new location of player,
 	//also checks for collisions
-	socket.on("Location", function(Location)
+	socket.on('location', function(Location)
 	{
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
@@ -160,6 +160,20 @@ function Connect(socket)
 		{
 			io.to(gr.room).emit('lose', check.ID);
 		}
+	});
+	
+	//resets the blocks and locations of the players
+	socket.on('restart', function()
+	{
+		var pl = FindUser(socket.username);
+		var gr = FindRoomOccupiedByUser(socket.username);
+		
+		gr.Players.forEach(function(value, index){
+			value.Ready = false;
+		});
+		
+		NewPLayerLocation(gr);
+		StartGame(socket);
 	});
 	
 	socket.on('ready', function()
