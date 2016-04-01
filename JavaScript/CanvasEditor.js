@@ -132,7 +132,8 @@ function menuButton(buttonIndex) {
 
 //Function to start the game
 function startGame() 
-{  	
+{
+	
 	gameRoom.Players.forEach( function (value, index)
 	{
 		if(index == 0)
@@ -145,7 +146,7 @@ function startGame()
 		}		
 	});
     drawPlayers();
-    //var tickrate = setInterval(update, 125);
+    var tickrate = setInterval(update, 125);
 }
 
 function update()

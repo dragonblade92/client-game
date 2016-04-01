@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" href="style.css" >
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="JavaScript/clientobjects.js"></script>
 		<script>
 		
 // making a connection to the server.
@@ -73,7 +74,8 @@ socket.on('PlayerExists', function ()
 
 socket.on('gameroom', function(gr)
 {
-	gameRoom = gr;
+	gameRoom = new Lobby();
+    //gameRoom.Blocks =
 	startGame();
 });
 
@@ -107,9 +109,9 @@ $(function(){
 <body>
 <canvas onclick="getPosition(event)" id="myCanvas" width= "960" height= "640"></canvas>
 <script src="JavaScript/CanvasEditor.js"></script>
-<script src="JavaScript/objects.js"></script>
 
-    <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:auto;">
+
+    <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow-y: auto;">
         <b>ROOMS</b>
         <div id="rooms"></div>
     </div>
