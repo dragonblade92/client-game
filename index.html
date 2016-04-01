@@ -73,12 +73,16 @@ socket.on('PlayerExists', function ()
 
 socket.on('gameroom', function(gr)
 {
+<<<<<<< HEAD
 	console.log("gameroom command");
 	gameRoom = gr
 	console.log("GameRoom = ");
 	console.log(gameRoom);
 	console.log("GR = ");
 	console.log(gr);
+=======
+	gameRoom = gr;
+>>>>>>> 21c6b0de70690f22149428d6ce3215d90f9dcb56
 	startGame();
 });
 
@@ -103,7 +107,7 @@ $(function(){
     $('#roombutton').click(function(){
         var name = $('#roomname').val();
         $('#roomname').val('');
-        socket.emit('create', name)
+        socket.emit('create', name);
     });
 });
 
