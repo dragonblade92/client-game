@@ -89,6 +89,9 @@ socket.on('gameroom', function(gr)
 	startGame();
 });
 
+socket.on('lose', function(user){
+    youLose(user);
+});
 function switchRoom(room){
     socket.emit('switchRoom', room);
 }

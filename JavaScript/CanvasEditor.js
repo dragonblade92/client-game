@@ -6,6 +6,7 @@ var gameStarted = false;
 var hit = false;
 var bewogen = false;
 var gameRoom;
+var tickrate;
 
 //Images
 var splashImage = new Image();
@@ -153,7 +154,7 @@ function startGame()
 		}		
 	});
     drawPlayers();
-	var tickrate = setInterval(update, 125);
+	tickrate = setInterval(update, 125);
 }
 
 function update()
@@ -166,18 +167,22 @@ function update()
 
 function drawPlayers() 
 {
+	console.log("DRAWTIME");
 	gameRoom.Players.forEach( function (value, index)
-	{			
+	{
+		console.log(value);
 		ctx.fillStyle= value.Color;
-		ctx.shadowBlur=10;
-		var shadow = value.Color
-		shadow.replace("FF", "88");
-		ctx.shadowColor= shadow;
-		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
+		ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
 	});
 	
 	gameRoom.Blocks.forEach( function (value, index)
-	{			
+	{
+		console.log("blockss");
+		console.log(value);
+		//ctx.shadowBlur=10;
+		var shadow = value.Color
+		shadow = shadow.replace("FF", "88");
+		ctx.shadowColor= shadow;
 		ctx.fillStyle = value.Color;
 		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
 	});
@@ -186,6 +191,7 @@ function drawPlayers()
 
 function moving() 
 {
+	console.log("I like to move it move it");
 	var pl;
 	gameRoom.Players.forEach( function (value, index)
 	{
@@ -278,10 +284,15 @@ function checkKey(e) {
 	}
 }
 
+function youLose(user) {
+	alert("You have collided");
+}
 
-function makeBlok(Location) {
-    blok = new Block();
-    blok.Location = Location;
-    blok.blocked = true;
+function makeBlok(location) {
+    var blok = new Block();
+	blok.Location = new Location();
+    blok.Location.posY = location.posY;
+	blok.Location.posX = location.posX;
+    blok.Blocked = true;
 	socket.emit('NewBlock', blok);
 }

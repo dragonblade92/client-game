@@ -66,16 +66,16 @@ function Connect(socket)
 			//making the player
 			var p = new Player();
 			p.ID = username;
-			p.room = socket.room;
+			p.Ready = false;
 			
 			if(gameRooms[0].Players.length == gameRooms[0].MaxPlayers)
 			{
-				console.log("not available");
+				console.log("room full");
 				gameRooms[0].Available = false;
 			}
 			else
 			{
-				console.log("available");
+				console.log("room available");
 				gameRooms[0].Players.push(p);
 				gameRooms[0].Available = true;
 			}
@@ -95,7 +95,7 @@ function Connect(socket)
 	//Create ==============================================================
 	// Creates a new room and gameroom with the given name
     socket.on('create', function(room) {
-		console.log("create");
+		console.log("created room");
 		var bool = true;
 		rooms.forEach(function( index, value ) 
 		{
@@ -111,13 +111,17 @@ function Connect(socket)
 		});		
 		if(bool)
 		{
-			rooms.push(room);			
+			rooms.push(room);
+			console.log("ROOMS");
+			console.log(room);
 			var l = new Lobby();
 			l.ID = room;
 			l.MaxPlayers = 2;
 			l.Available = true;
 			l.room = rooms[room];
 			gameRooms.push(l);
+			console.log("GAMEROOMS");
+			console.log(gameRooms);
 			ChangeRoom(socket, room);
 			io.sockets.emit('updaterooms', rooms, socket.room);
 		}
@@ -148,10 +152,10 @@ function Connect(socket)
 	socket.on("Location", function(Location)
 	{
 		var pl = FindUser(socket.username);
+		var gr = FindRoomOccupiedByUser(socket.username);
 		pl.Location.posX = Location.posX;
 		pl.Location.posY = Location.posY;
 		var check = CheckCollision(gr);
-		
 		if(check != undefined)
 		{
 			io.to(gr.room).emit('lose', check.ID);
@@ -160,18 +164,27 @@ function Connect(socket)
 	
 	socket.on('ready', function()
 	{
+		console.log("Ik wil ready");
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
-		pl.ready = true;
+		pl.Ready = true;
+		console.log("Ik wil ready2");
 		if(gr.Players.length >= 2) {
 			var r = false;
+			console.log("Ik wil ready3");
 			gr.Players.forEach(function (value, index) {
 				if (!value.Ready) {
 					r = true;
+					console.log("Ik wil ready4"+value.Ready);
+
 				}
 			});
+
+			console.log(r);
+
 			if (!r) {
 				StartGame(socket);
+				console.log("Ik wil ready5");
 			}
 		} else {
 			console.log("Less than two required players");
@@ -229,18 +242,16 @@ function ChangeRoom(socket, newRoom)
 			r = FindRoomOccupiedByUser(socket.username);
 			
 			//finding him in the array
-			var index = r.Players.indexOf(pl);
+			var playerindex = r.Players.indexOf(pl);
 			
 			//remove the player from the old room
-			if (index > -1)
+			if (playerindex > -1)
 			{
-				r.Players.splice(index, 1);
+				r.Players.splice(playerindex, 1);
 			}
 			console.log(gameRooms[index]);
-			console.log("---");
-			console.log(gameRooms);
 			if (gameRooms[index] == undefined) {
-				console.log("UNDEFINED MOFO");
+				console.log("UNDEFINED");
 			}
 			if(gameRooms[index].Players == undefined) {
 					gameRooms[index].Players = [pl];
@@ -248,6 +259,9 @@ function ChangeRoom(socket, newRoom)
 			}else {
 				gameRooms[index].Players.push(pl);
 			}
+
+			console.log("---");
+			console.log(gameRooms);
 			//als de room 0 spelers heeft dan delete de room.
 			if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
 			{
@@ -341,7 +355,20 @@ function NewPLayerLocation(gr)
 
 function AddBlock(gr, NewBlock)
 {
-	gr.Blocks[NewBlock.ID] = NewBlock;
+	var b = new Block();
+	var highestid = 0;
+	gr.Blocks.forEach( function (value, index) {
+		if(value.ID >= highestid)
+		{
+			highestid = value.ID + 1;
+		}
+	});
+	b.ID = highestid;
+	b.Blocked = NewBlock.Blocked;
+	b.Location = new Location();
+	b.Location.posX = NewBlock.Location.posX;
+	b.Location.posY = NewBlock.Location.posY;
+	gr.Blocks.push(b);
 }
 
 function StartGame(socket)
@@ -358,15 +385,22 @@ function CheckCollision(gr)
 	var player;
 	if(gr.Blocks != undefined){
 		gr.Players.forEach( function (value, index)
-		{			
+		{
 			gr.Blocks.forEach( function (value2, index2)
 			{
 				if(value2.Blocked)
-				{			
-					if(value.Location.posX == value2.Location.posX && value.Location.posY == value2.Location.posY)
+				{
+					console.log("check5");
+					if(value.Location.posX == value2.Location.posX)
 					{
-						console.log("Collision by: " + value.ID);
-						player = value;
+						console.log("pos X ok");
+						console.log(value.Location.posY);
+						console.log(value2.Location.posY );
+						if(value.Location.posY == value2.Location.posY)
+						{
+							console.log("Collision by: " + value.ID);
+							player = value;
+						}
 					}
 				}
 			});
