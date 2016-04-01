@@ -9,4 +9,4 @@ Dingen die we nog moeten doen:
 
 - Wachten tot Ready
 
-- Mobiel / Tablet afvangen
+- Mobiel / Tablet afvangen (on screen buttons, meta tags)

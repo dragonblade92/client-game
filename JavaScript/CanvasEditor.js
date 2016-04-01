@@ -7,6 +7,7 @@ var hit = false;
 var bewogen = false;
 var gameRoom;
 var tickrate;
+var playerReady = false;
 
 //Images
 var splashImage = new Image();
@@ -15,12 +16,13 @@ var mainImage = new Image();
 var newImage = new Image();
 var joinImage = new Image();
 var readyImage = new Image();
+var restartImage = new Image();
 
 //Array with button locations
-var buttonX = [280,280,680];
-var buttonY = [120,220,10];
-var buttonWidth = [400,400,244];
-var buttonHeight = [70,70,70];
+var buttonX = [280,280,680,645];
+var buttonY = [120,220,10,10];
+var buttonWidth = [400,400,244,315];
+var buttonHeight = [70,70,70,70];
 
 //Image sources
 splashImage.src = "images/SplashScreen.png";
@@ -29,6 +31,7 @@ mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
+restartImage.src = "images/menu/restart.png";
 
 //Drawing splash screen on canvas
 splashImage.onload = function() {
@@ -77,8 +80,10 @@ function getPosition(event) {
     menuButton(0);
     //join game button
     menuButton(1);
-    //:D
+    //ready button
     menuButton(2);
+	//restart button
+	menuButton(3);
 
 }
 //Clear canvas and draw new
@@ -126,14 +131,19 @@ function menuButton(buttonIndex) {
         if(gameStarted) {
             //To see if Ready button is pressed
             if(buttonIndex == 2) {
-                if(mainMenu == false) {
-                    //If the splashscreen is up
-                    mainMenu = true;
-                }else{
-                    socket.emit('ready');
-					console.log("ready");
-                }
-            }
+				console.log("player ready");
+				playerReady = true;
+				//ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
+				ctx.clearRect(0, 0, c.width, c.height);
+				ctx.drawImage(gridImage, 0, 0);
+				ctx.drawImage(restartImage, buttonX[3], buttonY[3])
+				socket.emit('ready');
+			}
+			if(playerReady) {
+				if (buttonIndex == 3) {
+					socket.emit('restart');
+				}
+			}
         }
     }
 }
@@ -237,7 +247,7 @@ function moving()
 		break;
 	}
 		
-	socket.emit('Location', pl.Location);
+	socket.emit('location', pl.Location);
 	bewogen = false;
 }
 
@@ -257,27 +267,27 @@ function checkKey(e) {
 	
 	if(e.keyCode == '37') {
 		// left arrow key
-		if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
+		if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
 			player1.Direction = "left";
 			bewogen = true;
 		}
 	} else if(e.keyCode == '38') {
 		// up arrow key
-		if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
+		if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
 			player1.Direction = "up";
 			bewogen = true;
 		}
 	}
 	else if(e.keyCode == '39') {
 		// right arrow key
-		if (player1.Direction === "up" && bewogen === false || player1.Direction === "down" && bewogen === false) {
+		if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
 			player1.Direction = "right";
 			bewogen = true;
 		}
 	}
 	else if(e.keyCode == '40') {
 		// down arrow key
-		if (player1.Direction === "left" && bewogen === false || player1.Direction === "right" && bewogen === false) {
+		if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
 			player1.Direction = "down";
 			bewogen = true;
 		}
