@@ -15,6 +15,12 @@ var newImage = new Image();
 var joinImage = new Image();
 var readyImage = new Image();
 
+//Array with button locations
+var buttonX = [280,280,680];
+var buttonY = [120,220,10];
+var buttonWidth = [400,400,244];
+var buttonHeight = [70,70,70];
+
 //Image sources
 splashImage.src = "images/SplashScreen.png";
 gridImage.src = "images/grid.png";
@@ -22,12 +28,6 @@ mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
-
-//Array with button locations
-var buttonX = [280,280,680,330];
-var buttonY = [120,220,10,420];
-var buttonWidth = [400,400,244,300];
-var buttonHeight = [70,70,70,77];
 
 //Drawing splash screen on canvas
 splashImage.onload = function() {
