@@ -97,7 +97,6 @@ function menuButton(buttonIndex) {
                     var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
                     clearDraw();
-                    startGame();
                     gameStarted = true;
                 }
             }
@@ -109,9 +108,9 @@ function menuButton(buttonIndex) {
                     mainMenu = true;
                 } else {
                     var joinroom = prompt("Name of the room you want to join: ");
-                    socket.emit('switchRoom', joinroom);
+                    console.log(joinroom);
+					socket.emit('switchRoom', joinroom);
                     clearDraw();
-                    startGame();
                     gameStarted = true;
                 }
             }
@@ -191,6 +190,7 @@ function moving()
 	switch(pl.Direction)
 	{
 		case "up":
+		makeBlok(pl.Location);
 		pl.Location.posY = pl.Location.posY - 16;
 		if(pl.Location.posY < 0){
 			alert("You failed!");
@@ -198,6 +198,7 @@ function moving()
 		}
 		break;
 		case "down":
+		makeBlok(pl.Location);
 		pl.Location.posY = pl.Location.posY + 16;
 		if(pl.Location.posY > 624){
 			alert("You failed!");
@@ -205,6 +206,7 @@ function moving()
 		}
 		break;
 		case "left":
+		makeBlok(pl.Location);
 		pl.Location.posX = pl.Location.posX - 16;
 		if(pl.Location.posX < 0){
 			alert("You failed!");
@@ -212,6 +214,7 @@ function moving()
 		}
 		break;
 		case "right":
+		makeBlok(pl.Location);
 		pl.Location.posX = pl.Location.posX + 16;
 		if(pl.Location.posX > 624){
 			alert("You failed!");
@@ -221,7 +224,6 @@ function moving()
 	}
 		
 	socket.emit('Location', pl.Location);
-        makeBlok(p1);
 	bewogen = false;
 }
 
@@ -274,10 +276,9 @@ function clearDraw() {
     ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
 }
 
-function makeBlok(Player) {
+function makeBlok(Location) {
     blok = new Block();
-    locatie = new Location();
+    blok.Location = Location;
     blok.blocked = true;
-    locatie.posX = Player.posX;
-    locatie.posY = Player.posY;
+	socket.emit('NewBlock', blok);
 }
