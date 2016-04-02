@@ -74,10 +74,6 @@ socket.on('PlayerExists', function ()
 
 socket.on('gameroom', function(gr)
 {
-
-	//gameRoom = new Lobby();
-    //gameRoom.Blocks =
-
 	console.log("gameroom command");
 	gameRoom = gr
 	console.log("GameRoom = ");
@@ -89,9 +85,20 @@ socket.on('gameroom', function(gr)
 	startGame();
 });
 
-socket.on('lose', function(user){
-    youLose(user);
+socket.on('lose', function(user)
+{
+    clearInterval(tickrate);
+    
+    if(socket.username == user.ID)
+    {
+        youLose(user);
+    }
+    else
+    {
+        youWin();        
+    }
 });
+
 function switchRoom(room){
     socket.emit('switchRoom', room);
 }

@@ -8,6 +8,8 @@ var bewogen = false;
 var gameRoom;
 var tickrate;
 var playerReady = false;
+var wins;
+var lose;
 
 //Images
 var splashImage = new Image();
@@ -294,17 +296,25 @@ function checkKey(e) {
 	}
 }
 
-function youLose(user) {
-	alert("You have collided");
-	clearInterval(tickrate);
-	
+function youLose(user) 
+{
+    lose += 1;
+    alert("You have collided");
+    //count losses
+}
+
+function youWin() 
+{
+    wins += 1;
+    alert("You have won");
+    //count wins
 }
 
 function makeBlok(location) {
     var blok = new Block();
-	blok.Location = new Location();
+    blok.Location = new Location();
     blok.Location.posY = location.posY;
-	blok.Location.posX = location.posX;
+    blok.Location.posX = location.posX;
     blok.Blocked = true;
-	socket.emit('NewBlock', blok);
+    socket.emit('NewBlock', blok);
 }

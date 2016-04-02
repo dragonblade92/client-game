@@ -396,29 +396,29 @@ function StartGame(socket)
 
 function CheckCollision(gr)
 {	
-	var player;
-	if(gr.Blocks != undefined){
-		gr.Players.forEach( function (value, index)
-		{
-			gr.Blocks.forEach( function (value2, index2)
-			{
-				if(value2.Blocked)
-				{
-					console.log("check5");
-					if(value.Location.posX == value2.Location.posX)
-					{
-						console.log("pos X ok");
-						console.log(value.Location.posY);
-						console.log(value2.Location.posY );
-						if(value.Location.posY == value2.Location.posY)
-						{
-							console.log("Collision by: " + value.ID);
-							player = value;
-						}
-					}
-				}
-			});
-		});
-	}
-	return player;
+    var player;
+    if(gr.Blocks != undefined){
+            gr.Players.forEach( function (value, index)
+            {
+                    gr.Blocks.forEach( function (value2, index2)
+                    {
+                            if(value2.Blocked)
+                            {
+                                    console.log("check5");
+                                    if(value.Location.posX == value2.Location.posX)
+                                    {
+                                            console.log("pos X ok");
+                                            console.log(value.Location.posY);
+                                            console.log(value2.Location.posY );
+                                            if(value.Location.posY == value2.Location.posY)
+                                            {
+                                                    console.log("Collision by: " + value.ID);
+                                                    player = value;
+                                            }
+                                    }
+                            }
+                    });
+            });
+    }
+    return player;
 }
