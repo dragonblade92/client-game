@@ -4,10 +4,12 @@
 		<meta charset="utf-8">
         <title>Tron the Rip-Off</title>
         <link rel="stylesheet" type="text/css" href="style.css" >
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
         <script src="JavaScript/clientobjects.js"></script>
-		<script>
+        <script src="JavaScript/CanvasInput.js"></script>
+        <script src="JavaScript/CanvasInput.min.js"></script>
+<script>
 		
 // making a connection to the server.
 var socket = io.connect('http://localhost:8081');
@@ -15,8 +17,10 @@ var socket = io.connect('http://localhost:8081');
 
 //Getting the username of the user.
 socket.on('connect', function(){
-	socket.username = prompt("What's your name: ");
-    socket.emit('adduser', socket.username);
+        //werkt niet vanwege splashscreen
+	//showInput("What is your username?", "adduser");
+	socket.username = prompt("What is your username?");
+        socket.emit('adduser', prompt("what is your username?"));
 });
 
 //recieve the new message.
@@ -55,8 +59,8 @@ socket.on('Roomfull', function ()
 //if the roomname or player name already exists this will function will be triggered
 socket.on('Exists', function () 
 {
-	alert("There is already a room with that name!");	
-	socket.emit('create', prompt("What's the room name: "));
+        socket.emit('create', prompt("what is your roomname?"));
+        //showInput("What is your room name?", "create");
 });
 
 //if the roomname or player name already exists this will function will be triggered
@@ -69,7 +73,9 @@ socket.on('NonExi', function ()
 socket.on('PlayerExists', function () 
 {
 	alert("There is already a Player with that name!");
-	socket.emit('adduser', prompt("What's your name: "));	
+        //showInput("What is your username?", "adduser");
+	socket.username = prompt("What is your username?");
+        socket.emit('adduser', prompt("what is your username?"));
 });
 
 socket.on('gameroom', function(gr)

@@ -10,6 +10,7 @@ var tickrate;
 var playerReady = false;
 var wins;
 var lose;
+var socket;
 
 //Images
 var splashImage = new Image();
@@ -108,8 +109,9 @@ function menuButton(buttonIndex) {
                     //If the splashscreen is up
                     mainMenu = true;
                 } else
-                {
-                    var roomname = prompt("Making a new room. New room name: ");
+                {                    
+                    var roomname = showInput("What is your username?");
+                    //var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
                     clearDraw();
                     gameStarted = true;
@@ -122,7 +124,8 @@ function menuButton(buttonIndex) {
                     //If the splashscreen is up
                     mainMenu = true;
                 } else {
-                    var joinroom = prompt("Name of the room you want to join: ");
+                    var joinroom = showInput("What is your username?");
+                    //var joinroom = prompt("Name of the room you want to join: ");
                     console.log(joinroom);
 					socket.emit('switchRoom', joinroom);
                     clearDraw();
@@ -152,8 +155,7 @@ function menuButton(buttonIndex) {
 
 //Function to start the game
 function startGame() 
-{
-	
+{	
 	gameRoom.Players.forEach( function (value, index)
 	{
 		if(index == 0)
@@ -317,4 +319,35 @@ function makeBlok(location) {
     blok.Location.posX = location.posX;
     blok.Blocked = true;
     socket.emit('NewBlock', blok);
+}
+
+function showInput(question, keyWord)
+{
+    var input = new CanvasInput(
+    {
+        canvas: document.getElementById('myCanvas'),
+        fontSize: 18,
+        fontFamily: 'Arial',
+        fontColor: '#212121',
+        fontWeight: 'bold',
+        width: 300,
+        padding: 8,
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 3,
+        boxShadow: '1px 1px 0px #fff',
+        innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+        placeHolder: question,
+        onsubmit: function()
+        {           
+            if(keyWord == "adduser")
+            {
+                socket.username == x._value;
+            }
+            
+            socket.emit(keyWord, x._value);
+            input.destroy();
+            clearDraw()
+        }
+    });
 }
