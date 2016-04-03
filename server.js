@@ -1,6 +1,6 @@
 //global variables ---------------------------
 var http = require('http');
-var server = http.createServer( handler );
+var server = http.createServer( Handler );
 var usernames = {};
 var rooms = ['Lobby'];
 var Player = require("./JavaScript/objects").Player;
@@ -8,7 +8,7 @@ var Lobby = require("./JavaScript/objects").Lobby;
 var Location = require("./JavaScript/objects").Location;
 var Block = require("./JavaScript/objects").Block;
 
-function handler( request, response ) 
+function Handler( request, response ) 
 {
     response.writeHead(200 , { "Content-Type": "text/plain"});
     response.write("Hello World");
@@ -385,7 +385,7 @@ function StartGame(socket)
     
     //socket.emit('BlockInfo', gr.Blocks);
     io.sockets["in"](socket.room).emit('gameroom', gr);
-    setTimeout(everyOneReady(socket), 3000);
+    setTimeout(EveryOneReady(socket), 3000);
 }
 
 function CheckCollision(gr)
@@ -415,7 +415,7 @@ function CheckCollision(gr)
     return player;
 }
 
-function everyOneReady(socket)
+function EveryOneReady(socket)
 {
     //checks if everybody has pressed the ready button
     var gr = FindRoomOccupiedByUser(socket.username);

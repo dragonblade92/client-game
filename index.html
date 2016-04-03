@@ -44,7 +44,7 @@
             else
             {
                 //these are the other rooms.
-                $('#rooms').append('<div id=\''+value+'\'><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
+                $('#rooms').append('<div id=\''+value+'\'><a href="#" onclick="SwitchRoom(\''+value+'\')">' + value + '</a></div>');
             }
         });
     });
@@ -73,7 +73,7 @@
     socket.on('NonExi', function () 
     {
         alert("This room doesnt exist.");
-        socket.emit('switchRoom', prompt("what is your roomname?"));
+        socket.emit('SwitchRoom', prompt("what is your roomname?"));
     });
 
     //Playernaam bestaat al
@@ -111,9 +111,9 @@
         }
     });
 
-    function switchRoom(room)
+    function SwitchRoom(room)
     {
-        socket.emit('switchRoom', room);
+        socket.emit('SwitchRoom', room);
     }
 
     $(function()

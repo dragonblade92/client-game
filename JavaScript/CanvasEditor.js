@@ -46,17 +46,17 @@ splashImage.onload = function()
 //Continue to menu by clicking anywhere on canvas -Jasper en Michiel
 $("#myCanvas").click(function ()
 {
-   loadMenu();
+   LoadMenu();
 });
 
 //Or press any key to continue to menu -Jasper en Michiel
 document.onkeydown = function()
 {
-    loadMenu();
+    LoadMenu();
 };
  
 //Function that loads the menu -Jasper
-function loadMenu()
+function LoadMenu()
 {
     if(splashUp == true) {
         ctx.clearRect(0,0, c.width, c.height);
@@ -69,7 +69,7 @@ function loadMenu()
 }
 
 //Clear canvas and draw new game field -Jasper & Michiel
-function clearDraw()
+function ClearDraw()
 {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(gridImage, 0, 0);
@@ -77,7 +77,7 @@ function clearDraw()
 }
 
 //Function that handles the mouse position in order to recognize which button is clicked -Jasper
-function getPosition(event)
+function GetPosition(event)
 {
     var x,
         y;
@@ -100,17 +100,17 @@ function getPosition(event)
 
     //To detect if Play button is pressed, and if pressed to handle its event.
     //new game button
-    menuButton(0);
+    MenuButton(0);
     //join game button
-    menuButton(1);
+    MenuButton(1);
     //ready button
-    menuButton(2);
+    MenuButton(2);
     //restart button
-    menuButton(3);
+    MenuButton(3);
 
 }
 //function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array -Jasper
-function menuButton(buttonIndex)
+function MenuButton(buttonIndex)
 {
     //Checking to see if the mouse clicked on the position of a button
     if (mouseX > buttonX[buttonIndex] &&
@@ -130,10 +130,10 @@ function menuButton(buttonIndex)
                 } 
                 else
                 {                    
-                    //var roomname = showInput("What is the roomname?");
+                    //var roomname = ShowInput("What is the roomname?");
                     var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
-                    clearDraw();
+                    ClearDraw();
                     gameStarted = true;
                 }
             }
@@ -148,11 +148,11 @@ function menuButton(buttonIndex)
                 }
                 else
                 {
-                    //var joinroom = showInput("What is your username?");
+                    //var joinroom = ShowInput("What is your username?");
                     var joinroom = prompt("Name of the room you want to join: ");
                     console.log(joinroom);
                     socket.emit('switchRoom', joinroom);
-                    clearDraw();
+                    ClearDraw();
                     gameStarted = true;
                 }
             }
@@ -165,7 +165,7 @@ function menuButton(buttonIndex)
                 console.log("player ready");
                 playerReady = true;
                 //ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
-                clearDraw();
+                ClearDraw();
                 ctx.drawImage(restartImage, buttonX[3], buttonY[3]);
                 socket.emit('ready');
             }
@@ -174,7 +174,7 @@ function menuButton(buttonIndex)
                 if (buttonIndex == 3)
                 {
                 splashUp = true;
-                loadMenu();
+                LoadMenu();
                 playerReady = false;
                 gameStarted = false;
                 socket.emit('switchRoom', "Lobby");
@@ -187,7 +187,7 @@ function menuButton(buttonIndex)
 }
 
 //Function to start the game -Michiel
-function startGame() 
+function StartGame() 
 {	
     gameRoom.Players.forEach( function (value, index)
     {
@@ -200,21 +200,21 @@ function startGame()
             value.Color = "#FF0000";
         }		
     });
-    drawPlayers();
-    setTimeout(function(){ tickrate = setInterval(update, 125)}, 3000);
+    DrawPlayers();
+    setTimeout(function(){ tickrate = setInterval(Update, 125)}, 3000);
 }
 
 //Moves and draws the players -Michiel J
-function update()
+function Update()
 {	
     //socket.emit
-    moving();
-    drawPlayers();
+    Moving();
+    DrawPlayers();
     bewogen = false;
 }
 
 //Draws the players -Jasper en Michiel
-function drawPlayers() 
+function DrawPlayers() 
 {
 
     ctx.clearRect(0, 0, c.width, c.height);
@@ -237,7 +237,7 @@ function drawPlayers()
 }
 
 //Moves the player according to their direction -Michiel
-function moving() 
+function Moving() 
 {
     console.log("I like to move it move it");
     var pl;
@@ -252,7 +252,7 @@ function moving()
     switch(pl.Direction)
     {
         case "up":
-        makeBlok(pl.Location);
+        MakeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY - 16;
         if(pl.Location.posY < 0)
         {
@@ -261,7 +261,7 @@ function moving()
         }
         break;
         case "down":
-        makeBlok(pl.Location);
+        MakeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY + 16;
         if(pl.Location.posY > 624)
         {
@@ -270,7 +270,7 @@ function moving()
         }
         break;
         case "left":
-        makeBlok(pl.Location);
+        MakeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX - 16;
         if(pl.Location.posX < 0)
         {
@@ -279,7 +279,7 @@ function moving()
         }
         break;
         case "right":
-        makeBlok(pl.Location);
+        MakeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX + 16;
         if(pl.Location.posX > 624)
         {
@@ -293,10 +293,10 @@ function moving()
     bewogen = false;
 }
 
-document.onkeydown = checkKey;
+document.onkeydown = CheckKey;
 
 //When there's an arrowkey input, changes the direction of the player -Michiel
-function checkKey(e) {
+function CheckKey(e) {
     e = e || window.event;
 
     var player1;
@@ -341,14 +341,14 @@ function checkKey(e) {
     }
 }
 
-function youLose(user) 
+function YouLose(user) 
 {
     lose += 1;
     alert("You have collided");
     //count losses
 }
 
-function youWin() 
+function YouWin() 
 {
     //count wins
     wins += 1;
@@ -357,7 +357,7 @@ function youWin()
 }
 
 //Makes a block and sends it to the server -Michiel
-function makeBlok(location)
+function MakeBlok(location)
 {
     var blok = new Block();
     blok.Location = new Location();
@@ -369,7 +369,7 @@ function makeBlok(location)
 
 //this code is mostely from: http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
 //doesnt work properly, it stays on the screen no matter what
-function showInput(question, keyWord)
+function ShowInput(question, keyWord)
 {
     var input = new CanvasInput(
     {
@@ -395,7 +395,7 @@ function showInput(question, keyWord)
             
             socket.emit(keyWord, input._value);
             input.destroy();
-            clearDraw()
+            ClearDraw()
         }
     });
 }
