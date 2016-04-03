@@ -182,7 +182,6 @@ function Connect(socket)
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
 		pl.Ready = true;
-		
 	});
 	
     socket.on('disconnect', function() {
