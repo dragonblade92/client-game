@@ -36,22 +36,27 @@ joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
 restartImage.src = "images/menu/restart.png";
 
-//Drawing splash screen on canvas
-splashImage.onload = function() {
+//Drawing splash screen on canvas (Michiel Janssen)
+splashImage.onload = function()
+{
     ctx.drawImage(splashImage, 0, 0);
     splashUp = true;
 };
 //Continue to menu by clicking anywhere on canvas
-$("#myCanvas").click(function () {
+$("#myCanvas").click(function ()
+{
    loadMenu();
 });
 //Or press any key to continue to menu
-document.onkeydown = function(evt){
+document.onkeydown = function(evt)
+{
     loadMenu();
- };
+};
 //Function that loads the menu
-function loadMenu() {
-    if(splashUp == true) {
+function loadMenu()
+{
+    if(splashUp == true)
+    {
         ctx.clearRect(0,0, c.width, c.height);
         ctx.drawImage(mainImage, 0, 0);
         ctx.drawImage(newImage, buttonX[0], buttonY[0]);
@@ -61,13 +66,17 @@ function loadMenu() {
     }
 }
 //Function that handles the mouse position in order to recognize which button is clicked
-function getPosition(event) {
+function getPosition(event)
+{
     var x,
         y;
-    if (event.x != undefined && event.y != undefined) {
+    if (event.x != undefined && event.y != undefined)
+    {
         x = event.x;
         y = event.y;
-    } else {
+    }
+    else
+    {
         x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
         y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
@@ -89,23 +98,28 @@ function getPosition(event) {
     menuButton(3);
 
 }
-//Clear canvas and draw new
-function clearDraw() {
+//Clear canvas and draw new (Michiel Janssen)
+function clearDraw()
+{
 	ctx.clearRect(0, 0, c.width, c.height);
 	ctx.drawImage(gridImage, 0, 0);
 	ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
 }
 
 //function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array
-function menuButton(buttonIndex) {
+function menuButton(buttonIndex)
+{
     if (mouseX > buttonX[buttonIndex] &&
         mouseX < buttonX[buttonIndex] + buttonWidth[buttonIndex] &&
         mouseY > buttonY[buttonIndex] &&
         mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex]) {
-        if(gameStarted == false) {
-            if(buttonIndex == 0) {
+        if(gameStarted == false)
+        {
+            if(buttonIndex == 0)
+            {
                 //If it's the button "New Game"
-                if(mainMenu == false) {
+                if(mainMenu == false)
+                {
                     //If the splashscreen is up
                     mainMenu = true;
                 } 
@@ -120,11 +134,15 @@ function menuButton(buttonIndex) {
             }
 			
             //If it's button "Join game"
-            if(buttonIndex == 1) {
-                if(mainMenu == false) {
+            if(buttonIndex == 1)
+            {
+                if(mainMenu == false)
+                {
                     //If the splashscreen is up
                     mainMenu = true;
-                } else {
+                }
+                else
+                {
                     //var joinroom = showInput("What is your username?");
                     var joinroom = prompt("Name of the room you want to join: ");
                     console.log(joinroom);
@@ -136,187 +154,196 @@ function menuButton(buttonIndex) {
         }
         if(gameStarted) {
             //To see if Ready button is pressed
-            if(buttonIndex == 2) {
-				console.log("player ready");
-				playerReady = true;
-				//ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
-				ctx.clearRect(0, 0, c.width, c.height);
-				ctx.drawImage(gridImage, 0, 0);
-				ctx.drawImage(restartImage, buttonX[3], buttonY[3]);
-				socket.emit('ready');
-			}
-			if(playerReady) {
-				if (buttonIndex == 3)
+            if(buttonIndex == 2)
+            {
+                console.log("player ready");
+                playerReady = true;
+                //ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
+                ctx.clearRect(0, 0, c.width, c.height);
+                ctx.drawImage(gridImage, 0, 0);
+                ctx.drawImage(restartImage, buttonX[3], buttonY[3]);
+                socket.emit('ready');
+            }
+            if(playerReady)
+            {
+                if (buttonIndex == 3)
                 {
-					socket.emit('restart');
-					socket.emit('ready');
-				}
-			}
+                socket.emit('restart');
+                socket.emit('ready');
+                }
+            }
         }
     }
 }
 
-//Function to start the game
+//Function to start the game (Michiel Janssen)
 function startGame() 
 {	
-	gameRoom.Players.forEach( function (value, index)
-	{
-		if(index == 0)
-		{
-			value.Color = "#0000FF";
-		}
-		else
-		{
-			value.Color = "#FF0000";
-		}		
-	});
+    gameRoom.Players.forEach( function (value, index)
+    {
+        if(index == 0)
+        {
+            value.Color = "#0000FF";
+        }
+        else
+        {
+            value.Color = "#FF0000";
+        }		
+    });
     drawPlayers();
     setTimeout(function(){ tickrate = setInterval(update, 125)}, 3000);
 }
 
+// (Michiel Janssen)
 function update()
 {	
-	//socket.emit
-	moving();
-	drawPlayers();
-	bewogen = false;
+    //socket.emit
+    moving();
+    drawPlayers();
+    bewogen = false;
 }
 
+// (Jasper Koning & Michiel Janssen)
 function drawPlayers() 
 {
-	console.log("DRAWTIME");
-	gameRoom.Players.forEach( function (value, index)
-	{
-		console.log(value);
-		ctx.fillStyle= value.Color;
-		ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
-	});
-	
-	gameRoom.Blocks.forEach( function (value, index)
-	{
-		console.log("blockss");
-		console.log(value);
-		//ctx.shadowBlur=10;
-		var shadow = value.Color
-		shadow = shadow.replace("FF", "88");
-		ctx.shadowColor= shadow;
-		ctx.fillStyle = value.Color;
-		ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
-	});
+    console.log("DRAWTIME");
+    gameRoom.Players.forEach( function (value, index)
+    {
+        console.log(value);
+        ctx.fillStyle= value.Color;
+        ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
+    });
+
+    gameRoom.Blocks.forEach( function (value, index)
+    {
+        console.log("blockss");
+        console.log(value);
+        //ctx.shadowBlur=10;
+        var shadow = value.Color
+        shadow = shadow.replace("FF", "88");
+        ctx.shadowColor= shadow;
+        ctx.fillStyle = value.Color;
+        ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
+    });
 	
 }
 
+// Moves the player once and checks for out of bounds (Michiel Janssen)
 function moving() 
 {
-	console.log("I like to move it move it");
-	var pl;
-	gameRoom.Players.forEach( function (value, index)
-	{
-		if(value.ID == socket.username)
-		{			
-			pl = value;
-		}
-	});
-	
-	switch(pl.Direction)
-	{
-		case "up":
-		makeBlok(pl.Location);
-		pl.Location.posY = pl.Location.posY - 16;
-		if(pl.Location.posY < 0){
-			alert("You failed!");
-			clearInterval(tickrate);
-		}
-		break;
-		case "down":
-		makeBlok(pl.Location);
-		pl.Location.posY = pl.Location.posY + 16;
-		if(pl.Location.posY > 624){
-			alert("You failed!");
-			clearInterval(tickrate);
-		}
-		break;
-		case "left":
-		makeBlok(pl.Location);
-		pl.Location.posX = pl.Location.posX - 16;
-		if(pl.Location.posX < 0){
-			alert("You failed!");
-			clearInterval(tickrate);
-		}
-		break;
-		case "right":
-		makeBlok(pl.Location);
-		pl.Location.posX = pl.Location.posX + 16;
-		if(pl.Location.posX > 624){
-			alert("You failed!");
-			clearInterval(tickrate);
-		}
-		break;
-	}
-		
-	socket.emit('location', pl.Location);
-	bewogen = false;
+    console.log("I like to move it move it");
+    var pl;
+    gameRoom.Players.forEach( function (value, index)
+    {
+        if(value.ID == socket.username)
+        {			
+            pl = value;
+        }
+    });
+
+    switch(pl.Direction)
+    {
+        case "up":
+        makeBlok(pl.Location);
+        pl.Location.posY = pl.Location.posY - 16;
+        if(pl.Location.posY < 0){
+            alert("You failed!");
+            clearInterval(tickrate);
+        }
+        break;
+        case "down":
+        makeBlok(pl.Location);
+        pl.Location.posY = pl.Location.posY + 16;
+        if(pl.Location.posY > 624){
+            alert("You failed!");
+            clearInterval(tickrate);
+        }
+        break;
+        case "left":
+        makeBlok(pl.Location);
+        pl.Location.posX = pl.Location.posX - 16;
+        if(pl.Location.posX < 0){
+            alert("You failed!");
+            clearInterval(tickrate);
+        }
+        break;
+        case "right":
+        makeBlok(pl.Location);
+        pl.Location.posX = pl.Location.posX + 16;
+        if(pl.Location.posX > 624){
+            alert("You failed!");
+            clearInterval(tickrate);
+        }
+        break;
+    }
+
+    socket.emit('location', pl.Location);
+    bewogen = false;
 }
 
 document.onkeydown = checkKey;
 
-function checkKey(e) {
-	e = e || window.event;
-	
-	var player1;
-	gameRoom.Players.forEach( function (value, index)
-	{
-		if(value.ID == socket.username)
-		{			
-			player1 = value;
-		}
-	});
-	
-	if(e.keyCode == '37') {
-		// left arrow key
-		if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
-			player1.Direction = "left";
-			bewogen = true;
-		}
-	} else if(e.keyCode == '38') {
-		// up arrow key
-		if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
-			player1.Direction = "up";
-			bewogen = true;
-		}
-	}
-	else if(e.keyCode == '39') {
-		// right arrow key
-		if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
-			player1.Direction = "right";
-			bewogen = true;
-		}
-	}
-	else if(e.keyCode == '40') {
-		// down arrow key
-		if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
-			player1.Direction = "down";
-			bewogen = true;
-		}
-	}
+//Changes direction with arrow key input (Michiel Janssen)
+function checkKey(e)
+{
+    e = e || window.event;
+
+    var player1;
+    gameRoom.Players.forEach( function (value, index)
+    {
+        if(value.ID == socket.username)
+        {			
+            player1 = value;
+        }
+    });
+
+    if(e.keyCode == '37') {
+        // left arrow key
+        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
+            player1.Direction = "left";
+            bewogen = true;
+        }
+    } else if(e.keyCode == '38') {
+        // up arrow key
+        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
+            player1.Direction = "up";
+            bewogen = true;
+        }
+    }
+    else if(e.keyCode == '39') {
+        // right arrow key
+        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
+            player1.Direction = "right";
+            bewogen = true;
+        }
+    }
+    else if(e.keyCode == '40') {
+        // down arrow key
+        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
+            player1.Direction = "down";
+            bewogen = true;
+        }
+    }
 }
 
+//counts losses
 function youLose(user) 
 {
     lose += 1;
     alert("You have collided");
-    //count losses
-}
-
-function youWin() 
-{
-    //count wins
-    wins += 1;
-    alert("You have won");
     
 }
 
-function makeBlok(location) {
+//counts wins
+function youWin() 
+{
+    wins += 1;
+    alert("You have won");
+}
+
+//Makes a block and sends it to the server (Michiel Janssen)
+function makeBlok(location)
+{
     var blok = new Block();
     blok.Location = new Location();
     blok.Location.posY = location.posY;
@@ -325,8 +352,8 @@ function makeBlok(location) {
     socket.emit('NewBlock', blok);
 }
 
-//this code is mostely from: http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
-//doesnt work properly, it stays on the screen no matter what
+//This code is mostly from: http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
+//Doesnt work properly, it stays on the screen no matter what
 function showInput(question, keyWord)
 {
     var input = new CanvasInput(
