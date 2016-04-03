@@ -10,8 +10,8 @@ var Block = require("./JavaScript/objects").Block;
 
 function handler( request, response ) 
 {
-	response.writeHead(200 , { "Content-Type": "text/plain"});
- 	response.write("Hello World");
+    response.writeHead(200 , { "Content-Type": "text/plain"});
+    response.write("Hello World");
 	
     response.end();
     console.log("response sent..");
@@ -195,7 +195,8 @@ function Connect(socket)
     });
 	
     //removes the user from the room on disconnect
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function()
+    {
         delete usernames[socket.username];
         io.sockets.emit('updateusers', usernames);
         socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
@@ -259,7 +260,8 @@ function ChangeRoom(socket, newRoom)
                 console.log("UNDEFINED GameRoom");
             }
             //add player to the new gameroom
-            if(gameRooms[index].Players == undefined) {
+            if(gameRooms[index].Players == undefined)
+            {
                 gameRooms[index].Players = [pl];
             }
             else
@@ -331,7 +333,8 @@ function FindRoomOccupiedByUser(username)
     return player;
 }
 
-function getUsersInRoomNumber(roomName, namespace) {
+function getUsersInRoomNumber(roomName, namespace)
+{
     if (!namespace) namespace = '/';
     var room = io.nsps[namespace].adapter.rooms[roomName];
     if (!room) return null;
@@ -389,7 +392,8 @@ function CheckCollision(gr)
 {	
     //checks for collision with blocks
     var player;
-    if(gr.Blocks != undefined){
+    if(gr.Blocks != undefined)
+    {
         gr.Players.forEach( function (value, index)
         {
             gr.Blocks.forEach( function (value2, index2)
@@ -415,7 +419,8 @@ function everyOneReady(socket)
 {
     //checks if everybody has pressed the ready button
     var gr = FindRoomOccupiedByUser(socket.username);
-    if(gr.Players.length >= 2) {
+    if(gr.Players.length >= 2)
+    {
         var r = true;
         gr.Players.forEach(function (value, index) 
         {
