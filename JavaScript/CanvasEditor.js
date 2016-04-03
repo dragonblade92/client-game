@@ -44,17 +44,20 @@ splashImage.onload = function()
 };
 
 //Continue to menu by clicking anywhere on canvas -Jasper en Michiel
-$("#myCanvas").click(function () {
+$("#myCanvas").click(function ()
+{
    loadMenu();
 });
 
 //Or press any key to continue to menu -Jasper en Michiel
-document.onkeydown = function(){
+document.onkeydown = function()
+{
     loadMenu();
- };
+};
  
 //Function that loads the menu -Jasper
-function loadMenu() {
+function loadMenu()
+{
     if(splashUp == true) {
         ctx.clearRect(0,0, c.width, c.height);
         ctx.drawImage(mainImage, 0, 0);
@@ -251,7 +254,8 @@ function moving()
         case "up":
         makeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY - 16;
-        if(pl.Location.posY < 0){
+        if(pl.Location.posY < 0)
+        {
             alert("You failed!");
             clearInterval(tickrate);
         }
@@ -259,7 +263,8 @@ function moving()
         case "down":
         makeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY + 16;
-        if(pl.Location.posY > 624){
+        if(pl.Location.posY > 624)
+        {
             alert("You failed!");
             clearInterval(tickrate);
         }
@@ -267,7 +272,8 @@ function moving()
         case "left":
         makeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX - 16;
-        if(pl.Location.posX < 0){
+        if(pl.Location.posX < 0)
+        {
             alert("You failed!");
             clearInterval(tickrate);
         }
@@ -275,7 +281,8 @@ function moving()
         case "right":
         makeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX + 16;
-        if(pl.Location.posX > 624){
+        if(pl.Location.posX > 624)
+        {
             alert("You failed!");
             clearInterval(tickrate);
         }
@@ -303,27 +310,31 @@ function checkKey(e) {
 
     if(e.keyCode == '37') {
         // left arrow key
-        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
+        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false)
+        {
             player1.Direction = "left";
             bewogen = true;
         }
     } else if(e.keyCode == '38') {
         // up arrow key
-        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
+        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false)
+        {
             player1.Direction = "up";
             bewogen = true;
         }
     }
     else if(e.keyCode == '39') {
         // right arrow key
-        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false) {
+        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false)
+        {
             player1.Direction = "right";
             bewogen = true;
         }
     }
     else if(e.keyCode == '40') {
         // down arrow key
-        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false) {
+        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false)
+        {
             player1.Direction = "down";
             bewogen = true;
         }
@@ -346,7 +357,8 @@ function youWin()
 }
 
 //Makes a block and sends it to the server -Michiel
-function makeBlok(location) {
+function makeBlok(location)
+{
     var blok = new Block();
     blok.Location = new Location();
     blok.Location.posY = location.posY;
