@@ -190,6 +190,7 @@ function update()
 
 function drawPlayers() 
 {
+    ctx.clearRect(0, 0, c.width, c.height);
 	gameRoom.Players.forEach( function (value, index)
 	{
 		console.log(value);
