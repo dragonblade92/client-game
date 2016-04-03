@@ -32,7 +32,6 @@ var gameRooms = [l];
 
 function Connect(socket)
 {
-	console.log("user connected: " + socket.id);
 	
 	socket.on("ClientMessage", function(data)
 	{	
@@ -42,7 +41,6 @@ function Connect(socket)
 	//adduser ---------------------------------------------------------
 	// adds a user to the system
         socket.on('adduser', function(username) {
-		console.log("Trying to add new player: " + username);
 		
 		var bool = true;
 		
@@ -50,7 +48,6 @@ function Connect(socket)
 		var p = FindUser(username);		
 		if(p != undefined)
 		{			
-			console.log("Player already exists");
 			socket.emit("PlayerExists");
 			bool = false;
 		}	
@@ -70,12 +67,10 @@ function Connect(socket)
 			
 			if(gameRooms[0].Players.length == gameRooms[0].MaxPlayers)
 			{
-				console.log("room full");
 				gameRooms[0].Available = false;
 			}
 			else
 			{
-				console.log("room available");
 				gameRooms[0].Players.push(p);
 				gameRooms[0].Available = true;
 			}
@@ -94,16 +89,15 @@ function Connect(socket)
 	//Game room stuff:
 	//Create ==============================================================
 	// Creates a new room and gameroom with the given name
-    socket.on('create', function(room) {
-		console.log("created room");
+    socket.on('create', function(room) 
+    {        
 		var bool = true;
 		rooms.forEach(function( index, value ) 
 		{
-			if(bool){
-				console.log( index + ": " + value );
+			if(bool)
+                        {
 				if(index == room)
 				{
-					console.log("room already exists");
 					socket.emit("exists");
 					bool = false;
 				}
@@ -112,16 +106,12 @@ function Connect(socket)
 		if(bool)
 		{
 			rooms.push(room);
-			console.log("ROOMS");
-			console.log(room);
 			var l = new Lobby();
 			l.ID = room;
 			l.MaxPlayers = 2;
 			l.Available = true;
 			l.room = rooms[room];
 			gameRooms.push(l);
-			console.log("GAMEROOMS");
-			console.log(gameRooms);
 			ChangeRoom(socket, room);
 			io.sockets.emit('updaterooms', rooms, socket.room);
 		}
@@ -178,7 +168,6 @@ function Connect(socket)
 	
 	socket.on('ready', function()
 	{
-		console.log("Ik wil ready");
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
 		pl.Ready = true;
@@ -216,7 +205,6 @@ function ChangeRoom(socket, newRoom)
 		
 		if(index == -1)
 		{
-			console.log("gameRoom not found!");
 			socket.emit("NonExi");
 			return;
 		}
@@ -241,9 +229,10 @@ function ChangeRoom(socket, newRoom)
 			{
 				r.Players.splice(playerindex, 1);
 			}
-			console.log(gameRooms[index]);
-			if (gameRooms[index] == undefined) {
-				console.log("UNDEFINED");
+			
+			if (gameRooms[index] == undefined)
+                        {
+				console.log("UNDEFINED GameRoom");
 			}
 			if(gameRooms[index].Players == undefined) {
 					gameRooms[index].Players = [pl];
@@ -251,9 +240,7 @@ function ChangeRoom(socket, newRoom)
 			}else {
 				gameRooms[index].Players.push(pl);
 			}
-
-			console.log("---");
-			console.log(gameRooms);
+                        
 			//als de room 0 spelers heeft dan delete de room.
 			if(getUsersInRoomNumber(oldroom) == null && oldroom != "Lobby")
 			{
@@ -261,8 +248,7 @@ function ChangeRoom(socket, newRoom)
 				if (index > -1) 
 				{
 					rooms.splice(index, 1);			
-					io.sockets.emit('deleteRoom', oldroom);				
-					console.log("Room deleted: " + oldroom);
+					io.sockets.emit('deleteRoom', oldroom);	
 				}
 			}
 			
@@ -278,7 +264,6 @@ function ChangeRoom(socket, newRoom)
 		}
 		else
 		{
-			console.log("full");
 			socket.emit("Roomfull");
 		}
 	}
@@ -294,7 +279,6 @@ function FindUser(username)
 		{
 			if(username == gameRooms[index].Players[index2].ID)
 			{
-				console.log("found player");
 				player = gameRooms[index].Players[index2];
 			}
 		});
@@ -313,7 +297,6 @@ function FindRoomOccupiedByUser(username)
 		{
 			if(username == gameRooms[index].Players[index2].ID)
 			{
-				console.log("found player");
 				player = gameRooms[index];
 			}
 		});
@@ -331,18 +314,18 @@ function getUsersInRoomNumber(roomName, namespace) {
 
 function NewPLayerLocation(gr)
 {
-	gr.Players[0].Location = new Location();
-	gr.Players[0].Location.posX = 32;
+    gr.Players[0].Location = new Location();
+    gr.Players[0].Location.posX = 32;
     gr.Players[0].Location.posY = 304;
-	gr.Players[0].Direction = "up";
-	
-	if(gr.Players[1] != undefined)
-	{		
-		gr.Players[1].Location = new Location();
-		gr.Players[1].Location.posX = 592;
-		gr.Players[1].Location.posY = 320;
-		gr.Players[1].Direction = "down";
-	}
+    gr.Players[0].Direction = "up";
+
+    if(gr.Players[1] != undefined)
+    {		
+            gr.Players[1].Location = new Location();
+            gr.Players[1].Location.posX = 592;
+            gr.Players[1].Location.posY = 320;
+            gr.Players[1].Direction = "down";
+    }
 }
 
 function AddBlock(gr, NewBlock)
@@ -370,7 +353,7 @@ function StartGame(socket)
 	var pl = FindUser(socket.username);
 	//socket.emit('BlockInfo', gr.Blocks);
 	io.sockets["in"](socket.room).emit('gameroom', gr);
-        setTimeout(everyOneReady(), 3000);
+        setTimeout(everyOneReady(socket), 3000);
 }
 
 function CheckCollision(gr)
@@ -383,12 +366,8 @@ function CheckCollision(gr)
                     {
                             if(value2.Blocked)
                             {
-                                    console.log("check5");
                                     if(value.Location.posX == value2.Location.posX)
                                     {
-                                            console.log("pos X ok");
-                                            console.log(value.Location.posY);
-                                            console.log(value2.Location.posY );
                                             if(value.Location.posY == value2.Location.posY)
                                             {
                                                     console.log("Collision by: " + value.ID);
@@ -402,24 +381,27 @@ function CheckCollision(gr)
     return player;
 }
 
-function everyOneReady()
+function everyOneReady(socket)
 {
+    var gr = FindRoomOccupiedByUser(socket.username);
     if(gr.Players.length >= 2) {
-            var r = false;
-            console.log("Ik wil ready3");
-            gr.Players.forEach(function (value, index) {
-                    if (!value.Ready) {
-                            r = true;
-                            console.log("Ik wil ready4"+value.Ready);
-
+            var r = true;
+            gr.Players.forEach(function (value, index) 
+            {
+                console.log("value = " + value.ID);
+                console.log("value.Ready = " + value.Ready);
+                    if (!value.Ready) 
+                    {
+                            r = false;
                     }
             });
 
-            console.log(r);
+            console.log("r = " + r);
 
-            if (!r) {
+            if (r) 
+            {
                     StartGame(socket);
-                    console.log("Ik wil ready5");
+                    console.log("starting game");
             }
     } else {
             console.log("Less than two players");
