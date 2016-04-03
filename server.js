@@ -164,10 +164,12 @@ function Connect(socket)
     //resets the blocks and locations of the players
     socket.on('restart', function()
     {
+        console.log("restart");
         var pl = FindUser(socket.username);
         var gr = FindRoomOccupiedByUser(socket.username);
 
-        gr.Players.forEach(function(value, index){
+        gr.Players.forEach(function(value, index)
+        {
             value.Ready = false;
         });
 
@@ -178,9 +180,18 @@ function Connect(socket)
     //sets player1 as ready
     socket.on('ready', function()
     {
-        var pl = FindUser(socket.username);
         var gr = FindRoomOccupiedByUser(socket.username);
-        pl.Ready = true;
+        gr.Players.forEach(function(value, index)
+        {
+            if(value.ID == socket.username)
+            {
+                var pl = new Player();
+                pl.ID = value.ID;
+                pl.Ready = true;
+                gr.Players[index] = pl; 
+                
+            }
+        });
     });
 	
     //removes the user from the room on disconnect

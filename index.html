@@ -10,8 +10,8 @@
         <script src="JavaScript/CanvasInput.js"></script>
         <script src="JavaScript/CanvasInput.min.js"></script>
 <script>
-		
-    // making a connection to the server.
+
+    //making a connection to the server.
     socket = io.connect('http://localhost:8081');
     //var socket = io.connect('http://tron.jasperkoning.com:8081');
 
@@ -36,7 +36,7 @@
         $('#rooms').empty();
         $.each(rooms, function(key, value)
         {
-            //this is the room the player is in
+            //this is the room the player is in/
             if(value == current_room)
             {
                 $('#rooms').append('<div id=\''+value+'\'>' + value + '</div>');
@@ -74,7 +74,6 @@
     {
         alert("This room doesnt exist.");
         socket.emit('switchRoom', prompt("what is your roomname?"));
-
     });
 
     //Playernaam bestaat al
@@ -89,6 +88,8 @@
     socket.on('gameroom', function(gr)
     {
         gameRoom = gr;
+        console.log("gameRoom.Blocks = ");
+        console.log(gameRoom.Blocks);
     });
 
     socket.on('start', function()
@@ -100,7 +101,6 @@
     socket.on('lose', function(user)
     {
         clearInterval(tickrate);
-
         if(socket.username == user.ID)
         {
             youLose(user);
@@ -127,15 +127,13 @@
 
         $('#data').keypress(function(e)
         {
-            if(e.which == 13)
-            {
+            if(e.which == 13) {
                 $(this).blur();
                 $('#datasend').focus().click();
             }
         });
 
-        $('#roombutton').click(function()
-        {
+        $('#roombutton').click(function(){
             var name = $('#roomname').val();
             $('#roomname').val('');
             socket.emit('create', name);
@@ -145,7 +143,7 @@
     socket.on('moreplayers', function()
     {
         alert("You do not have enough players to start a game, but you're ready!");
-    })
+    });
 
 </script>
 </head>

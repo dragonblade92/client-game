@@ -213,6 +213,8 @@ function update()
 //Draws the players -Jasper en Michiel
 function drawPlayers() 
 {
+
+    ctx.clearRect(0, 0, c.width, c.height);
     gameRoom.Players.forEach( function (value, index)
     {
         console.log(value);
@@ -228,8 +230,7 @@ function drawPlayers()
         ctx.shadowColor= shadow;
         ctx.fillStyle = value.Color;
         ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
-    });
-	
+    });	
 }
 
 //Moves the player according to their direction -Michiel
