@@ -85,8 +85,8 @@ function getPosition(event) {
     menuButton(1);
     //ready button
     menuButton(2);
-	//restart button
-	menuButton(3);
+    //restart button
+    menuButton(3);
 
 }
 //Clear canvas and draw new
@@ -108,10 +108,11 @@ function menuButton(buttonIndex) {
                 if(mainMenu == false) {
                     //If the splashscreen is up
                     mainMenu = true;
-                } else
+                } 
+                else
                 {                    
-                    var roomname = showInput("What is your username?");
-                    //var roomname = prompt("Making a new room. New room name: ");
+                    //var roomname = showInput("What is the roomname?");
+                    var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
                     clearDraw();
                     gameStarted = true;
@@ -124,10 +125,10 @@ function menuButton(buttonIndex) {
                     //If the splashscreen is up
                     mainMenu = true;
                 } else {
-                    var joinroom = showInput("What is your username?");
-                    //var joinroom = prompt("Name of the room you want to join: ");
+                    //var joinroom = showInput("What is your username?");
+                    var joinroom = prompt("Name of the room you want to join: ");
                     console.log(joinroom);
-					socket.emit('switchRoom', joinroom);
+                    socket.emit('switchRoom', joinroom);
                     clearDraw();
                     gameStarted = true;
                 }
@@ -145,8 +146,10 @@ function menuButton(buttonIndex) {
 				socket.emit('ready');
 			}
 			if(playerReady) {
-				if (buttonIndex == 3) {
+				if (buttonIndex == 3)
+                                {                                        
 					socket.emit('restart');
+                                        socket.emit('ready');
 				}
 			}
         }
@@ -307,9 +310,10 @@ function youLose(user)
 
 function youWin() 
 {
+    //count wins
     wins += 1;
     alert("You have won");
-    //count wins
+    
 }
 
 function makeBlok(location) {
@@ -321,6 +325,8 @@ function makeBlok(location) {
     socket.emit('NewBlock', blok);
 }
 
+//this code is mostely from: http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
+//doesnt work properly, it stays on the screen no matter what
 function showInput(question, keyWord)
 {
     var input = new CanvasInput(

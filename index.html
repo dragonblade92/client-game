@@ -12,7 +12,7 @@
 <script>
 		
 // making a connection to the server.
-var socket = io.connect('http://localhost:8081');
+socket = io.connect('http://localhost:8081');
 //var socket = io.connect('http://tron.jasperkoning.com:8081');
 
 //Getting the username of the user.
@@ -20,7 +20,7 @@ socket.on('connect', function(){
         //werkt niet vanwege splashscreen
 	//showInput("What is your username?", "adduser");
 	socket.username = prompt("What is your username?");
-        socket.emit('adduser', prompt("what is your username?"));
+        socket.emit('adduser', socket.username);
 });
 
 //recieve the new message.
@@ -63,10 +63,12 @@ socket.on('Exists', function ()
         //showInput("What is your room name?", "create");
 });
 
-//if the roomname or player name already exists this will function will be triggered
+//if the roomname or player name does not exists this will function will be triggered
 socket.on('NonExi', function () 
 {
 	alert("This room doesnt exist.");
+        socket.emit('switchRoom', prompt("what is your roomname?"));
+        
 });
 
 //Playernaam bestaat al
