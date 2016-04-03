@@ -171,7 +171,7 @@ function startGame()
 		}		
 	});
     drawPlayers();
-	tickrate = setInterval(update, 125);
+    setTimeout(function(){ tickrate = setInterval(update, 125)}, 3000);
 }
 
 function update()

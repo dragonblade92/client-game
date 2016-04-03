@@ -41,7 +41,7 @@ function Connect(socket)
 	
 	//adduser ---------------------------------------------------------
 	// adds a user to the system
-    socket.on('adduser', function(username) {
+        socket.on('adduser', function(username) {
 		console.log("Trying to add new player: " + username);
 		
 		var bool = true;
@@ -182,28 +182,7 @@ function Connect(socket)
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
 		pl.Ready = true;
-		console.log("Ik wil ready2");
-		if(gr.Players.length >= 2) {
-			var r = false;
-			console.log("Ik wil ready3");
-			gr.Players.forEach(function (value, index) {
-				if (!value.Ready) {
-					r = true;
-					console.log("Ik wil ready4"+value.Ready);
-
-				}
-			});
-
-			console.log(r);
-
-			if (!r) {
-				StartGame(socket);
-				console.log("Ik wil ready5");
-			}
-		} else {
-			console.log("Less than two required players");
-			socket.emit('moreplayers');
-		}
+		
 	});
 	
     socket.on('disconnect', function() {
@@ -391,7 +370,8 @@ function StartGame(socket)
 	NewPLayerLocation(gr);
 	var pl = FindUser(socket.username);
 	//socket.emit('BlockInfo', gr.Blocks);
-	io.sockets["in"](socket.room).emit('gameroom', gr);	
+	io.sockets["in"](socket.room).emit('gameroom', gr);
+        setTimeout(everyOneReady(), 3000);
 }
 
 function CheckCollision(gr)
@@ -421,4 +401,29 @@ function CheckCollision(gr)
             });
     }
     return player;
+}
+
+function everyOneReady()
+{
+    if(gr.Players.length >= 2) {
+            var r = false;
+            console.log("Ik wil ready3");
+            gr.Players.forEach(function (value, index) {
+                    if (!value.Ready) {
+                            r = true;
+                            console.log("Ik wil ready4"+value.Ready);
+
+                    }
+            });
+
+            console.log(r);
+
+            if (!r) {
+                    StartGame(socket);
+                    console.log("Ik wil ready5");
+            }
+    } else {
+            console.log("Less than two players");
+            socket.emit('moreplayers');
+    }
 }
