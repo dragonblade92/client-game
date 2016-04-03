@@ -142,14 +142,14 @@ function menuButton(buttonIndex) {
 				//ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
 				ctx.clearRect(0, 0, c.width, c.height);
 				ctx.drawImage(gridImage, 0, 0);
-				ctx.drawImage(restartImage, buttonX[3], buttonY[3])
+				ctx.drawImage(restartImage, buttonX[3], buttonY[3]);
 				socket.emit('ready');
 			}
 			if(playerReady) {
 				if (buttonIndex == 3)
-                                {                                        
+                {
 					socket.emit('restart');
-                                        socket.emit('ready');
+					socket.emit('ready');
 				}
 			}
         }

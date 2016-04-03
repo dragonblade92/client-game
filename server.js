@@ -190,7 +190,6 @@ function Connect(socket)
 				if (!value.Ready) {
 					r = true;
 					console.log("Ik wil ready4"+value.Ready);
-
 				}
 			});
 
