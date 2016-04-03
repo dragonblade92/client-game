@@ -23,7 +23,7 @@ var restartImage = new Image();
 
 //Array with button locations
 var buttonX = [280,280,680,645];
-var buttonY = [120,220,10,10];
+var buttonY = [120,220,10,550];
 var buttonWidth = [400,400,244,315];
 var buttonHeight = [70,70,70,70];
 
@@ -36,7 +36,7 @@ joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
 restartImage.src = "images/menu/restart.png";
 
-//Drawing splash screen on canvas
+//Drawing splash screen on canvas -Jasper
 splashImage.onload = function() {
     ctx.drawImage(splashImage, 0, 0);
     splashUp = true;
@@ -46,10 +46,10 @@ $("#myCanvas").click(function () {
    loadMenu();
 });
 //Or press any key to continue to menu
-document.onkeydown = function(evt){
+document.onkeydown = function(){
     loadMenu();
  };
-//Function that loads the menu
+//Function that loads the menu -Jasper
 function loadMenu() {
     if(splashUp == true) {
         ctx.clearRect(0,0, c.width, c.height);
@@ -60,7 +60,13 @@ function loadMenu() {
         mainMenu = true;
     }
 }
-//Function that handles the mouse position in order to recognize which button is clicked
+//Clear canvas and draw new game field -Jasper
+function clearDraw() {
+	ctx.clearRect(0, 0, c.width, c.height);
+	ctx.drawImage(gridImage, 0, 0);
+	ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
+}
+//Function that handles the mouse position in order to recognize which button is clicked -Jasper
 function getPosition(event) {
     var x,
         y;
@@ -89,15 +95,9 @@ function getPosition(event) {
     menuButton(3);
 
 }
-//Clear canvas and draw new
-function clearDraw() {
-	ctx.clearRect(0, 0, c.width, c.height);
-	ctx.drawImage(gridImage, 0, 0);
-	ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
-}
-
-//function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array
+//function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array -Jasper
 function menuButton(buttonIndex) {
+	//Checking to see if the mouse clicked on the position of a button
     if (mouseX > buttonX[buttonIndex] &&
         mouseX < buttonX[buttonIndex] + buttonWidth[buttonIndex] &&
         mouseY > buttonY[buttonIndex] &&
@@ -140,16 +140,20 @@ function menuButton(buttonIndex) {
 				console.log("player ready");
 				playerReady = true;
 				//ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
-				ctx.clearRect(0, 0, c.width, c.height);
-				ctx.drawImage(gridImage, 0, 0);
+				clearDraw();
 				ctx.drawImage(restartImage, buttonX[3], buttonY[3]);
 				socket.emit('ready');
 			}
 			if(playerReady) {
 				if (buttonIndex == 3)
                 {
-					socket.emit('restart');
-					socket.emit('ready');
+					splashUp = true;
+					loadMenu();
+					playerReady = false;
+					gameStarted = false;
+					socket.emit('switchRoom', "Lobby");
+					//socket.emit('restart');
+					//socket.emit('ready');
 				}
 			}
         }
@@ -184,7 +188,6 @@ function update()
 
 function drawPlayers() 
 {
-	console.log("DRAWTIME");
 	gameRoom.Players.forEach( function (value, index)
 	{
 		console.log(value);
@@ -194,8 +197,6 @@ function drawPlayers()
 	
 	gameRoom.Blocks.forEach( function (value, index)
 	{
-		console.log("blockss");
-		console.log(value);
 		//ctx.shadowBlur=10;
 		var shadow = value.Color
 		shadow = shadow.replace("FF", "88");
@@ -348,10 +349,10 @@ function showInput(question, keyWord)
         {           
             if(keyWord == "adduser")
             {
-                socket.username == x._value;
+                socket.username == x. value;
             }
             
-            socket.emit(keyWord, x._value);
+            socket.emit(keyWord, x. value);
             input.destroy();
             clearDraw()
         }
