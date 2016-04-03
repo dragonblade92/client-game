@@ -60,18 +60,15 @@ function loadMenu() {
         mainMenu = true;
     }
 }
-<<<<<<< HEAD
 
-//Function that handles the mouse position in order to recognize which button is clicked
-=======
 //Clear canvas and draw new game field -Jasper
 function clearDraw() {
 	ctx.clearRect(0, 0, c.width, c.height);
 	ctx.drawImage(gridImage, 0, 0);
 	ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
 }
+
 //Function that handles the mouse position in order to recognize which button is clicked -Jasper
->>>>>>> origin/master
 function getPosition(event) {
     var x,
         y;
@@ -354,10 +351,10 @@ function showInput(question, keyWord)
         {           
             if(keyWord == "adduser")
             {
-                socket.username == x. value;
+                socket.username == input._value;
             }
             
-            socket.emit(keyWord, x. value);
+            socket.emit(keyWord, input._value);
             input.destroy();
             clearDraw()
         }
