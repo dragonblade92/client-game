@@ -31,8 +31,7 @@ l.room = rooms["Lobby"];
 var gameRooms = [l];
 
 function Connect(socket)
-{
-	
+{	
 	socket.on("ClientMessage", function(data)
 	{	
 		socket.broadcast.emit("ServerMessage", data);	
@@ -162,15 +161,19 @@ function Connect(socket)
 			value.Ready = false;
 		});
 		
+		gr.Blocks = [];
 		NewPLayerLocation(gr);
 		StartGame(socket);
 	});
 	
 	socket.on('ready', function()
 	{
+                console.log("ready to rumble");
 		var pl = FindUser(socket.username);
 		var gr = FindRoomOccupiedByUser(socket.username);
+                console.log("pl = " + pl.ID);
 		pl.Ready = true;
+                console.log("pl.ready == " + pl.Ready);
 	});
 	
     socket.on('disconnect', function() {
@@ -260,7 +263,7 @@ function ChangeRoom(socket, newRoom)
 			socket.room = newRoom;
 			socket.broadcast.to(newRoom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
 			socket.emit('updaterooms', rooms, newRoom);
-			//StartGame(socket);
+			StartGame(socket);
 		}
 		else
 		{
@@ -279,6 +282,7 @@ function FindUser(username)
 		{
 			if(username == gameRooms[index].Players[index2].ID)
 			{
+                                console.log("found one");
 				player = gameRooms[index].Players[index2];
 			}
 		});
@@ -353,7 +357,7 @@ function StartGame(socket)
 	var pl = FindUser(socket.username);
 	//socket.emit('BlockInfo', gr.Blocks);
 	io.sockets["in"](socket.room).emit('gameroom', gr);
-        setTimeout(everyOneReady(socket), 3000);
+	setTimeout(everyOneReady(socket), 3);
 }
 
 function CheckCollision(gr)
@@ -388,7 +392,7 @@ function everyOneReady(socket)
             var r = true;
             gr.Players.forEach(function (value, index) 
             {
-                console.log("value = " + value.ID);
+                console.log("value = " + value);
                 console.log("value.Ready = " + value.Ready);
                     if (!value.Ready) 
                     {
@@ -399,8 +403,8 @@ function everyOneReady(socket)
             console.log("r = " + r);
 
             if (r) 
-            {
-                    StartGame(socket);
+            {                    
+                    io.sockets["in"](socket.room).emit('start', gr);
                     console.log("starting game");
             }
     } else {

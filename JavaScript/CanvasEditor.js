@@ -60,6 +60,7 @@ function loadMenu() {
         mainMenu = true;
     }
 }
+
 //Function that handles the mouse position in order to recognize which button is clicked
 function getPosition(event) {
     var x,
