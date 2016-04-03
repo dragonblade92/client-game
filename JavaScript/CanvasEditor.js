@@ -19,12 +19,12 @@ var mainImage = new Image();
 var newImage = new Image();
 var joinImage = new Image();
 var readyImage = new Image();
-var restartImage = new Image();
+var exitImage = new Image();
 
 //Array with button locations
-var buttonX = [280,280,680,645];
+var buttonX = [280,280,680,720];
 var buttonY = [120,220,10,550];
-var buttonWidth = [400,400,244,315];
+var buttonWidth = [400,400,244,170];
 var buttonHeight = [70,70,70,70];
 
 //Image sources
@@ -34,7 +34,7 @@ mainImage.src= "images/menu/mainmenu.png";
 newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
-restartImage.src = "images/menu/restart.png";
+exitImage.src = "images/menu/exit.png";
 
 //Drawing splash screen on canvas -Jasper & Michiel
 splashImage.onload = function()
@@ -69,7 +69,7 @@ function loadMenu()
 }
 
 //Clear canvas and draw new game field -Jasper & Michiel
-function clearDraw()
+function drawField()
 {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(gridImage, 0, 0);
@@ -133,7 +133,7 @@ function menuButton(buttonIndex)
                     //var roomname = showInput("What is the roomname?");
                     var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
-                    clearDraw();
+                    drawField();
                     gameStarted = true;
                 }
             }
@@ -152,7 +152,7 @@ function menuButton(buttonIndex)
                     var joinroom = prompt("Name of the room you want to join: ");
                     console.log(joinroom);
                     socket.emit('switchRoom', joinroom);
-                    clearDraw();
+                    drawField();
                     gameStarted = true;
                 }
             }
@@ -165,8 +165,8 @@ function menuButton(buttonIndex)
                 console.log("player ready");
                 playerReady = true;
                 //ctx.clearRect(xcoordinate_of_img1,ycoordinate_of_img1,xcoordinate_of_img1 + img1.width ,ycoord_of_img1 +img1.height );
-                clearDraw();
-                ctx.drawImage(restartImage, buttonX[3], buttonY[3]);
+                drawField();
+                ctx.drawImage(exitImage, buttonX[3], buttonY[3]);
                 socket.emit('ready');
             }
             if(playerReady)
@@ -390,12 +390,12 @@ function showInput(question, keyWord)
         {           
             if(keyWord == "adduser")
             {
-                socket.username == input._value;
+                socket.username = input._value;
             }
             
             socket.emit(keyWord, input._value);
             input.destroy();
-            clearDraw()
+            drawField()
         }
     });
 }
