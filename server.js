@@ -197,7 +197,14 @@ function Connect(socket)
             }
         });
     });
-
+    
+    //changes the direction of the player
+    socket.on('direct', function(dir)
+    {
+        var pl = FindUser(socket.username);
+        pl.Direction = dir;
+    });
+    
     //removes the user from the room on disconnect
     socket.on('disconnect', function ()
     {
