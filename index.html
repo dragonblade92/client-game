@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <title>Tron the Rip-Off</title>
-        <link rel="stylesheet" type="text/css" href="style.css" >
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script src="JavaScript/clientobjects.js"></script>
-        <script src="JavaScript/CanvasInput.js"></script>
-        <script src="JavaScript/CanvasInput.min.js"></script>
-        <script src="JavaScript/socketconnections.js"></script>
-              
-    </head>
-    <body>
-        <audio autoplay loop>
-            <source src="sound/background.wav" type="audio/wav">
-            Your browser does not support the audio element.
-        </audio>
-        <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow-y: auto;">
-            <b>ROOMS</b>
-            <div id="rooms"></div>
-        </div>
-        <div style="float:left;width:300px;height:250px;overflow:auto;padding:10px;">
-            <div id="conversation"></div>
-            <input id="data" style="width:200px;" />
-            <input type="button" id="datasend" value="send" />
-        </div>
-        <canvas onclick="GetPosition(event)" id="myCanvas" width= "960" height= "640"></canvas>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=0">
+    <title>Tron the Rip-Off</title>
+    <link rel="stylesheet" type="text/css" href="style.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="JavaScript/clientobjects.js"></script>
+    <script src="JavaScript/CanvasInput.js"></script>
+    <script src="JavaScript/CanvasInput.min.js"></script>
+    <script src="JavaScript/socketconnections.js"></script>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="sound/background.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow-y: auto;">
+        <b>ROOMS</b>
+        <div id="rooms"></div>
+    </div>
+    <canvas onclick="GetPosition(event)" id="myCanvas" width= "960" height= "640"></canvas>
+    <script src="JavaScript/CanvasEditor.js"></script>
+    <div style="float:left;width:300px;height:250px;overflow:auto;padding:10px;">
+        <div id="conversation"></div>
+        <input id="data" style="width:200px;" />
+        <input type="button" id="datasend" value="send" />
+    </div>
+
+   <div style="float:left;width:300px;height:250px;overflow:auto;padding:10px;">
+       <div id="roomcreation"></div>
+       <input id="roomname" style="width:200px;" />
+        <input type="button" id="roombutton" value="create room" />
+   </div>	
+        Bericht: <input id="message" type="text"/>
+        <button id="myButton">verzenden</button>
         <script src="JavaScript/CanvasEditor.js"></script>
     </body>
 </html>
