@@ -432,29 +432,21 @@ function EveryOneReady(socket)
 {
     //checks if everybody has pressed the ready button
     var gr = FindRoomOccupiedByUser(socket.username);
-    if (gr.Players.length >= 2)
+    var r = true;
+    gr.Players.forEach(function (value, index)
     {
-        var r = true;
-        gr.Players.forEach(function (value, index)
+        console.log("value = " + value.ID);
+        console.log("value.Ready = " + value.Ready);
+        if (!value.Ready)
         {
-            console.log("value = " + value.ID);
-            console.log("value.Ready = " + value.Ready);
-            if (!value.Ready)
-            {
-                r = false;
-            }
-        });
-
-        console.log("r = " + r);
-        if (r)
-        {
-            io.sockets["in"](socket.room).emit('start', gr);
-            console.log("starting game");
+            r = false;
         }
-    }
-    else
+    });
+
+    console.log("r = " + r);
+    if (r)
     {
-        console.log("Less than two players");
-        socket.emit('moreplayers');
+        io.sockets["in"](socket.room).emit('start', gr);
+        console.log("starting game");
     }
 }

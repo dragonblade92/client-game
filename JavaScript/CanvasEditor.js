@@ -231,7 +231,6 @@ function DrawPlayers()
     {
         //ctx.shadowBlur=10;
         var shadow = value.Color;
-        console.log(shadow);
         shadow = shadow.replace("FF", "88");
         ctx.shadowColor= shadow;
         ctx.fillStyle = value.Color;
@@ -365,12 +364,13 @@ function YouWin()
 }
 
 //Makes a block and sends it to the server -Michiel
-function MakeBlok(location)
+function MakeBlok(location, color)
 {
     var blok = new Block();
     blok.Location = new Location();
     blok.Location.posY = location.posY;
     blok.Location.posX = location.posX;
+    blok.Color = color;
     blok.Blocked = true;
     socket.emit('NewBlock', blok);
 }
