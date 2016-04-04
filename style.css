@@ -21,6 +21,30 @@ a {
 
 #conversation {
     width:300px;
-    height:250px;
-    overflow-y:auto;
+    height:500px;
+    overflow:auto;
+}
+.rooms {
+    float:left;
+    width:100px;
+    border-right:1px solid black;
+    height:300px;
+    padding:10px;
+    overflow: auto;
+}
+#chat {
+    float:left;
+    width:300px;
+    height:500px;
+    overflow:auto;
+    padding:10px;
+}
+#data {
+    margin-top:10px;
+    width: 200px;
+    float:left;
+}
+#datasend {
+    margin-top:10px;
+    float:left;
 }

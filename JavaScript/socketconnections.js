@@ -1,6 +1,6 @@
 //making a connection to the server.
-socket = io.connect('http://localhost:8081');
-//var socket = io.connect('http://tron.jasperkoning.com:8081');
+socket = io.connect('http://localhost:8083');
+//var socket = io.connect('http://tron.jasperkoning.com:8083');
 
 //Getting the username of the user.
 socket.on('connect', function()
