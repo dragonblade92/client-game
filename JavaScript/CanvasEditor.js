@@ -223,16 +223,12 @@ function DrawPlayers()
     
     gameRoom.Players.forEach( function (value, index)
     {
-        ctx.fillStyle= value.Color;
+        //ctx.fillStyle= value.Color;
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
     });    
     
     gameRoom.Blocks.forEach( function (value, index)
     {
-        //ctx.shadowBlur=10;
-        var shadow = value.Color;
-        shadow = shadow.replace("FF", "88");
-        ctx.shadowColor= shadow;
         ctx.fillStyle = value.Color;
         ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
     });	
