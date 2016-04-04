@@ -352,6 +352,7 @@ function Moving()
     socket.emit('location', pl.Location);
     bewogen = false;
 }
+//Function that determines the direction the player goes -Jasper & Michiel
 function Direction(d)
 {
     var player1;
@@ -409,7 +410,7 @@ function Direction(d)
 
 document.onkeydown = CheckKey;
 
-//When there's an arrowkey input, changes the direction of the player -Michiel en D�an
+//When there's an arrowkey input, changes the direction of the player -Iedereen
 function CheckKey(e) {
     e = e || window.event;
 
@@ -446,7 +447,7 @@ function YouWin()
     alert("You have won");  
 }
 
-//Makes a block and sends it to the server -Michiel en D�an
+//Makes a block and sends it to the server -Michiel en Déan
 function MakeBlok(location, color)
 {
     var blok = new Block();
