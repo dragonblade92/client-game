@@ -389,7 +389,7 @@ function StartGame(socket)
 
     //socket.emit('BlockInfo', gr.Blocks);
     io.sockets["in"](socket.room).emit('gameroom', gr);
-    everyOneReady(socket);
+    EveryOneReady(socket);
 }
 
 function CheckCollision(gr)
