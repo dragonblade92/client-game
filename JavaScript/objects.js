@@ -7,29 +7,29 @@ function Lobby()
     this.Blocks = [];
     this.room;
 
-    /*function SetBlocked(Player)
-    {
-        this.Blocks.ForEach(Block)
-        {
-            var Loc = new Location();
-            switch(Player.Direction)
-            {
-                case "up":
-                Loc.Height = Player.Height + 16;
-                case "down":
-                Loc.Height = Player.Height - 16;
-                case "left":
-                Loc.Height = Player.Height + 16;
-                case "right":
-                Loc.Height = Player.Height - 16;
-            }
-
-            if(this.Location == Loc)
-            {
-                this.Blocked = true;
-            }
-        }
-    } */
+//    function SetBlocked(Player)
+//    {
+//        this.Blocks.ForEach(Block)
+//        {
+//            var Loc = new Location();
+//            switch(Player.Direction)
+//            {
+//                case "up":
+//                Loc.Height = Player.Height + 16;
+//                case "down":
+//                Loc.Height = Player.Height - 16;
+//                case "left":
+//                Loc.Height = Player.Height + 16;
+//                case "right":
+//                Loc.Height = Player.Height - 16;
+//            }
+//
+//            if(this.Location == Loc)
+//            {
+//                this.Blocked = true;
+//            }
+//        }
+//    }
 }
 
 function Player()
