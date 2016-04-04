@@ -31,7 +31,7 @@ l.Available = true;
 l.room = rooms["Lobby"];
 var gameRooms = [l];
 
-//Handles incomming connections - Déan
+//Handles incomming connections - Dï¿½an
 function Connect(socket)
 {
     //Send a message
@@ -64,7 +64,7 @@ function Connect(socket)
             socket.join('Lobby');
 
             //making the player
-            var p = new Player();
+            p = new Player();
             p.ID = username;
             p.Ready = false;
 
@@ -222,7 +222,7 @@ function Connect(socket)
     //io.sockets.emit("message", data); //to all connected clients
 }
 
-//gets the index of the room based on the username of the client - Déan
+//gets the index of the room based on the username of the client - Dï¿½an
 function GetIndexOfRoom(name)
 {
     //gets the index of the gameRoom
@@ -237,7 +237,7 @@ function GetIndexOfRoom(name)
     return r;
 }
 
-//changes the client from one room to another - Déan
+//changes the client from one room to another - Dï¿½an
 function ChangeRoom(socket, newRoom)
 {
     //changes the room of the player
@@ -292,9 +292,9 @@ function ChangeRoom(socket, newRoom)
             }
 
             //als de room 0 spelers heeft dan delete de room.
-            if (getUsersInRoomNumber(oldRoom) == null && oldRoom != "Lobby")
+            if (getUsersInRoomNumber(oldRoom) === null && oldRoom != "Lobby")
             {
-                var index = rooms.indexOf(oldRoom);
+                index = rooms.indexOf(oldRoom);
                 if (index > -1)
                 {
                     rooms.splice(index, 1);
@@ -338,7 +338,7 @@ function FindUser(username)
     return player;
 }
 
-//finds the room the user is in based on username - Déan
+//finds the room the user is in based on username - Dï¿½an
 function FindRoomOccupiedByUser(username)
 {
     var player;
@@ -361,14 +361,18 @@ function FindRoomOccupiedByUser(username)
 function getUsersInRoomNumber(roomName, namespace)
 {
     if (!namespace)
+    {
         namespace = '/';
+    }
     var room = io.nsps[namespace].adapter.rooms[roomName];
     if (!room)
+    {
         return null;
+    }
     return Object.keys(room).length;
 }
 
-//sets the player location of the players in a certain room - Déan
+//sets the player location of the players in a certain room - Dï¿½an
 function NewPlayerLocation(gr)
 {
     gr.Players[0].Location = new Location();
@@ -385,7 +389,7 @@ function NewPlayerLocation(gr)
     }
 }
 
-//Adds a block to a gameroom - Déan
+//Adds a block to a gameroom - Dï¿½an
 function AddBlock(gr, NewBlock)
 {
     //add a block at location
@@ -407,7 +411,7 @@ function AddBlock(gr, NewBlock)
     gr.Blocks.push(b);
 }
 
-//sends the gameroom to the clients - Déan
+//sends the gameroom to the clients - Dï¿½an
 function StartGame(socket)
 {
     //start the game when everybody is ready
@@ -420,7 +424,7 @@ function StartGame(socket)
     EveryOneReady(socket);
 }
 
-//checks collisions between the objects in gameroom - Déan
+//checks collisions between the objects in gameroom - Dï¿½an
 function CheckCollision(gr)
 {
     //checks for collision with blocks
@@ -447,7 +451,7 @@ function CheckCollision(gr)
     return player;
 }
 
-//checks to see if everyone in a room is ready - Déan
+//checks to see if everyone in a room is ready - Dï¿½an
 function EveryOneReady(socket)
 {
     //checks if everybody has pressed the ready button

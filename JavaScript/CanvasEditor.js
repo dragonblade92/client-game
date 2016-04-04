@@ -32,7 +32,7 @@ var buttonY = [120,220,10,550,170,335,250,250];
 var buttonWidth = [400,400,244,170,72,72,72,72];
 var buttonHeight = [70,70,70,70,72,72,72,72];
 
-//Image sources
+//Image sources by Jasper
 splashImage.src = "images/SplashScreen.png";
 gridImage.src = "images/grid.png";
 mainImage.src= "images/menu/mainmenu.png";
@@ -50,7 +50,6 @@ splashImage.onload = function()
 {
     ctx.drawImage(splashImage, 0, 0);
     splashUp = true;
-    PlayMusic();
 };
 
 //Continue to menu by clicking anywhere on canvas -Jasper en Michiel
@@ -202,8 +201,6 @@ function MenuButton(buttonIndex)
                 playerReady = false;
                 gameStarted = false;
                 socket.emit('switchRoom', "Lobby");
-                //socket.emit('restart');
-                //socket.emit('ready');
                 }
                 //Directional arrow buttons, for mobile/tablet users
                 if(buttonIndex == 4)
@@ -490,13 +487,4 @@ function ShowInput(question, keyWord)
             DrawField();
         }
     });
-}
-
-function PlayMusic()
-{
-   this.backgroundAudio = new Audio("sound/background.wav");
-   this.backgroundAudio.loop = true;
-   this.backgroundAudio.volume = .25;
-   this.backgroundAudio.load();
-   this.checkAudio = window.setInterval(1000);
 }
