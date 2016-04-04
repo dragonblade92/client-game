@@ -335,7 +335,7 @@ function Moving()
             clearInterval(tickrate);
         }
         break;
-        case "right":
+        default:
         pl.Location.posX = pl.Location.posX + 16;
         if(pl.Location.posX > 624)
         {
