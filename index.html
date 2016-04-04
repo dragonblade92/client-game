@@ -1,152 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-        <title>Tron the Rip-Off</title>
-        <link rel="stylesheet" type="text/css" href="style.css" >
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script src="JavaScript/clientobjects.js"></script>
-        <script src="JavaScript/CanvasInput.js"></script>
-        <script src="JavaScript/CanvasInput.min.js"></script>
-<script>
-
-    //making a connection to the server.
-    socket = io.connect('http://localhost:8081');
-    //var socket = io.connect('http://tron.jasperkoning.com:8081');
-
-    //Getting the username of the user.
-    socket.on('connect', function()
-    {
-        //werkt niet vanwege splashscreen
-        //showInput("What is your username?", "adduser");
-        socket.username = prompt("What is your username?");
-        socket.emit('adduser', socket.username);
-    });
-
-    //recieve the new message.
-    socket.on('updatechat', function (username, data)
-    {
-        $('#conversation').append('<b>'+ username + ':</b> ' + data + '<br>');
-    });
-
-    //to update the list with rooms
-    socket.on('updaterooms', function (rooms, current_room)
-    {
-        $('#rooms').empty();
-        $.each(rooms, function(key, value)
-        {
-            //this is the room the player is in/
-            if(value == current_room)
-            {
-                $('#rooms').append('<div id=\''+value+'\'>' + value + '</div>');
-            }
-            else
-            {
-                //these are the other rooms.
-                $('#rooms').append('<div id=\''+value+'\'><a href="#" onclick="SwitchRoom(\''+value+'\')">' + value + '</a></div>');
-            }
-        });
-    });
-
-    //to delete a room from the page
-    socket.on('deleteRoom', function (current_room) 
-    {
-        var d = "#" + current_room;
-        $(d).remove();
-    });
-
-    //if the room the user is trying to join is full this will trigger
-    socket.on('Roomfull', function () 
-    {
-        alert("Room is full");
-    });
-
-    //if the roomname or player name already exists this will function will be triggered
-    socket.on('Exists', function () 
-    {
-        socket.emit('create', prompt("what is your roomname?"));
-        //showInput("What is your room name?", "create");
-    });
-
-    //if the roomname or player name does not exists this will function will be triggered
-    socket.on('NonExi', function () 
-    {
-        alert("This room doesnt exist.");
-        socket.emit('SwitchRoom', prompt("what is your roomname?"));
-    });
-
-    //Playernaam bestaat al
-    socket.on('PlayerExists', function () 
-    {
-        alert("There is already a Player with that name!");
-        //showInput("What is your username?", "adduser");
-        socket.username = prompt("What is your username?");
-        socket.emit('adduser', prompt("what is your username?"));
-    });
-
-    socket.on('gameroom', function(gr)
-    {
-        gameRoom = gr;
-        //console.log("gameRoom.Blocks = ");
-        //console.log(gameRoom.Blocks);
-    });
-
-    socket.on('start', function()
-    {
-        console.log("start");
-        StartGameC();
-    });
-
-    socket.on('lose', function(user)
-    {
-        clearInterval(tickrate);
-        if(socket.username == user.ID)
-        {
-            YouLose(user);
-        }
-        else
-        {
-            YouWin();
-        }
-    });
-
-    function SwitchRoom(room)
-    {
-        socket.emit('SwitchRoom', room);
-    }
-
-    $(function()
-    {
-        $('#datasend').click( function()
-        {
-            var message = $('#data').val();
-            $('#data').val('');
-            socket.emit('sendchat', message);
-        });
-
-        $('#data').keypress(function(e)
-        {
-            if(e.which == 13) {
-                $(this).blur();
-                $('#datasend').focus().click();
-            }
-        });
-
-        $('#roombutton').click(function()
-        {
-            var name = $('#roomname').val();
-            $('#roomname').val('');
-            socket.emit('create', name);
-        });
-    });
-
-    socket.on('moreplayers', function()
-    {
-        alert("You do not have enough players to start a game, but you're ready!");
-    });
-
-</script>
+    <head>
+        <meta charset="utf-8">
+    <title>Tron the Rip-Off</title>
+    <link rel="stylesheet" type="text/css" href="style.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="JavaScript/clientobjects.js"></script>
+    <script src="JavaScript/CanvasInput.js"></script>
+    <script src="JavaScript/CanvasInput.min.js"></script>
+    <script src="JavaScript/socketconnections.js"></script>
 </head>
 <body>
     <div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow-y: auto;">
@@ -166,7 +29,7 @@
        <input id="roomname" style="width:200px;" />
         <input type="button" id="roombutton" value="create room" />
    </div>	
-		Bericht: <input id="message" type="text"/>
-		<button id="myButton">verzenden</button>
-	</body>
+        Bericht: <input id="message" type="text"/>
+        <button id="myButton">verzenden</button>
+    </body>
 </html>
