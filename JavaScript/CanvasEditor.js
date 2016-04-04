@@ -13,6 +13,7 @@ var lose;
 var socket;
 var mouseX;
 var mouseY;
+var arrow;
 
 //Images
 var splashImage = new Image();
@@ -22,12 +23,16 @@ var newImage = new Image();
 var joinImage = new Image();
 var readyImage = new Image();
 var exitImage = new Image();
+var upImage = new Image();
+var downImage = new Image();
+var leftImage = new Image();
+var rightImage = new Image();
 
 //Array with button locations
-var buttonX = [280,280,680,720];
-var buttonY = [120,220,10,550];
-var buttonWidth = [400,400,244,170];
-var buttonHeight = [70,70,70,70];
+var buttonX = [280,280,680,725,760,760,685,835];
+var buttonY = [120,220,10,550,170,335,250,250];
+var buttonWidth = [400,400,244,170,72,72,72,72];
+var buttonHeight = [70,70,70,70,72,72,72,72];
 
 //Image sources
 splashImage.src = "images/SplashScreen.png";
@@ -37,6 +42,10 @@ newImage.src = "images/menu/new.png";
 joinImage.src = "images/menu/join.png";
 readyImage.src = "images/menu/ready.png";
 exitImage.src = "images/menu/exit.png";
+upImage.src = "images/menu/up.png";
+downImage.src = "images/menu/down.png";
+leftImage.src = "images/menu/left.png";
+rightImage.src = "images/menu/right.png";
 
 //Drawing splash screen on canvas -Jasper & Michiel
 splashImage.onload = function()
@@ -76,6 +85,10 @@ function DrawField()
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.drawImage(gridImage, 0, 0);
     ctx.drawImage(readyImage, buttonX[2], buttonY[2]);
+    ctx.drawImage(upImage, buttonX[4], buttonY[4]);
+    ctx.drawImage(downImage, buttonX[5], buttonY[5]);
+    ctx.drawImage(leftImage, buttonX[6], buttonY[6]);
+    ctx.drawImage(rightImage, buttonX[7], buttonY[7]);
 }
 
 //Function that handles the mouse position in order to recognize which button is clicked -Jasper
@@ -109,6 +122,14 @@ function GetPosition(event)
     MenuButton(2);
     //restart button
     MenuButton(3);
+    //up
+    MenuButton(4);
+    //down
+    MenuButton(5);
+    //left
+    MenuButton(6);
+    //right
+    MenuButton(7);
 
 }
 //function that adds functionality to buttons, with variable buttonIndex to know which coordinates to obtain from the array -Jasper
@@ -182,6 +203,22 @@ function MenuButton(buttonIndex)
                 socket.emit('switchRoom', "Lobby");
                 //socket.emit('restart');
                 //socket.emit('ready');
+                }
+                if(buttonIndex == 4)
+                {
+                    CheckKey('38');
+                }
+                if(buttonIndex == 5)
+                {
+                    CheckKey('40');
+                }
+                if(buttonIndex == 6)
+                {
+                    CheckKey('37');
+                }
+                if(buttonIndex == 7)
+                {
+                    CheckKey('39');
                 }
             }
         }
@@ -318,6 +355,7 @@ function CheckKey(e) {
 
     var dir;
     if(e.keyCode == '37') {
+        arrow = "left";
         // left arrow key
         if (player1.Direction == "up" && bewogen === false || player1.Direction == "down" && bewogen === false)
         {
@@ -326,6 +364,7 @@ function CheckKey(e) {
             dir = "left";
         }
     } else if(e.keyCode == '38') {
+        arrow = "up";
         // up arrow key
         if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
         {
@@ -335,6 +374,7 @@ function CheckKey(e) {
         }
     }
     else if(e.keyCode == '39') {
+        arrow = "right";
         // right arrow key
         if (player1.Direction == "up" && bewogen === false || player1.Direction == "down" && bewogen === false)
         {
@@ -344,6 +384,7 @@ function CheckKey(e) {
         }
     }
     else if(e.keyCode == '40') {
+        arrow = "down";
         // down arrow key
         if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
         {
