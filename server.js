@@ -217,9 +217,6 @@ function Connect(socket)
         socket.leave(socket.room);
         console.log("disconnected");
     });
-
-    //to all other connected clients
-    //io.sockets.emit("message", data); //to all connected clients
 }
 
 //gets the index of the room based on the username of the client - D�an

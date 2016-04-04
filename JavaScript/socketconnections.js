@@ -73,8 +73,6 @@ socket.on('PlayerExists', function ()
 socket.on('gameroom', function(gr)
 {
     gameRoom = gr;
-    //console.log("gameRoom.Blocks = ");
-    //console.log(gameRoom.Blocks);
 });
 
 //starts the game
