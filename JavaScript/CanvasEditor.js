@@ -222,10 +222,10 @@ function DrawPlayers()
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
     });    
     
-    gameRoom.Blocks.forEach( function (value, index)
+    gameRoom.Blocks.forEach( function (value2, index2)
     {
-        ctx.fillStyle = value.Color;
-        ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
+        ctx.fillStyle = value2.Color;
+        ctx.fillRect(value2.Location.posX,value2.Location.posY,16,16);
     });	
 }
 
@@ -258,7 +258,7 @@ function Moving()
         }
     });
 
-    MakeBlok(pl.Location);
+    MakeBlok(pl.Location, pl.Color);
     
     switch(pl.Direction)
     {
