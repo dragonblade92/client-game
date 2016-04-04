@@ -191,17 +191,7 @@ function MenuButton(buttonIndex)
 //Function to start the game -Michiel
 function StartGameC()
 {	
-    gameRoom.Players.forEach( function (value, index)
-    {
-        if(index == 0)
-        {
-            value.Color = "#0000FF";
-        }
-        else
-        {
-            value.Color = "#FF0000";
-        }		
-    });
+
     DrawPlayers();
     setTimeout(function(){ tickrate = setInterval(Update, 125)}, 3000);
 }
@@ -216,13 +206,16 @@ function Update()
     
 }
 
-//Draws the players -Jasper en Michiel
+//Draws the players -Jasper,Déan en Michiel
 function DrawPlayers() 
 {
     ctx.clearRect(0, 0, c.width, c.height);
-    
+    DrawField();
+    GetColor();
     gameRoom.Players.forEach( function (value, index)
     {
+        console.log("kleur = " + value.Color);
+        console.log("value id = " + value.ID);
         ctx.fillStyle= value.Color;
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
     });    
@@ -236,6 +229,22 @@ function DrawPlayers()
         ctx.fillStyle = value.Color;
         ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
     });	
+}
+
+//Gives a color to the player - Déan
+function GetColor()
+{
+        gameRoom.Players.forEach( function (value, index)
+    {
+        if(index == 0)
+        {
+            value.Color = "#0000FF";
+        }
+        else
+        {
+            value.Color = "#FF0000";
+        }		
+    });    
 }
 
 //Moves the player according to their direction -Michiel
