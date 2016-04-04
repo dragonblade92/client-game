@@ -43,6 +43,7 @@ splashImage.onload = function()
 {
     ctx.drawImage(splashImage, 0, 0);
     splashUp = true;
+    PlayMusic();
 };
 
 //Continue to menu by clicking anywhere on canvas -Jasper en Michiel
@@ -423,4 +424,13 @@ function ShowInput(question, keyWord)
             DrawField();
         }
     });
+}
+
+function PlayMusic()
+{
+   this.backgroundAudio = new Audio("sound/background.wav");
+   this.backgroundAudio.loop = true;
+   this.backgroundAudio.volume = .25;
+   this.backgroundAudio.load();
+   this.checkAudio = window.setInterval(1000);
 }
