@@ -1,6 +1,6 @@
 function Lobby()
 {
-    this.ID
+    this.ID;
     this.Players = [];
     this.MaxPlayers;
     this.Available;

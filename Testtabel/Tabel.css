@@ -1,0 +1,37 @@
+body {
+	font-family: Arial;
+}
+
+table, td {
+	border: 2px solid black;
+	border-collapse: collapse;
+}
+
+td {
+	padding: 1em;
+	text-align: left;
+}
+
+tr:hover {
+	background-color: #A6A6A6
+}
+
+table {
+	width: 50%;
+}
+p {
+	width: 50%;
+	font-size: 20px;
+}
+.green {
+	background-color: green;
+}
+.red {
+	background-color: red;
+}
+.grey {
+	background-color: gray;
+}
+.orange {
+	background-color: orange;
+}

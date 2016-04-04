@@ -60,7 +60,7 @@ document.onkeydown = function()
 //Function that loads the menu -Jasper
 function LoadMenu()
 {
-    if(splashUp == true) {
+    if(splashUp === true) {
         ctx.clearRect(0,0, c.width, c.height);
         ctx.drawImage(mainImage, 0, 0);
         ctx.drawImage(newImage, buttonX[0], buttonY[0]);
@@ -120,12 +120,12 @@ function MenuButton(buttonIndex)
         mouseY > buttonY[buttonIndex] &&
         mouseY < buttonY[buttonIndex] + buttonHeight[buttonIndex])
     {
-        if(gameStarted == false)
+        if(gameStarted === false)
         {
-            if(buttonIndex == 0)
+            if(buttonIndex === 0)
             {
                 //If it's the button "New Game"
-                if(mainMenu == false)
+                if(mainMenu === false)
                 {
                     //If the splashscreen is up
                     mainMenu = true;
@@ -143,7 +143,7 @@ function MenuButton(buttonIndex)
             //If it's button "Join game"
             if(buttonIndex == 1)
             {
-                if(mainMenu == false)
+                if(mainMenu === false)
                 {
                     //If the splashscreen is up
                     mainMenu = true;
@@ -193,7 +193,7 @@ function StartGameC()
 {	
 
     DrawPlayers();
-    setTimeout(function(){ tickrate = setInterval(Update, 125)}, 3000);
+    setTimeout(function(){ tickrate = setInterval(Update, 125);}, 3000);
 }
 
 //Moves and draws the players -Michiel J
@@ -222,10 +222,10 @@ function DrawPlayers()
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
     });    
     
-    gameRoom.Blocks.forEach( function (value, index)
+    gameRoom.Blocks.forEach( function (value2, index2)
     {
-        ctx.fillStyle = value.Color;
-        ctx.fillRect(value.Location.posX,value.Location.posY,16,16);
+        ctx.fillStyle = value2.Color;
+        ctx.fillRect(value2.Location.posX,value2.Location.posY,16,16);
     });	
 }
 
@@ -234,7 +234,7 @@ function GetColor()
 {
         gameRoom.Players.forEach( function (value, index)
     {
-        if(index == 0)
+        if(index === 0)
         {
             value.Color = "#0000FF";
         }
@@ -258,7 +258,8 @@ function Moving()
         }
     });
 
-    MakeBlok(pl.Location);
+    //MakeBlok(pl.Location, pl.Color);
+    MakeBlok(pl.Location, "00FF00");
     
     switch(pl.Direction)
     {
@@ -318,7 +319,7 @@ function CheckKey(e) {
     var dir;
     if(e.keyCode == '37') {
         // left arrow key
-        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false)
+        if (player1.Direction == "up" && bewogen === false || player1.Direction == "down" && bewogen === false)
         {
             player1.Direction = "left";
             bewogen = true;
@@ -326,7 +327,7 @@ function CheckKey(e) {
         }
     } else if(e.keyCode == '38') {
         // up arrow key
-        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false)
+        if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
         {
             player1.Direction = "up";
             bewogen = true;
@@ -335,7 +336,7 @@ function CheckKey(e) {
     }
     else if(e.keyCode == '39') {
         // right arrow key
-        if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false)
+        if (player1.Direction == "up" && bewogen === false || player1.Direction == "down" && bewogen === false)
         {
             player1.Direction = "right";
             bewogen = true;
@@ -344,7 +345,7 @@ function CheckKey(e) {
     }
     else if(e.keyCode == '40') {
         // down arrow key
-        if (player1.Direction == "left" && bewogen == false || player1.Direction == "right" && bewogen == false)
+        if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
         {
             player1.Direction = "down";
             bewogen = true;
@@ -410,7 +411,7 @@ function ShowInput(question, keyWord)
             
             socket.emit(keyWord, input._value);
             input.destroy();
-            DrawField()
+            DrawField();
         }
     });
 }
