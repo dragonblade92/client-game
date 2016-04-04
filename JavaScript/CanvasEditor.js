@@ -11,9 +11,7 @@ var playerReady = false;
 var wins;
 var lose;
 var socket;
-var mouseX;
-var mouseY;
-var arrow;
+var direction = "";
 
 //Images
 var splashImage = new Image();
@@ -193,8 +191,10 @@ function MenuButton(buttonIndex)
                 ctx.drawImage(exitImage, buttonX[3], buttonY[3]);
                 socket.emit('ready');
             }
+            //Buttons only activated if the player has pressed the Ready button
             if(playerReady)
             {
+                //Exit button
                 if (buttonIndex == 3)
                 {
                 splashUp = true;
@@ -205,21 +205,26 @@ function MenuButton(buttonIndex)
                 //socket.emit('restart');
                 //socket.emit('ready');
                 }
+                //Directional arrow buttons, for mobile/tablet users
                 if(buttonIndex == 4)
                 {
-                    CheckKey('38');
+                    direction = "up";
+                    Direction(direction);
                 }
                 if(buttonIndex == 5)
                 {
-                    CheckKey('40');
+                    direction = "down";
+                    Direction(direction);
                 }
                 if(buttonIndex == 6)
                 {
-                    CheckKey('37');
+                    direction = "left";
+                    Direction(direction);
                 }
                 if(buttonIndex == 7)
                 {
-                    CheckKey('39');
+                    direction = "right";
+                    Direction(direction);
                 }
             }
         }
@@ -233,7 +238,7 @@ function StartGameC()
     setTimeout(function(){ tickrate = setInterval(Update, 125);}, 3000);
 }
 
-//Moves and draws the players -Michiel J en Déan
+//Moves and draws the players -Michiel J en Dï¿½an
 function Update()
 {	
     //socket.emit
@@ -347,45 +352,30 @@ function Moving()
     socket.emit('location', pl.Location);
     bewogen = false;
 }
-
-document.onkeydown = CheckKey;
-
-//When there's an arrowkey input, changes the direction of the player -Michiel en Déan
-function CheckKey(e) {
-    e = e || window.event;
-
+function Direction(d)
+{
     var player1;
     gameRoom.Players.forEach( function (value, index)
     {
         if(value.ID == socket.username)
-        {			
+        {
             player1 = value;
         }
     });
-
     var dir;
-    if(e.keyCode == '37') {
-        arrow = "left";
-        // left arrow key
+    if(d == "left")
+    {
+        //left direction key
         if (player1.Direction == "up" && bewogen === false || player1.Direction == "down" && bewogen === false)
         {
             player1.Direction = "left";
             bewogen = true;
             dir = "left";
         }
-    } else if(e.keyCode == '38') {
-        arrow = "up";
-        // up arrow key
-        if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
-        {
-            player1.Direction = "up";
-            bewogen = true;
-            dir = "up";
-        }
     }
-    else if(e.keyCode == '39') {
-        arrow = "right";
-        // right arrow key
+    if(d == "right")
+    {
+        //right direction key
         if (player1.Direction == "up" && bewogen === false || player1.Direction == "down" && bewogen === false)
         {
             player1.Direction = "right";
@@ -393,9 +383,19 @@ function CheckKey(e) {
             dir = "right";
         }
     }
-    else if(e.keyCode == '40') {
-        arrow = "down";
-        // down arrow key
+    if(d == "up")
+    {
+        //up direction key
+        if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
+        {
+            player1.Direction = "up";
+            bewogen = true;
+            dir = "up";
+        }
+    }
+    if(d == "down")
+    {
+        //down direction key
         if (player1.Direction == "left" && bewogen === false || player1.Direction == "right" && bewogen === false)
         {
             player1.Direction = "down";
@@ -403,9 +403,33 @@ function CheckKey(e) {
             dir = "down";
         }
     }
-    
     //sends the direction to the server
     socket.emit('direct', dir);
+}
+
+document.onkeydown = CheckKey;
+
+//When there's an arrowkey input, changes the direction of the player -Michiel en Dï¿½an
+function CheckKey(e) {
+    e = e || window.event;
+
+    if(e.keyCode == '37')
+    {
+        direction = "left";
+    } else if(e.keyCode == '38')
+    {
+        direction = "up";
+    }
+    else if(e.keyCode == '39')
+    {
+        direction = "right";
+    }
+    else if(e.keyCode == '40')
+    {
+        direction = "down";
+    }
+
+    Direction(direction);
 }
 
 function YouLose(user)
@@ -422,7 +446,7 @@ function YouWin()
     alert("You have won");  
 }
 
-//Makes a block and sends it to the server -Michiel en Déan
+//Makes a block and sends it to the server -Michiel en Dï¿½an
 function MakeBlok(location, color)
 {
     var blok = new Block();
