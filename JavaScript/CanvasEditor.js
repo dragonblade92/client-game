@@ -213,6 +213,7 @@ function Update()
     Moving();
     DrawPlayers();
     bewogen = false;
+    
 }
 
 //Draws the players -Jasper en Michiel
@@ -251,10 +252,11 @@ function Moving()
         }
     });
 
+    MakeBlok(pl.Location);
+    
     switch(pl.Direction)
     {
         case "up":
-        MakeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY - 16;
         if(pl.Location.posY < 0)
         {
@@ -263,7 +265,6 @@ function Moving()
         }
         break;
         case "down":
-        MakeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY + 16;
         if(pl.Location.posY > 624)
         {
@@ -272,7 +273,6 @@ function Moving()
         }
         break;
         case "left":
-        MakeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX - 16;
         if(pl.Location.posX < 0)
         {
@@ -281,7 +281,6 @@ function Moving()
         }
         break;
         case "right":
-        MakeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX + 16;
         if(pl.Location.posX > 624)
         {

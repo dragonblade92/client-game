@@ -143,7 +143,7 @@ function Connect(socket)
     socket.on('NewBlock', function (block)
     {
         var gr = FindRoomOccupiedByUser(socket.username);
-        AddBlock(gr, block);
+        AddBlock(gr, block);        
     });
 
     //sets new location of player,
@@ -158,6 +158,10 @@ function Connect(socket)
         if (check != undefined)
         {
             io.to(gr.room).emit('lose', check.ID);
+        } 
+        else
+        {        
+            io.sockets["in"](socket.room).emit('gameroom', gr);
         }
     });
 
@@ -192,8 +196,6 @@ function Connect(socket)
                 StartGame(socket);
             }
         });
-        
-        
     });
 
     //removes the user from the room on disconnect
@@ -408,7 +410,7 @@ function CheckCollision(gr)
                     {
                         if (value.Location.posY == value2.Location.posY)
                         {
-                            console.log("Collision by: " + value.ID);
+                            console.log("Collision by: " + value.ID + "With :" + value2);
                             player = value;
                         }
                     }
