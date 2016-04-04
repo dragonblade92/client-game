@@ -341,6 +341,7 @@ function getUsersInRoomNumber(roomName, namespace)
     return Object.keys(room).length;
 }
 
+// -Jasper & Michiel
 function NewPLayerLocation(gr)
 {
     gr.Players[0].Location = new Location();
@@ -361,14 +362,14 @@ function AddBlock(gr, NewBlock)
 {
     //add a block at location
     var b = new Block();
-    var highestid = 0;
+    var highestID = 0;
     gr.Blocks.forEach( function (value, index) {
-        if(value.ID >= highestid)
+        if(value.ID >= highestID)
         {
-            highestid = value.ID + 1;
+            highestID = value.ID + 1;
         }
     });
-    b.ID = highestid;
+    b.ID = highestID;
     b.Blocked = NewBlock.Blocked;
     b.Location = new Location();
     b.Location.posX = NewBlock.Location.posX;
