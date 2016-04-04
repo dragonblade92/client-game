@@ -191,12 +191,11 @@ function MenuButton(buttonIndex)
 //Function to start the game -Michiel
 function StartGameC()
 {	
-
     DrawPlayers();
     setTimeout(function(){ tickrate = setInterval(Update, 125);}, 3000);
 }
 
-//Moves and draws the players -Michiel J
+//Moves and draws the players -Michiel J en Déan
 function Update()
 {	
     //socket.emit
@@ -206,22 +205,30 @@ function Update()
     
 }
 
-//Draws the players -Jasper,Dï¿½an en Michiel
+//Draws the players -Jasper,Dean en Michiel
 function DrawPlayers() 
 {
+    //clears the canvas
     ctx.clearRect(0, 0, c.width, c.height);
+    
+    //draws the grid
     DrawField();
-	ctx.drawImage(exitImage, buttonX[3], buttonY[3]);
+    
+    //draws background image
+    ctx.drawImage(exitImage, buttonX[3], buttonY[3]);
+    
+    //gets the color of the players
     GetColor();
+    
+    //draws all players
     gameRoom.Players.forEach( function (value, index)
     {
         ctx.fillStyle= value.Color;
-        console.log("kleur = " + value.Color);
-        console.log("value id = " + value.ID);
         ctx.fillStyle= value.Color;
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
     });    
     
+    //draws all blocks
     gameRoom.Blocks.forEach( function (value2, index2)
     {
         ctx.fillStyle = value2.Color;
@@ -261,6 +268,7 @@ function Moving()
     //MakeBlok(pl.Location, pl.Color);
     MakeBlok(pl.Location, "00FF00");
     
+    //checks the direction of the players
     switch(pl.Direction)
     {
         case "up":
@@ -297,13 +305,14 @@ function Moving()
         break;
     }
 
+    //sends the new location to the server
     socket.emit('location', pl.Location);
     bewogen = false;
 }
 
 document.onkeydown = CheckKey;
 
-//When there's an arrowkey input, changes the direction of the player -Michiel
+//When there's an arrowkey input, changes the direction of the player -Michiel en Déan
 function CheckKey(e) {
     e = e || window.event;
 
@@ -353,6 +362,7 @@ function CheckKey(e) {
         }
     }
     
+    //sends the direction to the server
     socket.emit('direct', dir);
 }
 
@@ -367,11 +377,10 @@ function YouWin()
 {
     //count wins
     wins += 1;
-    alert("You have won");
-    
+    alert("You have won");  
 }
 
-//Makes a block and sends it to the server -Michiel
+//Makes a block and sends it to the server -Michiel en Déan
 function MakeBlok(location, color)
 {
     var blok = new Block();
