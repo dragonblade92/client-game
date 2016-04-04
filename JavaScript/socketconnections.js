@@ -72,6 +72,7 @@ socket.on('PlayerExists', function ()
     socket.emit('adduser', prompt("what is your username?"));
 });
 
+//gets the gameroom and data
 socket.on('gameroom', function(gr)
 {
     gameRoom = gr;
@@ -79,12 +80,14 @@ socket.on('gameroom', function(gr)
     //console.log(gameRoom.Blocks);
 });
 
+//starts the game
 socket.on('start', function()
 {
     console.log("start");
     StartGameC();
 });
 
+//game ends
 socket.on('lose', function(user)
 {
     clearInterval(tickrate);
