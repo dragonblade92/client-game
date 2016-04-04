@@ -1,10 +1,6 @@
 //global variables ---------------------------
 var http = require('http');
-<<<<<<< HEAD
 var server = http.createServer(handler);
-=======
-var server = http.createServer( Handler );
->>>>>>> origin/master
 var usernames = {};
 var rooms = ['Lobby'];
 var Player = require("./JavaScript/objects").Player;
@@ -12,11 +8,7 @@ var Lobby = require("./JavaScript/objects").Lobby;
 var Location = require("./JavaScript/objects").Location;
 var Block = require("./JavaScript/objects").Block;
 
-<<<<<<< HEAD
 function handler(request, response)
-=======
-function Handler( request, response ) 
->>>>>>> origin/master
 {
     response.writeHead(200, {"Content-Type": "text/plain"});
     response.write("Hello World");
@@ -397,11 +389,7 @@ function StartGame(socket)
 
     //socket.emit('BlockInfo', gr.Blocks);
     io.sockets["in"](socket.room).emit('gameroom', gr);
-<<<<<<< HEAD
     everyOneReady(socket);
-=======
-    setTimeout(EveryOneReady(socket), 3000);
->>>>>>> origin/master
 }
 
 function CheckCollision(gr)
