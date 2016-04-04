@@ -1,12 +1,12 @@
 function Lobby()
 {
-	this.ID;
-	this.Players = [];
-	this.MaxPlayers;
-	this.Available;
-	this.Blocks = [];
-	this.room;
-	
+    this.ID;
+    this.Players = [];
+    this.MaxPlayers;
+    this.Available;
+    this.Blocks = [];
+    this.room;
+
 //	function SetBlocked(Player)
 //	{
 //		Lobby.Blocks.ForEach(Block)
