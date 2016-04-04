@@ -6,7 +6,6 @@ socket = io.connect('http://localhost:8083');
 socket.on('connect', function()
 {
     //werkt niet vanwege splashscreen
-    //showInput("What is your username?", "adduser");
     socket.username = prompt("What is your username?");
     socket.emit('adduser', socket.username);
 });
@@ -53,7 +52,6 @@ socket.on('Roomfull', function ()
 socket.on('Exists', function () 
 {
     socket.emit('create', prompt("what is your roomname?"));
-    //showInput("What is your room name?", "create");
 });
 
 //if the roomname or player name does not exists this will function will be triggered
@@ -67,7 +65,6 @@ socket.on('NonExi', function ()
 socket.on('PlayerExists', function () 
 {
     alert("There is already a Player with that name!");
-    //showInput("What is your username?", "adduser");
     socket.username = prompt("What is your username?");
     socket.emit('adduser', prompt("what is your username?"));
 });

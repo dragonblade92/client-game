@@ -150,8 +150,7 @@ function MenuButton(buttonIndex)
                     mainMenu = true;
                 } 
                 else
-                {                    
-                    //var roomname = ShowInput("What is the roomname?");
+                {
                     var roomname = prompt("Making a new room. New room name: ");
                     socket.emit('create', roomname);
                     DrawField();
@@ -169,7 +168,6 @@ function MenuButton(buttonIndex)
                 }
                 else
                 {
-                    //var joinroom = ShowInput("What is your username?");
                     var joinroom = prompt("Name of the room you want to join: ");
                     console.log(joinroom);
                     socket.emit('switchRoom', joinroom);
@@ -456,35 +454,3 @@ function MakeBlok(location, color)
     socket.emit('NewBlock', blok);
 }
 
-//this code is mostely from: http://goldfirestudios.com/blog/108/CanvasInput-HTML5-Canvas-Text-Input
-//doesnt work properly, it stays on the screen no matter what
-function ShowInput(question, keyWord)
-{
-    var input = new CanvasInput(
-    {
-        canvas: document.getElementById('myCanvas'),
-        fontSize: 18,
-        fontFamily: 'Arial',
-        fontColor: '#212121',
-        fontWeight: 'bold',
-        width: 300,
-        padding: 8,
-        borderWidth: 1,
-        borderColor: '#000',
-        borderRadius: 3,
-        boxShadow: '1px 1px 0px #fff',
-        innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
-        placeHolder: question,
-        onsubmit: function()
-        {           
-            if(keyWord == "adduser")
-            {
-                socket.username = input._value;
-            }
-            
-            socket.emit(keyWord, input._value);
-            input.destroy();
-            DrawField();
-        }
-    });
-}
