@@ -206,21 +206,19 @@ function Update()
     
 }
 
-//Draws the players -Jasper,Déan en Michiel
+//Draws the players -Jasper,Dï¿½an en Michiel
 function DrawPlayers() 
 {
     ctx.clearRect(0, 0, c.width, c.height);
     DrawField();
+	ctx.drawImage(exitImage, buttonX[3], buttonY[3]);
     GetColor();
     gameRoom.Players.forEach( function (value, index)
     {
-<<<<<<< HEAD
-        //ctx.fillStyle= value.Color;
-=======
+        ctx.fillStyle= value.Color;
         console.log("kleur = " + value.Color);
         console.log("value id = " + value.ID);
         ctx.fillStyle= value.Color;
->>>>>>> origin/master
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
     });    
     
@@ -231,7 +229,7 @@ function DrawPlayers()
     });	
 }
 
-//Gives a color to the player - Déan
+//Gives a color to the player - Dï¿½an
 function GetColor()
 {
         gameRoom.Players.forEach( function (value, index)
