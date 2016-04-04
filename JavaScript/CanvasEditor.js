@@ -259,6 +259,7 @@ function Moving()
     });
 
     MakeBlok(pl.Location, pl.Color);
+    MakeBlok(pl.Location, "00FF00");
     
     switch(pl.Direction)
     {
