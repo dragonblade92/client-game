@@ -143,7 +143,7 @@ function Connect(socket)
     socket.on('NewBlock', function (block)
     {
         var gr = FindRoomOccupiedByUser(socket.username);
-        AddBlock(gr, block);
+        AddBlock(gr, block);        
     });
 
     //sets new location of player,
@@ -158,6 +158,10 @@ function Connect(socket)
         if (check != undefined)
         {
             io.to(gr.room).emit('lose', check.ID);
+        } 
+        else
+        {        
+            io.sockets["in"](socket.room).emit('gameroom', gr);
         }
     });
 
@@ -192,10 +196,15 @@ function Connect(socket)
                 StartGame(socket);
             }
         });
-        
-        
     });
-
+    
+    //changes the direction of the player
+    socket.on('direct', function(dir)
+    {
+        var pl = FindUser(socket.username);
+        pl.Direction = dir;
+    });
+    
     //removes the user from the room on disconnect
     socket.on('disconnect', function ()
     {
@@ -409,7 +418,7 @@ function CheckCollision(gr)
                     {
                         if (value.Location.posY == value2.Location.posY)
                         {
-                            console.log("Collision by: " + value.ID);
+                            console.log("Collision by: " + value.ID + "With :" + value2);
                             player = value;
                         }
                     }
@@ -424,29 +433,21 @@ function EveryOneReady(socket)
 {
     //checks if everybody has pressed the ready button
     var gr = FindRoomOccupiedByUser(socket.username);
-    if (gr.Players.length >= 2)
+    var r = true;
+    gr.Players.forEach(function (value, index)
     {
-        var r = true;
-        gr.Players.forEach(function (value, index)
+        console.log("value = " + value.ID);
+        console.log("value.Ready = " + value.Ready);
+        if (!value.Ready)
         {
-            console.log("value = " + value.ID);
-            console.log("value.Ready = " + value.Ready);
-            if (!value.Ready)
-            {
-                r = false;
-            }
-        });
-
-        console.log("r = " + r);
-        if (r)
-        {
-            io.sockets["in"](socket.room).emit('start', gr);
-            console.log("starting game");
+            r = false;
         }
-    }
-    else
+    });
+
+    console.log("r = " + r);
+    if (r)
     {
-        console.log("Less than two players");
-        socket.emit('moreplayers');
+        io.sockets["in"](socket.room).emit('start', gr);
+        console.log("starting game");
     }
 }

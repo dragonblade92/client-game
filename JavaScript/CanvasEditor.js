@@ -213,24 +213,24 @@ function Update()
     Moving();
     DrawPlayers();
     bewogen = false;
+    
 }
 
 //Draws the players -Jasper en Michiel
 function DrawPlayers() 
 {
-
     ctx.clearRect(0, 0, c.width, c.height);
+    
     gameRoom.Players.forEach( function (value, index)
     {
-        console.log(value);
         ctx.fillStyle= value.Color;
         ctx.fillRect(value.Location.posX, value.Location.posY,16,16);
-    });
-
+    });    
+    
     gameRoom.Blocks.forEach( function (value, index)
     {
         //ctx.shadowBlur=10;
-        var shadow = value.Color
+        var shadow = value.Color;
         shadow = shadow.replace("FF", "88");
         ctx.shadowColor= shadow;
         ctx.fillStyle = value.Color;
@@ -251,10 +251,11 @@ function Moving()
         }
     });
 
+    MakeBlok(pl.Location);
+    
     switch(pl.Direction)
     {
         case "up":
-        MakeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY - 16;
         if(pl.Location.posY < 0)
         {
@@ -263,7 +264,6 @@ function Moving()
         }
         break;
         case "down":
-        MakeBlok(pl.Location);
         pl.Location.posY = pl.Location.posY + 16;
         if(pl.Location.posY > 624)
         {
@@ -272,7 +272,6 @@ function Moving()
         }
         break;
         case "left":
-        MakeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX - 16;
         if(pl.Location.posX < 0)
         {
@@ -281,7 +280,6 @@ function Moving()
         }
         break;
         case "right":
-        MakeBlok(pl.Location);
         pl.Location.posX = pl.Location.posX + 16;
         if(pl.Location.posX > 624)
         {
@@ -310,12 +308,14 @@ function CheckKey(e) {
         }
     });
 
+    var dir;
     if(e.keyCode == '37') {
         // left arrow key
         if (player1.Direction == "up" && bewogen == false || player1.Direction == "down" && bewogen == false)
         {
             player1.Direction = "left";
             bewogen = true;
+            dir = "left";
         }
     } else if(e.keyCode == '38') {
         // up arrow key
@@ -323,6 +323,7 @@ function CheckKey(e) {
         {
             player1.Direction = "up";
             bewogen = true;
+            dir = "up";
         }
     }
     else if(e.keyCode == '39') {
@@ -331,6 +332,7 @@ function CheckKey(e) {
         {
             player1.Direction = "right";
             bewogen = true;
+            dir = "right";
         }
     }
     else if(e.keyCode == '40') {
@@ -339,8 +341,11 @@ function CheckKey(e) {
         {
             player1.Direction = "down";
             bewogen = true;
+            dir = "down";
         }
     }
+    
+    socket.emit('direct', dir);
 }
 
 function YouLose(user)
@@ -359,12 +364,13 @@ function YouWin()
 }
 
 //Makes a block and sends it to the server -Michiel
-function MakeBlok(location)
+function MakeBlok(location, color)
 {
     var blok = new Block();
     blok.Location = new Location();
     blok.Location.posY = location.posY;
     blok.Location.posX = location.posX;
+    blok.Color = color;
     blok.Blocked = true;
     socket.emit('NewBlock', blok);
 }
