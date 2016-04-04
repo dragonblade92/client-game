@@ -11,6 +11,8 @@ var playerReady = false;
 var wins;
 var lose;
 var socket;
+var mouseX;
+var mouseY;
 
 //Images
 var splashImage = new Image();
@@ -341,14 +343,14 @@ function CheckKey(e) {
     }
 }
 
-function YouLose(user) 
+function YouLose(user)
 {
     lose += 1;
     alert("You have collided");
-    //count losses
+    //count looses
 }
 
-function YouWin() 
+function YouWin()
 {
     //count wins
     wins += 1;
