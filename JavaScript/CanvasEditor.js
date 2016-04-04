@@ -187,7 +187,7 @@ function MenuButton(buttonIndex)
 }
 
 //Function to start the game -Michiel
-function StartGame() 
+function StartGameC()
 {	
     gameRoom.Players.forEach( function (value, index)
     {
